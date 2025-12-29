@@ -125,6 +125,8 @@ This architecture is conserved across mammals, suggesting evolutionary optimizat
 
 ## Current Focus: Binocular Processing
 
+![BinocularMPKNet Architecture](figures/binocular_mpknet_architecture.png)
+
 The binocular extension (`mpknet_binocular.py`) is the current active development focus. This adds:
 
 - **Ocular dominance organization**: Channels are assigned to left/right eye with graded mixing; some purely monocular, some binocular
