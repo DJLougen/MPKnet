@@ -8,6 +8,8 @@ This project emerged from my PhD research on the LGN at the University of Toront
 
 MPKNet is both a learning exercise in deep learning and an attempt to put forth a new approach: rather than cherry-picking biological features, we directly model the laminar organization of the LGN as observed in tree shrews, where M, P, and K pathways are clearly separated into distinct layers. This is a side project exploring whether taking biological structure seriously leads to networks with different computational properties.
 
+This work also represents an alternative to current scaling methodologies in AI. Rather than emphasizing parameter count and data volume, MPKNet explores a **structural approach to scaling**—the idea that architectural organization inspired by biological systems may provide computational benefits that brute-force scaling cannot.
+
 ## Key Ideas
 
 1. **Parallel Visual Streams**: Like the biological LGN, MPKNet processes visual information through three parallel pathways:
