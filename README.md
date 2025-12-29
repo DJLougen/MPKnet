@@ -118,7 +118,7 @@ mpknet/
 The tree shrew (*Tupaia*) LGN provides an excellent model for studying parallel visual processing due to its clearly laminated structure. Unlike primates where M, P, and K cells are intermixed, the tree shrew LGN shows distinct layers:
 
 - **Koniocellular-like**: 2 layers (small cells, modulatory)
-- **Parvocellular-like**: 2 layers (color, detail)
+- **Parvocellular-like**: 4 layers (color, detail)
 - **Magnocellular-like**: 2 layers (motion, global)
 
 This architecture is conserved across mammals, suggesting evolutionary optimization for efficient visual processing.
