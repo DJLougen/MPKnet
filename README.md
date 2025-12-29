@@ -6,7 +6,7 @@
 
 This project is a side project to my PhD research on the LGN at the University of Toronto. I had the idea a couple years ago and built it over the summer of 2025. After reviewing prior attempts at bio-inspired neural networks, I felt existing approaches did not satisfactorily capture the actual organizational principles of biological visual systems. They often borrowed surface-level inspiration (like Gabor filters) without modeling the fundamental parallel-stream architecture that evolution has conserved across mammals. Another approach I encountered was EEG-guided training, which can reveal correlations between neural activity and image processing, but seemed to me more about pattern matching brain waves than capturing the underlying structure of how biological vision is organized.
 
-While it might seem naive, I was curious whether directly modeling the anatomical structure I study would produce something interesting. MPKNet is both a learning exercise in deep learning and an attempt to put forth a new approach: rather than cherry-picking biological features, we directly model the laminar organization of the LGN as observed in tree shrews, where M, P, and K pathways are clearly separated into distinct layers. This explores whether taking biological structure seriously leads to networks with different computational properties.
+While it might seem naive, I was curious whether directly modeling the anatomical structure I study would produce something interesting. MPKNet is both a learning exercise in deep learning and an attempt to put forth a new approach: rather than cherry-picking biological features, I directly model the laminar organization of the LGN as observed in tree shrews, where M, P, and K pathways are clearly separated into distinct layers. This explores whether taking biological structure seriously leads to networks with different computational properties.
 
 This work also represents an alternative to current scaling methodologies in AI. Rather than emphasizing parameter count and data volume, MPKNet explores a **structural approach to scaling**: the idea that architectural organization inspired by biological systems may provide computational benefits that brute-force scaling cannot.
 
@@ -81,7 +81,7 @@ Input (3×H×W)
 
 2. **Implicit Regularization**: While the baseline CNN achieves higher peak accuracy (84.6%), it memorizes the training set (100% train acc). MPKNet's biological structure acts as implicit regularization, preventing perfect memorization.
 
-3. **Biological Dynamics**: Our models exhibit DFA ≈ 0.52, within the biological range (0.5-0.75), indicating long-range temporal correlations characteristic of neural systems at criticality.
+3. **Biological Dynamics**: The models exhibit DFA ≈ 0.52, within the biological range (0.5-0.75), indicating long-range temporal correlations characteristic of neural systems at criticality.
 
 **Note on Evaluation**: This project explores bio-inspired design principles rather than pursuing SOTA accuracy. The value lies in understanding how biological organizational principles (parallel visual streams, cross-stream modulation) translate to computational properties in artificial systems.
 
@@ -93,11 +93,11 @@ Input (3×H×W)
 | MobileNetV3-Small | 2.5M | 92.5% | No | Heavy |
 | SqueezeNet | 1.2M | 84.5% | Yes (ImageNet) | Standard |
 
-*Note: Most published results use pretraining and/or heavy augmentation. Our results are from-scratch with minimal data augmentation to isolate architectural contribution.*
+*Note: Most published results use pretraining and/or heavy augmentation. These results are from-scratch with minimal data augmentation to isolate architectural contribution.*
 
 ## Fractal Dynamics
 
-We measure Detrended Fluctuation Analysis (DFA) and Hurst exponent of prediction confidence traces during evaluation. Biological neural systems exhibit DFA values in the 0.5-0.75 range, indicating long-range temporal correlations. Our models consistently produce dynamics in this biological range.
+I measure Detrended Fluctuation Analysis (DFA) and Hurst exponent of prediction confidence traces during evaluation. Biological neural systems exhibit DFA values in the 0.5-0.75 range, indicating long-range temporal correlations. The models consistently produce dynamics in this biological range.
 
 ## Installation
 
