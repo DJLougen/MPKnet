@@ -31,6 +31,8 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 
 5. **Late Pooling**: Pooling is deferred until the final GAP layer. This preserves spatial noise throughout the network—the hypothesis being that "what is not" (negative space, noise patterns) may carry information that aids discrimination, similar to how biological systems may use absence of signal as informative
 
+6. **Task Agnostic**: The goal is for the model architecture to remain unchanged regardless of task—just like biological visual systems, you don't modify the structure, you simply give it a task and it learns
+
 ## Architecture
 
 ![MPKNet Architecture](figures/mpknet_architecture.png)
