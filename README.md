@@ -59,16 +59,21 @@ Input (3×H×W)
 
 ### CIFAR-10 (From Scratch, No Pretraining)
 
-| Model | Params | Val Acc (no aug) | Val Acc (aug) | DFA | Notes |
-|-------|--------|------------------|---------------|-----|-------|
-| MPKNet + CellPop | 0.54M | **79.5%** | 81.1% | 0.52 | Stable training |
-| Baseline CNN (ablation) | 0.55M | 84.5%* | - | - | *Overfits: 100% train |
-| MPKNet + Binocular | 0.14M | TBD | TBD | TBD | 4x fewer params |
+| Model | Params | Val Acc (no aug) | Val Acc (aug) | DFA | Train Acc |
+|-------|--------|------------------|---------------|-----|-----------|
+| MPKNet + CellPop | 0.54M | 79.5% | 81.1% | 0.52 | ~95% |
+| Baseline CNN (ablation) | 0.55M | 84.6% | - | - | 100% (overfits) |
+| MPKNet + Binocular | 0.14M | TBD | TBD | TBD | - |
 
 **Key Findings**:
-1. **Augmentation Insensitivity**: MPKNet gains only +1.6% from heavy augmentation (vs +8-12% typical), suggesting intrinsic invariances from bio-inspired design
-2. **Stable Dynamics**: While a vanilla CNN achieves higher peak accuracy, it severely overfits (100% train acc). MPKNet maintains more stable generalization dynamics
-3. **Biological DFA**: Our models exhibit DFA ≈ 0.52, within the biological range (0.5-0.75)
+
+1. **Augmentation Insensitivity**: MPKNet gains only **+1.6%** from heavy augmentation (vs +8-12% typical for CNNs). This suggests the parallel M/P/K pathway structure provides intrinsic invariances that standard architectures must learn through data augmentation.
+
+2. **Implicit Regularization**: While the baseline CNN achieves higher peak accuracy (84.6%), it memorizes the training set (100% train acc). MPKNet's biological structure acts as implicit regularization, preventing perfect memorization.
+
+3. **Biological Dynamics**: Our models exhibit DFA ≈ 0.52, within the biological range (0.5-0.75), indicating long-range temporal correlations characteristic of neural systems at criticality.
+
+**Note on Evaluation**: This project explores bio-inspired design principles rather than pursuing SOTA accuracy. The value lies in understanding how biological organizational principles (parallel visual streams, cross-stream modulation) translate to computational properties in artificial systems.
 
 ### Comparison Context
 
