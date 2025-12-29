@@ -154,7 +154,7 @@ The philosophy is to start with the most fundamental structural feature (paralle
 ## Citation
 
 ```bibtex
-@misc{mpknet2024,
+@misc{MPKNet,
   author = {Lougen, D.J.
   title = {MPKNet: A Tree Shrew LGN-Inspired Architecture for Efficient Visual Processing},
   year = {2024},
