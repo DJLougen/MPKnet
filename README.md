@@ -29,43 +29,7 @@ I am open to suggestions and collaboration. The parallel pathway architecture mi
 
 ## Architecture
 
-```
-Input (3×H×W)
-    │
-    ▼
-┌─────────┐
-│ PreMPK  │  LGN-like preprocessing (HPF for P, LPF for M)
-└─────────┘
-    │
-    ├────────────────┬────────────────┐
-    ▼                ▼                ▼
-┌─────────┐    ┌─────────┐    ┌─────────┐
-│ CellPop │    │ CellPop │    │ CellPop │
-│ P-stem  │    │ M-stem  │    │ K-stem  │
-└─────────┘    └─────────┘    └─────────┘
-    │                │                │
-    ▼                ▼                ▼
-┌─────────┐    ┌─────────┐    ┌─────────┐
-│  Parvo  │    │  Magno  │    │  Konio  │
-│ 4×4→3×3 │    │ 7×7→9×9 │    │ 5×5×3   │
-│ 4 layers│    │ 2 layers│    │ 3 layers│
-└─────────┘    └─────────┘    └─────────┘
-    │                │                │
-    │                │                ▼
-    │                │         ┌─────────────┐
-    │                │         │ K-Gate (σ)  │
-    │                │         └─────────────┘
-    │                │                │
-    ▼                ▼                ▼
-┌────────────────────────────────────────────┐
-│              Fusion (1×1 conv)             │
-└────────────────────────────────────────────┘
-    │
-    ▼
-┌─────────┐
-│  Head   │  GAP → FC → logits
-└─────────┘
-```
+![MPKNet Architecture](figures/mpknet_architecture.png)
 
 ## Results
 
@@ -99,7 +63,7 @@ Input (3×H×W)
 
 ## Fractal Dynamics
 
-I measure Detrended Fluctuation Analysis (DFA) and Hurst exponent of prediction confidence traces during evaluation. Biological neural systems exhibit DFA values in the 0.5-0.75 range, indicating long-range temporal correlations. The models consistently produce dynamics in this biological range.
+I measure Detrended Fluctuation Analysis (DFA) and Hurst exponent of prediction confidence traces during evaluation. Biological neural systems exhibit DFA values in the 0.5-0.75 range, indicating long-range temporal correlations. The models consistently produce dynamics in this biological range. Whether this is meaningful or simply reflects how the data is organized is an open question.
 
 ## Installation
 
