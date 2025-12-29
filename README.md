@@ -4,6 +4,8 @@
 
 ## Motivation
 
+This project was largely inspired by [Usrey & Alitto (2015)](https://www.pnas.org/doi/10.1073/pnas.1403112111) on parallel processing in the visual thalamus.
+
 This project is a side project to my PhD research on the LGN at the University of Toronto. I had the idea a couple years ago and built it over the summer of 2025. After reviewing prior attempts at bio-inspired neural networks, I felt existing approaches did not satisfactorily capture the actual organizational principles of biological visual systems. They often borrowed surface-level inspiration (like Gabor filters) without modeling the fundamental parallel-stream architecture that evolution has conserved across mammals. Another approach I encountered was EEG-guided training, which can reveal correlations between neural activity and image processing, but seemed to me more about pattern matching brain waves than capturing the underlying structure of how biological vision is organized.
 
 While it might seem naive, I was curious whether directly modeling the anatomical structure I study would produce something interesting. MPKNet is both a learning exercise in deep learning and an attempt to put forth a new approach: rather than cherry-picking biological features, I directly model the laminar organization of the LGN as observed in tree shrews, where M, P, and K pathways are clearly separated into distinct layers. This explores whether taking biological structure seriously leads to networks with different computational properties.
@@ -73,7 +75,7 @@ Input (3×H×W)
 |-------|--------|------------------|---------------|-----|-----------|
 | MPKNet + CellPop | 0.54M | 79.5% | 81.1% | 0.52 | ~95% |
 | Baseline CNN (ablation) | 0.55M | 84.6% | - | - | 100% (overfits) |
-| MPKNet + Binocular | 0.14M | TBD | TBD | TBD | - |
+| MPKNet + Binocular | 0.14M | 83.0% | - | - | ~93% |
 
 **Key Findings**:
 
@@ -160,7 +162,7 @@ The binocular extension (`mpknet_binocular.py`) is the current active developmen
 - **Stereo disparity simulation**: Horizontal shifts between eye views during training
 - **Eye-specific LGN layers**: Modeling the contralateral/ipsilateral layer organization (layers 1,4,6 vs 2,3,5)
 
-The binocular model is significantly smaller (0.14M params) while adding biologically plausible dual-eye processing. Results TBD.
+The binocular model is significantly smaller (0.14M params) while adding biologically plausible dual-eye processing, achieving 83.0% validation accuracy on CIFAR-10.
 
 ## What This Project Deliberately Ignores
 
@@ -168,13 +170,13 @@ Several biological features are intentionally omitted. The reasoning:
 
 **Temporal dynamics / spiking**: The LGN exhibits rich temporal processing; M cells respond transiently, P cells have sustained responses. I chose to focus on the spatial/structural organization first. Adding temporal dynamics (e.g., spiking networks, LSTM-like recurrence) would complicate the architecture before validating that the parallel stream structure itself provides value.
 
-**Recurrent connections**: Real visual processing involves massive feedback from V1 to LGN and lateral connections within LGN. These are omitted because feedforward CNNs are better understood and easier to train. Recurrence is a natural next step but adds training complexity.
+**Recurrent connections**: Real visual processing involves massive feedback from V1 to LGN and lateral connections within LGN. These are omitted because feedforward CNNs are better understood and easier to train. Recurrence is a natural next step but adds training complexity. See [arXiv:2506.21734](https://arxiv.org/abs/2506.21734) for a potentially relevant approach.
 
 **Foveation / eccentricity**: Biological retinas have varying resolution across the visual field. This could be added via attention mechanisms or non-uniform sampling, but would require larger images than CIFAR-10's 32x32 to be meaningful.
 
 **Color opponent channels**: The P pathway in particular carries color opponent signals (red-green, blue-yellow). The current implementation uses standard RGB. True color opponency might improve the biological fidelity of the P stream.
 
-**Cortical processing (V1+)**: This model stops at LGN-level processing. Real vision involves extensive cortical computation. The fusion layer is a crude stand-in for V1 integration. A proper V1 model with orientation columns and complex cells would be a substantial extension.
+**Cortical processing (V1+)**: This model stops at LGN-level processing. Real vision involves extensive cortical computation. The fusion layer is a crude stand-in for V1 integration. A proper V1 model with orientation columns and complex cells would be a substantial extension. I am thinking about how the [Kakeya conjecture](https://en.wikipedia.org/wiki/Kakeya_set) might be used with Fourier-transformed data to efficiently encode and predict orientations—inspired by a recent [video](https://www.youtube.com/watch?v=5J3tYU_-IZI) on the 3D Kakeya conjecture being solved ([arXiv:2502.17655](https://arxiv.org/abs/2502.17655)).
 
 **Attention / top-down modulation**: Beyond K-gating, biological vision involves attentional modulation from higher areas. This is ignored to keep the model simple and feedforward.
 
