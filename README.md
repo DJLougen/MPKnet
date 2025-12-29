@@ -83,7 +83,7 @@ I learned about fractal dynamics from the Sereno lab at the University of Oregon
 The core MPKNet architecture implementation will be released upon paper publication. This repository currently contains:
 - Architecture diagrams and figures
 - Benchmark results
-- Supporting utilities (CellPop, data loading, logging)
+- Supporting utilities (data loading, logging)
 
 **For early access or collaboration inquiries**, please contact me via my [website](https://djlougen.github.io/PersonalWebsite/).
 
