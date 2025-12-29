@@ -27,6 +27,8 @@ I am open to suggestions and collaboration. The parallel pathway architecture mi
 
 4. **Evolutionary Priors**: Kernel sizes and strides chosen to reflect biological receptive field properties across species
 
+5. **Late Pooling**: Pooling is deferred until the final GAP layer. This preserves spatial noise throughout the network—the hypothesis being that "what is not" (negative space, noise patterns) may carry information that aids discrimination, similar to how biological systems may use absence of signal as informative
+
 ## Architecture
 
 ![MPKNet Architecture](figures/mpknet_architecture.png)
