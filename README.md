@@ -4,7 +4,7 @@
 
 ## Motivation
 
-This project was largely inspired by [Usrey & Alitto (2015)](https://www.pnas.org/doi/10.1073/pnas.1403112111) on parallel processing in the visual thalamus.
+This project was largely inspired by [Yamins et al. (2014)](https://www.pnas.org/doi/10.1073/pnas.1403112111) on performance-optimized hierarchical models. For a thorough explanation of the LGN, see [Solomon (2021)](https://pubmed.ncbi.nlm.nih.gov/33832683/).
 
 This project is a side project to my PhD research on the LGN at the University of Toronto. I had the idea a couple years ago and built it over the summer of 2025. After reviewing prior attempts at bio-inspired neural networks, I felt existing approaches did not satisfactorily capture the actual organizational principles of biological visual systems. They often borrowed surface-level inspiration (like Gabor filters) without modeling the fundamental parallel-stream architecture that evolution has conserved across mammals. Another approach I encountered was EEG-guided training, which can reveal correlations between neural activity and image processing, but seemed to me more about pattern matching brain waves than capturing the underlying structure of how biological vision is organized.
 
