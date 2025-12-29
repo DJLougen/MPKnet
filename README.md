@@ -1,4 +1,4 @@
-# MPKNet: A Tree Shrew LGN-Inspired Architecture for Efficient Visual Processing
+# MPKNet: A LGN-Inspired Architecture for Efficient Visual Processing
 
 **MPKNet** is a bio-inspired convolutional neural network that models the Magnocellular (M), Parvocellular (P), and Koniocellular (K) pathways of the Lateral Geniculate Nucleus (LGN), based on cross-species evolutionary priors observed in mammals from tree shrews to primates.
 
@@ -184,11 +184,11 @@ The philosophy is to start with the most fundamental structural feature (paralle
 
 ```bibtex
 @misc{mpknet2024,
-  author = {Your Name},
+  author = {Lougen, D.J.
   title = {MPKNet: A Tree Shrew LGN-Inspired Architecture for Efficient Visual Processing},
   year = {2024},
   publisher = {GitHub},
-  url = {https://github.com/YOUR_USERNAME/mpknet}
+  url = https://github.com/DJLougen/MPKnet
 }
 ```
 
@@ -196,7 +196,4 @@ The philosophy is to start with the most fundamental structural feature (paralle
 
 MIT License
 
-## Acknowledgments
 
-- Jay Pratt Lab, University of Toronto
-- Vector Institute
