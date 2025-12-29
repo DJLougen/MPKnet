@@ -106,8 +106,7 @@ mpknet/
 ├── tbLogger.py         # TensorBoard logging
 ├── visualize_mpknet.py # Architecture visualization
 ├── figures/            # Generated figures
-├── results/            # Experiment results
-└── paper/              # White paper LaTeX source
+└── results/            # Experiment results
 ```
 
 ## Biological Motivation
@@ -151,8 +150,6 @@ The philosophy is to start with the most fundamental structural feature (paralle
 ## White Paper
 
 *Coming soon* — once I figure out how to write it!
-
-See the `paper/` directory for LaTeX source (in progress).
 
 ## Citation
 
