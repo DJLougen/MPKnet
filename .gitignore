@@ -28,3 +28,15 @@ Thumbs.db
 
 # Logs
 *.log
+
+# ============================================
+# PRIVATE - Core architecture (not released)
+# ============================================
+# These files contain the novel M/P/K implementation
+# Will be released upon paper publication
+mpknet_binocular.py
+mpkSGD.py
+mpkSGD_kgate.py
+visualize_mpknet.py
+generate_architecture_figure.py
+generate_binocular_figure.py

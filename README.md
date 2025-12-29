@@ -64,57 +64,39 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 | Model | Params | CIFAR-10 | CIFAR-100 | Pretrained? | Augmentation |
 |-------|--------|----------|-----------|-------------|--------------|
 | **BinocularMPKNet** | 0.14M | 83.0% | 52.8% | No | None |
+| **BinocularMPKNet** | 0.14M | - | 46.0% | No | Heavy |
 | MobileNetV3-Small | 2.5M | 92.5% | 75.4% | No | Heavy |
 | SqueezeNet | 1.2M | 84.5% | 58.5% | Yes (ImageNet) | Standard |
 
-*Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. BinocularMPKNet results are from-scratch without augmentation to isolate architectural contribution.*
+*Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. BinocularMPKNet results are from-scratch to isolate architectural contribution.*
 
-*Continuing to run on any dataset I can get.*
+**Note on CIFAR-100 augmentation**: The heavy augmentation run (46.0%) underperforms no-augmentation (52.8%), consistent with our finding that MPKNet's biological structure provides intrinsic invariances. Adding augmentation may interfere with these learned representations.
+
+*Continuing to run on any dataset I can get - currently testing on Kvasir-v2 (medical endoscopy).*
 
 ## Fractal Dynamics
 
 I learned about fractal dynamics from the Sereno lab at the University of Oregon while doing my masters and was curious to explore it here. For a cool introduction to fractal dynamics, see [this Jackson Pollock-related paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC3124832/). I measure Detrended Fluctuation Analysis (DFA) and Hurst exponent of prediction confidence traces during evaluation. Biological neural systems exhibit DFA values in the 0.5-0.75 range, indicating long-range temporal correlations. The models consistently produce dynamics in this biological range. Whether this is meaningful or simply reflects how the data is organized is an open question.
 
-## Installation
+## Code Availability
 
-```bash
-git clone https://github.com/YOUR_USERNAME/mpknet.git
-cd mpknet
-pip install -r requirements.txt
-```
+The core MPKNet architecture implementation will be released upon paper publication. This repository currently contains:
+- Architecture diagrams and figures
+- Benchmark results
+- Supporting utilities (CellPop, data loading, logging)
 
-## Usage
-
-### Training
-
-```bash
-# Basic training with CellPop
-python mpkSGD.py --dataset CIFAR10 --epochs 100 --batch 256 --lr 0.1 \
-    --use_cellpop --cellpop_stride 2 --mixup 0.2 --warmup_epochs 5 --swa --ema
-
-# With CellPop and Konio gating
-python mpkSGD_kgate.py --dataset CIFAR10 --epochs 100 --batch 256 --lr 0.1 \
-    --use_cellpop --cellpop_stride 2 --mixup 0.2 --warmup_epochs 5 --swa --ema
-```
-
-### Visualization
-
-```bash
-python visualize_mpknet.py  # Generates architecture diagram
-```
+**For early access or collaboration inquiries**, please contact me via my [website](https://djlougen.github.io/PersonalWebsite/).
 
 ## File Structure
 
 ```
 mpknet/
-├── mpkSGD.py           # Main training script (SGD + modern techniques)
-├── mpkSGD_kgate.py     # Training with Konio gating mechanism
-├── cellpop.py          # CellPop retinal sampling module
-├── modelData.py        # Dataset loading utilities
-├── tbLogger.py         # TensorBoard logging
-├── visualize_mpknet.py # Architecture visualization
-├── figures/            # Generated figures
-└── results/            # Experiment results
+├── cellpop.py          # CellPop retinal sampling module (released)
+├── modelData.py        # Dataset loading utilities (released)
+├── tbLogger.py         # TensorBoard logging (released)
+├── figures/            # Architecture diagrams
+├── results/            # Experiment results
+└── [private]           # Core architecture (released upon publication)
 ```
 
 ## Biological Motivation
