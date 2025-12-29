@@ -63,7 +63,7 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 
 | Model | Params | CIFAR-10 | CIFAR-100 | Pretrained? | Augmentation |
 |-------|--------|----------|-----------|-------------|--------------|
-| **BinocularMPKNet (ours)** | 0.14M | 83.0% | - | No | None |
+| **BinocularMPKNet** | 0.14M | 83.0% | - | No | None |
 | MobileNetV3-Small | 2.5M | 92.5% | 75.4% | No | Heavy |
 | SqueezeNet | 1.2M | 84.5% | 58.5% | Yes (ImageNet) | Standard |
 
