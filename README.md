@@ -4,11 +4,11 @@
 
 ## Motivation
 
-This project emerged from my PhD research on the LGN at the University of Toronto. After reviewing prior attempts at bio-inspired neural networks, I felt existing approaches didn't satisfactorily capture the actual organizational principles of biological visual systems—they often borrowed surface-level inspiration (like Gabor filters) without modeling the fundamental parallel-stream architecture that evolution has conserved across mammals.
+This project is a side project to my PhD research on the LGN at the University of Toronto. I had the idea a couple years ago and built it over the summer of 2024. After reviewing prior attempts at bio-inspired neural networks, I felt existing approaches did not satisfactorily capture the actual organizational principles of biological visual systems. They often borrowed surface-level inspiration (like Gabor filters) without modeling the fundamental parallel-stream architecture that evolution has conserved across mammals.
 
-MPKNet is both a learning exercise in deep learning and an attempt to put forth a new approach: rather than cherry-picking biological features, we directly model the laminar organization of the LGN as observed in tree shrews, where M, P, and K pathways are clearly separated into distinct layers. This is a side project exploring whether taking biological structure seriously leads to networks with different computational properties.
+MPKNet is both a learning exercise in deep learning and an attempt to put forth a new approach: rather than cherry-picking biological features, we directly model the laminar organization of the LGN as observed in tree shrews, where M, P, and K pathways are clearly separated into distinct layers. This explores whether taking biological structure seriously leads to networks with different computational properties.
 
-This work also represents an alternative to current scaling methodologies in AI. Rather than emphasizing parameter count and data volume, MPKNet explores a **structural approach to scaling**—the idea that architectural organization inspired by biological systems may provide computational benefits that brute-force scaling cannot.
+This work also represents an alternative to current scaling methodologies in AI. Rather than emphasizing parameter count and data volume, MPKNet explores a **structural approach to scaling**: the idea that architectural organization inspired by biological systems may provide computational benefits that brute-force scaling cannot.
 
 ## Key Ideas
 
