@@ -102,7 +102,7 @@ mpknet/
 
 MPKNet's architecture is an amalgamation of tree shrew and human LGN organization. The tree shrew (*Tupaia*) LGN provides an excellent model for studying parallel visual processing due to its clearly laminated structure, with clean separation between pathway types. This inspired the parallel-stream approach. The specific layer counts are based on human LGN anatomy:
 
-- **Koniocellular**: 3 layers (small cells, modulatory)
+- **Koniocellular**: 3 layers (sparse, modulatory)
 - **Parvocellular**: 4 layers (color, detail)
 - **Magnocellular**: 2 layers (motion, global)
 
