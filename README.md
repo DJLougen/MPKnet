@@ -152,6 +152,34 @@ The tree shrew (*Tupaia*) LGN provides an excellent model for studying parallel 
 
 This architecture is conserved across mammals, suggesting evolutionary optimization for efficient visual processing.
 
+## Current Focus: Binocular Processing
+
+The binocular extension (`mpknet_binocular.py`) is the current active development focus. This adds:
+
+- **Ocular dominance organization**: Channels are assigned to left/right eye with graded mixing; some purely monocular, some binocular
+- **Stereo disparity simulation**: Horizontal shifts between eye views during training
+- **Eye-specific LGN layers**: Modeling the contralateral/ipsilateral layer organization (layers 1,4,6 vs 2,3,5)
+
+The binocular model is significantly smaller (0.14M params) while adding biologically plausible dual-eye processing. Results TBD.
+
+## What This Project Deliberately Ignores
+
+Several biological features are intentionally omitted. The reasoning:
+
+**Temporal dynamics / spiking**: The LGN exhibits rich temporal processing; M cells respond transiently, P cells have sustained responses. I chose to focus on the spatial/structural organization first. Adding temporal dynamics (e.g., spiking networks, LSTM-like recurrence) would complicate the architecture before validating that the parallel stream structure itself provides value.
+
+**Recurrent connections**: Real visual processing involves massive feedback from V1 to LGN and lateral connections within LGN. These are omitted because feedforward CNNs are better understood and easier to train. Recurrence is a natural next step but adds training complexity.
+
+**Foveation / eccentricity**: Biological retinas have varying resolution across the visual field. This could be added via attention mechanisms or non-uniform sampling, but would require larger images than CIFAR-10's 32x32 to be meaningful.
+
+**Color opponent channels**: The P pathway in particular carries color opponent signals (red-green, blue-yellow). The current implementation uses standard RGB. True color opponency might improve the biological fidelity of the P stream.
+
+**Cortical processing (V1+)**: This model stops at LGN-level processing. Real vision involves extensive cortical computation. The fusion layer is a crude stand-in for V1 integration. A proper V1 model with orientation columns and complex cells would be a substantial extension.
+
+**Attention / top-down modulation**: Beyond K-gating, biological vision involves attentional modulation from higher areas. This is ignored to keep the model simple and feedforward.
+
+The philosophy is to start with the most fundamental structural feature (parallel M/P/K streams) and validate that before adding complexity. Each ignored feature represents a potential future direction.
+
 ## Citation
 
 ```bibtex
