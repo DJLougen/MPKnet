@@ -59,11 +59,11 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 
 | Model | Params | CIFAR-10 | CIFAR-100 | Pretrained? | Augmentation |
 |-------|--------|----------|-----------|-------------|--------------|
-| **MPKNet (ours)** | 0.54M | 79.5% | - | No | None |
+| **BinocularMPKNet (ours)** | 0.14M | 83.0% | - | No | None |
 | MobileNetV3-Small | 2.5M | 92.5% | 75.4% | No | Heavy |
 | SqueezeNet | 1.2M | 84.5% | 58.5% | Yes (ImageNet) | Standard |
 
-*Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. MPKNet results are from-scratch with minimal data augmentation to isolate architectural contribution.*
+*Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. BinocularMPKNet results are from-scratch without augmentation to isolate architectural contribution.*
 
 ## Fractal Dynamics
 
