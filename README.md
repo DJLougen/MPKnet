@@ -143,7 +143,7 @@ Several biological features are intentionally omitted. The reasoning:
 
 **Foveation / eccentricity**: Biological retinas have varying resolution across the visual field. This could be added via attention mechanisms or non-uniform sampling, but would require larger images than CIFAR-10's 32x32 to be meaningful.
 
-**Color opponent channels**: The P pathway in particular carries color opponent signals (red-green, blue-yellow). The current implementation uses standard RGB. True color opponency might improve the biological fidelity of the P stream.
+**Color opponent channels**: The P pathway in particular carries color opponent signals (red-green, blue-yellow). The current implementation uses standard RGB. True color opponency might improve the biological fidelity of the P stream. However, I'm still uncertain whether opponency is fundamentally baked into our visual system or if it emerges as a quirk of [utility-based coding](https://www.sciencedirect.com/science/article/pii/S136466132300147X).
 
 **Cortical processing (V1+)**: This model stops at LGN-level processing. Real vision involves extensive cortical computation. The fusion layer is a crude stand-in for V1 integration. A proper V1 model with orientation columns and complex cells would be a substantial extension. I am thinking about how the [Kakeya conjecture](https://en.wikipedia.org/wiki/Kakeya_set) might be used with Fourier-transformed data to efficiently encode and predict orientations—inspired by a recent [video](https://www.youtube.com/watch?v=5J3tYU_-IZI) on the 3D Kakeya conjecture being solved ([arXiv:2502.17655](https://arxiv.org/abs/2502.17655)).
 
