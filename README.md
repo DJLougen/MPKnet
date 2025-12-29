@@ -44,7 +44,7 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 | Model | Params | Val Acc (no aug) | Val Acc (aug) | DFA | Train Acc |
 |-------|--------|------------------|---------------|-----|-----------|
 | MPKNet + CellPop | 0.54M | 79.5% | 81.1% | 0.52 | ~95% |
-| Baseline CNN (ablation) | 0.55M | 84.6% | - | - | 100% (overfits) |
+| Baseline CNN | 0.55M | 84.6% | - | - | 100% (overfits) |
 | MPKNet + Binocular | 0.14M | 83.0% | - | - | ~93% |
 
 **Key Findings**:
