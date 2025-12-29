@@ -91,7 +91,6 @@ The core MPKNet architecture implementation will be released upon paper publicat
 
 ```
 mpknet/
-├── cellpop.py          # CellPop retinal sampling module (released)
 ├── modelData.py        # Dataset loading utilities (released)
 ├── tbLogger.py         # TensorBoard logging (released)
 ├── figures/            # Architecture diagrams

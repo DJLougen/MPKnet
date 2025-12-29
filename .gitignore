@@ -40,3 +40,4 @@ mpkSGD_kgate.py
 visualize_mpknet.py
 generate_architecture_figure.py
 generate_binocular_figure.py
+cellpop.py
