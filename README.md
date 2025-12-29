@@ -119,11 +119,11 @@ mpknet/
 
 ## Biological Motivation
 
-The tree shrew (*Tupaia*) LGN provides an excellent model for studying parallel visual processing due to its clearly laminated structure. Unlike primates where M, P, and K cells are intermixed, the tree shrew LGN shows distinct layers:
+MPKNet's architecture is an amalgamation of tree shrew and human LGN organization. The tree shrew (*Tupaia*) LGN provides an excellent model for studying parallel visual processing due to its clearly laminated structure, with clean separation between pathway types. This inspired the parallel-stream approach. The specific layer counts are based on human LGN anatomy:
 
-- **Koniocellular-like**: 3 layers (small cells, modulatory)
-- **Parvocellular-like**: 4 layers (color, detail)
-- **Magnocellular-like**: 2 layers (motion, global)
+- **Koniocellular**: 3 layers (small cells, modulatory)
+- **Parvocellular**: 4 layers (color, detail)
+- **Magnocellular**: 2 layers (motion, global)
 
 This architecture is conserved across mammals, suggesting evolutionary optimization for efficient visual processing.
 
