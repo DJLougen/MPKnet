@@ -67,6 +67,8 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 
 *Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. BinocularMPKNet results are from-scratch without augmentation to isolate architectural contribution.*
 
+*Continuing to run on any dataset I can get.*
+
 ## Fractal Dynamics
 
 I learned about fractal dynamics from the Sereno lab at the University of Oregon while doing my masters and was curious to explore it here. For a cool introduction to fractal dynamics, see [this Jackson Pollock-related paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC3124832/). I measure Detrended Fluctuation Analysis (DFA) and Hurst exponent of prediction confidence traces during evaluation. Biological neural systems exhibit DFA values in the 0.5-0.75 range, indicating long-range temporal correlations. The models consistently produce dynamics in this biological range. Whether this is meaningful or simply reflects how the data is organized is an open question.
