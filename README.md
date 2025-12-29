@@ -181,4 +181,8 @@ Thanks to my then-advisor at UO, Paul Dassonville, for telling me about these ce
 
 MIT License
 
+## More About Me
+
+[djlougen.github.io/PersonalWebsite](https://djlougen.github.io/PersonalWebsite/)
+
 
