@@ -148,6 +148,12 @@ Several biological features are intentionally omitted. The reasoning:
 
 The philosophy is to start with the most fundamental structural feature (parallel M/P/K streams) and validate that before adding complexity. Each ignored feature represents a potential future direction.
 
+## White Paper
+
+*Coming soon* — once I figure out how to write it!
+
+See the `paper/` directory for LaTeX source (in progress).
+
 ## Citation
 
 ```bibtex
