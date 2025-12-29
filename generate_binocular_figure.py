@@ -121,33 +121,33 @@ draw_arrow(ax, (7, 4.25), (7, 2.9))
 draw_box(ax, 7, 1.3, 3, 0.7, colors['head'], 'Head', 'GAP -> FC -> 10')
 draw_arrow(ax, (7, 2.1), (7, 1.7))
 
-# Legend
-legend_y = 0.3
+# Legend - aligned on left
+legend_x = 0.5
 legend_items = [
-    (1.5, 'P: Fine detail', colors['parvo']),
-    (4.5, 'M: Motion/gist', colors['magno']),
-    (7.5, 'K: Modulation', colors['konio']),
-    (10.5, 'Ocular Dom.', colors['ocular']),
+    (1.1, 'P: Fine detail', colors['parvo']),
+    (0.8, 'M: Motion/gist', colors['magno']),
+    (0.5, 'K: Modulation', colors['konio']),
+    (0.2, 'Ocular Dom.', colors['ocular']),
 ]
-for x, label, color in legend_items:
-    rect = FancyBboxPatch((x - 0.3, legend_y - 0.15), 0.3, 0.3,
+for y, label, color in legend_items:
+    rect = FancyBboxPatch((legend_x, y - 0.1), 0.25, 0.25,
                           boxstyle="round,pad=0.01", facecolor=color,
                           edgecolor='#404040', linewidth=1)
     ax.add_patch(rect)
-    ax.text(x + 0.2, legend_y, label, ha='left', va='center', fontsize=9)
+    ax.text(legend_x + 0.4, y, label, ha='left', va='center', fontsize=9)
 
-# Eye color legend
-rect_L = FancyBboxPatch((0.7, 0.7), 0.3, 0.3,
+# Eye color legend - stacked below
+rect_L = FancyBboxPatch((3.5, 0.8), 0.25, 0.25,
                         boxstyle="round,pad=0.01", facecolor=colors['left_eye'],
                         edgecolor='#404040', linewidth=1)
 ax.add_patch(rect_L)
-ax.text(1.2, 0.85, 'Left eye input', ha='left', va='center', fontsize=9)
+ax.text(3.9, 0.9, 'Left eye', ha='left', va='center', fontsize=9)
 
-rect_R = FancyBboxPatch((4.7, 0.7), 0.3, 0.3,
+rect_R = FancyBboxPatch((3.5, 0.4), 0.25, 0.25,
                         boxstyle="round,pad=0.01", facecolor=colors['right_eye'],
                         edgecolor='#404040', linewidth=1)
 ax.add_patch(rect_R)
-ax.text(5.2, 0.85, 'Right eye input', ha='left', va='center', fontsize=9)
+ax.text(3.9, 0.5, 'Right eye', ha='left', va='center', fontsize=9)
 
 # Add annotation
 ax.text(12.5, 3.5, 'gating', ha='left', va='center',
