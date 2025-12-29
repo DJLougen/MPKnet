@@ -14,6 +14,8 @@ This work also represents an alternative to current scaling methodologies in AI.
 
 I am open to suggestions and collaboration. I'm hoping to apply this to drones and robotics (currently 3D printing a robot arm with a camera). I also plan to explore its ability to encode visual information for a VLM. I hope this can also be a step towards making AI easier to do for all labs with consumer hardware.
 
+To be clear: I recognize that computers are not brains. This project is more of a "why not?" exploration that seemed like it could make for a cool paper at the very least.
+
 ## Key Ideas
 
 For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](https://pubmed.ncbi.nlm.nih.gov/33832683/).
