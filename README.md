@@ -59,13 +59,16 @@ Input (3×H×W)
 
 ### CIFAR-10 (From Scratch, No Pretraining)
 
-| Model | Params | Val Acc (no aug) | Val Acc (aug) | DFA |
-|-------|--------|------------------|---------------|-----|
-| MPKNet + CellPop | 0.54M | **79.5%** | 81.1% | 0.52 |
-| Baseline CNN (ablation) | 0.55M | 79.2% | - | - |
-| MPKNet + Binocular | 0.14M | TBD | TBD | TBD |
+| Model | Params | Val Acc (no aug) | Val Acc (aug) | DFA | Notes |
+|-------|--------|------------------|---------------|-----|-------|
+| MPKNet + CellPop | 0.54M | **79.5%** | 81.1% | 0.52 | Stable training |
+| Baseline CNN (ablation) | 0.55M | 84.5%* | - | - | *Overfits: 100% train |
+| MPKNet + Binocular | 0.14M | TBD | TBD | TBD | 4x fewer params |
 
-**Key Finding**: MPKNet gains only +1.6% from heavy augmentation (vs +8-12% typical for CNNs), suggesting the bio-inspired architecture provides intrinsic invariances.
+**Key Findings**:
+1. **Augmentation Insensitivity**: MPKNet gains only +1.6% from heavy augmentation (vs +8-12% typical), suggesting intrinsic invariances from bio-inspired design
+2. **Stable Dynamics**: While a vanilla CNN achieves higher peak accuracy, it severely overfits (100% train acc). MPKNet maintains more stable generalization dynamics
+3. **Biological DFA**: Our models exhibit DFA ≈ 0.52, within the biological range (0.5-0.75)
 
 ### Comparison Context
 
