@@ -10,6 +10,8 @@ While it might seem naive, I was curious whether directly modeling the anatomica
 
 This work also represents an alternative to current scaling methodologies in AI. Rather than emphasizing parameter count and data volume, MPKNet explores a **structural approach to scaling**: the idea that architectural organization inspired by biological systems may provide computational benefits that brute-force scaling cannot.
 
+I am open to suggestions and collaboration. The parallel pathway architecture might be useful for robotics applications where efficient, real-time visual processing matters more than benchmark accuracy.
+
 ## Key Ideas
 
 1. **Parallel Visual Streams**: Like the biological LGN, MPKNet processes visual information through three parallel pathways:
