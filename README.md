@@ -92,7 +92,7 @@ pip install -r requirements.txt
 python mpkSGD.py --dataset CIFAR10 --epochs 100 --batch 256 --lr 0.1 \
     --use_cellpop --cellpop_stride 2 --mixup 0.2 --warmup_epochs 5 --swa --ema
 
-# With Konio gating
+# With CellPop and Konio gating
 python mpkSGD_kgate.py --dataset CIFAR10 --epochs 100 --batch 256 --lr 0.1 \
     --use_cellpop --cellpop_stride 2 --mixup 0.2 --warmup_epochs 5 --swa --ema
 ```
