@@ -22,7 +22,7 @@
 
 | Model | Params | Accuracy | Param Ratio | Notes |
 |-------|--------|----------|-------------|-------|
-| **BinocularMPKNet** | **0.14M** | **84.0%** | **1×** | No pretraining, no augmentation |
+| **BinocularMPKNet** | **0.14M** | **84.1%** | **1×** | No pretraining, no augmentation |
 | Swin Transformer | 0.40M | 74.5% | 3× | - |
 | ConvMixer | 0.59M | 92.5% | 4× | - |
 | Vanilla ViT | 0.77M | 79.5% | 6× | - |
@@ -31,7 +31,7 @@
 | MobileNetV2 | 3.5M | 83.0% | 25× | - |
 | DenseNet201 | 19.2M | 94.5% | 137× | - |
 
-**The efficiency story**: BinocularMPKNet achieves 84% accuracy with 0.14M parameters. MobileNetV3-Small needs 18× more parameters (2.5M) to reach 92.5%—a 9.5 percentage point gain for 18× the cost. DenseNet201 requires 137× more parameters for just 10.5 points. For resource-constrained applications (edge devices, real-time medical imaging), this trade-off matters.
+**The efficiency story**: BinocularMPKNet achieves 84.1% accuracy with 0.14M parameters. MobileNetV3-Small needs 18× more parameters (2.5M) to reach 92.5%—an 8.4 percentage point gain for 18× the cost. DenseNet201 requires 137× more parameters for just 10.4 points. For resource-constrained applications (edge devices, real-time medical imaging), this trade-off matters.
 
 ---
 

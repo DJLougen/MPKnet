@@ -67,7 +67,7 @@ class VOCDataset(torch.utils.data.Dataset):
 
     def __init__(self, root: str, year: str = '2007', image_set: str = 'train',
                  img_size: int = 416, augment: bool = False):
-        self.voc = VOCDetection(root=root, year=year, image_set=image_set, download=True)
+        self.voc = VOCDetection(root=root, year=year, image_set=image_set, download=False)
         self.img_size = img_size
         self.augment = augment
 
