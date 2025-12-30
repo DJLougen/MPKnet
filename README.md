@@ -228,7 +228,7 @@ Thanks to my then-advisor at UO, Paul Dassonville, for telling me about these ce
 
 ## License
 
-MIT License
+Dual-licensed under MIT OR Apache-2.0 (your choice). A provisional patent has been filed.
 
 ## More About Me
 
