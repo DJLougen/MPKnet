@@ -114,14 +114,22 @@ The architecture automatically:
 
 **Note on Evaluation**: This project explores bio-inspired design principles rather than pursuing SOTA accuracy. The value lies in understanding how biological organizational principles (parallel visual streams, cross-stream modulation) translate to computational properties in artificial systems.
 
+### STL-10 (96x96 images, 5000 train samples)
+
+| Model | Params | Accuracy | Notes |
+|-------|--------|----------|-------|
+| **BinocularMPKNet** | **0.14M** | **71.0%** | No pretraining, no augmentation |
+
+STL-10 is a challenging dataset with only 5000 labeled training samples. The model shows reasonable generalization despite the limited data.
+
 ### Comparison Context
 
-| Model | Params | CIFAR-10 | CIFAR-100 | Pretrained? | Augmentation |
-|-------|--------|----------|-----------|-------------|--------------|
-| **BinocularMPKNet** | 0.14M | 83.0% | 52.8% | No | None |
-| **BinocularMPKNet** | 0.14M | - | 46.0% | No | Heavy |
-| MobileNetV3-Small | 2.5M | 92.5% | 75.4% | No | Heavy |
-| SqueezeNet | 1.2M | 84.5% | 58.5% | Yes (ImageNet) | Standard |
+| Model | Params | CIFAR-10 | CIFAR-100 | STL-10 | Pretrained? | Augmentation |
+|-------|--------|----------|-----------|--------|-------------|--------------|
+| **BinocularMPKNet** | 0.14M | 83.0% | 52.8% | 71.0% | No | None |
+| **BinocularMPKNet** | 0.14M | - | 46.0% | - | No | Heavy |
+| MobileNetV3-Small | 2.5M | 92.5% | 75.4% | - | No | Heavy |
+| SqueezeNet | 1.2M | 84.5% | 58.5% | - | Yes (ImageNet) | Standard |
 
 *Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. BinocularMPKNet results are from-scratch to isolate architectural contribution.*
 
