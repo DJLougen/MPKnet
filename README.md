@@ -32,14 +32,6 @@
 
 **BinocularMPKNet is on the Pareto frontier.** At 0.14M parameters, it achieves higher accuracy than MobileNetV2 (25x larger), Vanilla ViT (5x larger), and Swin Transformer (3x larger). The highest accuracy-per-parameter ratio of any model tested.
 
-### CIFAR-10 (From Scratch)
-
-| Model | Params | Accuracy | Notes |
-|-------|--------|----------|-------|
-| **BinocularMPKNet** | **0.14M** | **83.0%** | No pretraining, no augmentation |
-| SqueezeNet | 1.2M | 84.5% | ImageNet pretrained |
-| MobileNetV3-Small | 2.5M | 92.5% | Heavy augmentation |
-
 ---
 
 ## Motivation
