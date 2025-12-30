@@ -214,11 +214,11 @@ The philosophy is to start with the most fundamental structural feature (paralle
 
 ```bibtex
 @misc{MPKNet,
-  author = {Lougen, D.J.
+  author = {Lougen, D.J.},
   title = {MPKNet: A LGN-Inspired Architecture for Efficient Visual Processing},
   year = {2025},
   publisher = {GitHub},
-  url = https://github.com/DJLougen/MPKnet
+  url = {https://github.com/DJLougen/MPKnet}
 }
 ```
 
