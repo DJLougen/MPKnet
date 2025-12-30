@@ -61,7 +61,7 @@ The hypothesis driving this work is that **attention isn't a mechanism you bolt 
 
 ### Compute Democratization
 
-All experiments in this repo were run on a single desktop GPU (DGX Spark). If the structural approach works it means
+All experiments in this repo were run on a DGX Spark or a MacBook M3 Max. If the structural approach works it means
 
 - Meaningful vision research without cluster access
 - Edge deployment on real hardware constraints
