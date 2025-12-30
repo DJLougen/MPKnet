@@ -71,7 +71,7 @@ This project was largely inspired by [Yamins et al. (2014)](https://www.pnas.org
 
 I am open to suggestions and collaboration. I'm hoping to apply this to drones and robotics (currently 3D printing a robot arm with a camera). I also plan to explore its ability to encode visual information for a VLM.
 
-I recognize that computers are not brains. But I'm curious whether the structure that brains converged on has something to teach us about efficient computation.
+I recognize that computers are not brains. But I haven't seen anyone try this specific approach and figured why not.
 
 ## Key Ideas
 
