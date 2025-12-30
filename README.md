@@ -20,7 +20,7 @@
 
 | Model | Params | Accuracy | Param Ratio | Notes |
 |-------|--------|----------|-------------|-------|
-| **MPKNet** | **0.14M** | **84.1%** | **1×** | No pretraining, no augmentation |
+| **MPKNet (binocular)** | **0.14M** | **84.1%** | **1×** | No pretraining, no augmentation |
 | Swin Transformer | 0.40M | 74.5% | 3× | - |
 | ConvMixer | 0.59M | 92.5% | 4× | - |
 | Vanilla ViT | 0.77M | 79.5% | 6× | - |
@@ -29,7 +29,7 @@
 | MobileNetV2 | 3.5M | 83.0% | 25× | - |
 | DenseNet201 | 19.2M | 94.5% | 137× | - |
 
-**The efficiency story**: MPKNet achieves 84.1% accuracy with 0.14M parameters. MobileNetV3-Small needs 18× more parameters (2.5M) to reach 92.5%—an 8.4 percentage point gain for 18× the cost. DenseNet201 requires 137× more parameters for just 10.4 points. For resource-constrained applications (edge devices, real-time medical imaging), this trade-off matters.
+**The efficiency story**: MPKNet (binocular version) achieves 84.1% accuracy with 0.14M parameters. MobileNetV3-Small needs 18× more parameters (2.5M) to reach 92.5%—an 8.4 percentage point gain for 18× the cost. DenseNet201 requires 137× more parameters for just 10.4 points. For resource-constrained applications (edge devices, real-time medical imaging), this trade-off matters.
 
 ---
 
@@ -116,7 +116,7 @@ The architecture automatically:
 |-------|--------|------------------|---------------|-----|-----------|
 | MPKNet + CellPop | 0.54M | 79.5% | 81.1% | 0.52 | ~95% |
 | Baseline CNN | 0.55M | 84.6% | - | - | 100% (overfits) |
-| MPKNet (ch=48) | 0.14M | 83.0% | - | - | ~93% |
+| MPKNet (binocular) | 0.14M | 83.0% | - | - | ~93% |
 
 **Preliminary Observations**:
 
@@ -132,9 +132,9 @@ The architecture automatically:
 
 | Model | Params | Accuracy | Notes |
 |-------|--------|----------|-------|
-| **MPKNet** | **0.14M** | **71.0%** | No pretraining, no augmentation |
+| **MPKNet (binocular)** | **0.14M** | **71.0%** | No pretraining, no augmentation |
 
-STL-10 is a challenging dataset with only 5000 labeled training samples. The model shows reasonable generalization despite the limited data.
+STL-10 is a challenging dataset with only 5000 labeled training samples. The binocular model shows reasonable generalization despite the limited data.
 
 **Ablation Study** (Preliminary Results):
 
@@ -178,12 +178,12 @@ STL-10 is a challenging dataset with only 5000 labeled training samples. The mod
 
 | Model | Params | CIFAR-10 | CIFAR-100 | STL-10 | Pretrained? | Augmentation |
 |-------|--------|----------|-----------|--------|-------------|--------------|
-| **MPKNet** | 0.14M | 83.0% | 52.8% | 71.0% | No | None |
-| **MPKNet** | 0.14M | - | 46.0% | - | No | Heavy |
+| **MPKNet (binocular)** | 0.14M | 83.0% | 52.8% | 71.0% | No | None |
+| **MPKNet (binocular)** | 0.14M | - | 46.0% | - | No | Heavy |
 | MobileNetV3-Small | 2.5M | 92.5% | 75.4% | - | No | Heavy |
 | SqueezeNet | 1.2M | 84.5% | 58.5% | - | Yes (ImageNet) | Standard |
 
-*Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. MPKNet results are from-scratch to isolate architectural contribution.*
+*Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. MPKNet (binocular) results are from-scratch to isolate architectural contribution.*
 
 **Note on CIFAR-100 augmentation**: The heavy augmentation run (46.0%) underperforms no-augmentation (52.8%). This is *hypothesis-consistent* with MPKNet's biological structure providing intrinsic invariances, though the effect warrants further investigation across datasets.
 
