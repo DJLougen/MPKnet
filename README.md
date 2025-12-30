@@ -127,9 +127,7 @@ This architecture is conserved across mammals, suggesting evolutionary optimizat
 
 ## Current Focus: Binocular Processing
 
-![BinocularMPKNet Architecture](figures/binocular_mpknet_architecture.png)
-
-The binocular extension is the current active development focus. *Code will be released upon publication; architecture diagram and preliminary results are provided for feedback.*
+The binocular extension is the current active development focus. *Code and architecture diagram will be released upon publication; preliminary results are provided for feedback.*
 
 This extension adds:
 
