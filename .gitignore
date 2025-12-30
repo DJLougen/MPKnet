@@ -37,3 +37,10 @@ mpknet_binocular.py
 generate_binocular_figure.py
 figures/binocular_mpknet_architecture.png
 figures/binocular_mpknet_architecture.svg
+
+# ============================================
+# PRIVATE - Object detection (not released)
+# ============================================
+# Detection module using BinocularMPKNet backbone
+mpknet_detection.py
+train_voc.py
