@@ -8,8 +8,6 @@
 >
 > **What's public now:** Architecture diagrams, benchmark results, supporting utilities, core MPKNet implementation
 >
-> **What's in development:** Binocular extension (private until publication)
->
 > **Feedback welcome:** Conceptual critique, robustness evaluation ideas, collaboration inquiries
 >
 > Contact: [djlougen.github.io](https://djlougen.github.io/PersonalWebsite/)
@@ -22,7 +20,7 @@
 
 | Model | Params | Accuracy | Param Ratio | Notes |
 |-------|--------|----------|-------------|-------|
-| **BinocularMPKNet** | **0.14M** | **84.1%** | **1×** | No pretraining, no augmentation |
+| **MPKNet** | **0.14M** | **84.1%** | **1×** | No pretraining, no augmentation |
 | Swin Transformer | 0.40M | 74.5% | 3× | - |
 | ConvMixer | 0.59M | 92.5% | 4× | - |
 | Vanilla ViT | 0.77M | 79.5% | 6× | - |
@@ -31,7 +29,7 @@
 | MobileNetV2 | 3.5M | 83.0% | 25× | - |
 | DenseNet201 | 19.2M | 94.5% | 137× | - |
 
-**The efficiency story**: BinocularMPKNet achieves 84.1% accuracy with 0.14M parameters. MobileNetV3-Small needs 18× more parameters (2.5M) to reach 92.5%—an 8.4 percentage point gain for 18× the cost. DenseNet201 requires 137× more parameters for just 10.4 points. For resource-constrained applications (edge devices, real-time medical imaging), this trade-off matters.
+**The efficiency story**: MPKNet achieves 84.1% accuracy with 0.14M parameters. MobileNetV3-Small needs 18× more parameters (2.5M) to reach 92.5%—an 8.4 percentage point gain for 18× the cost. DenseNet201 requires 137× more parameters for just 10.4 points. For resource-constrained applications (edge devices, real-time medical imaging), this trade-off matters.
 
 ---
 
@@ -47,7 +45,7 @@ The question is **does having the right areas exist and connect the right way ca
 
 The current MPKNet is just the LGN stage. It is essentially the thalamic preprocessing before visual cortex. The roadmap is as follows.
 
-1. **LGN** (current). M/P/K parallel pathways with binocular processing ✓
+1. **LGN** (current). M/P/K parallel pathways ✓
 2. **Retinotectal pathway**. Superior colliculus for fast coarse spatial processing
 3. **V1**. Orientation columns and simple/complex cells and feedback to LGN
 4. **Pulvinar**. Thalamic hub connecting SC and V1 and higher areas
@@ -118,7 +116,7 @@ The architecture automatically:
 |-------|--------|------------------|---------------|-----|-----------|
 | MPKNet + CellPop | 0.54M | 79.5% | 81.1% | 0.52 | ~95% |
 | Baseline CNN | 0.55M | 84.6% | - | - | 100% (overfits) |
-| MPKNet + Binocular | 0.14M | 83.0% | - | - | ~93% |
+| MPKNet (ch=48) | 0.14M | 83.0% | - | - | ~93% |
 
 **Preliminary Observations**:
 
@@ -134,7 +132,7 @@ The architecture automatically:
 
 | Model | Params | Accuracy | Notes |
 |-------|--------|----------|-------|
-| **BinocularMPKNet** | **0.14M** | **71.0%** | No pretraining, no augmentation |
+| **MPKNet** | **0.14M** | **71.0%** | No pretraining, no augmentation |
 
 STL-10 is a challenging dataset with only 5000 labeled training samples. The model shows reasonable generalization despite the limited data.
 
@@ -180,12 +178,12 @@ STL-10 is a challenging dataset with only 5000 labeled training samples. The mod
 
 | Model | Params | CIFAR-10 | CIFAR-100 | STL-10 | Pretrained? | Augmentation |
 |-------|--------|----------|-----------|--------|-------------|--------------|
-| **BinocularMPKNet** | 0.14M | 83.0% | 52.8% | 71.0% | No | None |
-| **BinocularMPKNet** | 0.14M | - | 46.0% | - | No | Heavy |
+| **MPKNet** | 0.14M | 83.0% | 52.8% | 71.0% | No | None |
+| **MPKNet** | 0.14M | - | 46.0% | - | No | Heavy |
 | MobileNetV3-Small | 2.5M | 92.5% | 75.4% | - | No | Heavy |
 | SqueezeNet | 1.2M | 84.5% | 58.5% | - | Yes (ImageNet) | Standard |
 
-*Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. BinocularMPKNet results are from-scratch to isolate architectural contribution.*
+*Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. MPKNet results are from-scratch to isolate architectural contribution.*
 
 **Note on CIFAR-100 augmentation**: The heavy augmentation run (46.0%) underperforms no-augmentation (52.8%). This is *hypothesis-consistent* with MPKNet's biological structure providing intrinsic invariances, though the effect warrants further investigation across datasets.
 
@@ -237,18 +235,6 @@ MPKNet's architecture is an amalgamation of tree shrew and human LGN organizatio
 - **Magnocellular**: 2 layers (motion, global)
 
 This architecture is conserved across mammals, suggesting evolutionary optimization for efficient visual processing.
-
-## Current Focus: Binocular Processing
-
-The binocular extension is the current active development focus. *Code and architecture diagram will be released upon publication; preliminary results are provided for feedback.*
-
-This extension adds:
-
-- **Ocular dominance organization**: Channels are assigned to left/right eye with graded mixing; some purely monocular, some binocular
-- **Stereo disparity simulation**: Horizontal shifts between eye views during training
-- **Eye-specific LGN layers**: Modeling the contralateral/ipsilateral layer organization
-
-The binocular model is significantly smaller (0.14M params) while adding biologically plausible dual-eye processing.
 
 ## What This Project Deliberately Ignores
 
