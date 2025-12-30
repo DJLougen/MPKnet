@@ -20,17 +20,18 @@
 
 ### Kvasir-v2 (Medical Endoscopy, 8 classes)
 
-| Model | Params | Accuracy | Acc/Param | Notes |
-|-------|--------|----------|-----------|-------|
-| **BinocularMPKNet** | **0.14M** | **83.4%** | **587.6** | No pretraining, no augmentation |
-| Swin Transformer | 0.40M | 74.5% | 187.7 | - |
-| ConvMixer | 0.59M | 92.5% | 156.0 | - |
-| Vanilla ViT | 0.77M | 79.5% | 103.4 | - |
-| SqueezeNet | 1.25M | 85.6% | 68.3 | - |
-| MobileNetV2 | 3.5M | 83.0% | 23.7 | - |
-| DenseNet201 | 19.2M | 94.5% | 4.9 | - |
+| Model | Params | Accuracy | Param Ratio | Notes |
+|-------|--------|----------|-------------|-------|
+| **BinocularMPKNet** | **0.14M** | **84.0%** | **1×** | No pretraining, no augmentation |
+| Swin Transformer | 0.40M | 74.5% | 3× | - |
+| ConvMixer | 0.59M | 92.5% | 4× | - |
+| Vanilla ViT | 0.77M | 79.5% | 6× | - |
+| SqueezeNet | 1.25M | 85.6% | 9× | - |
+| MobileNetV3-Small | 2.5M | 92.5% | 18× | - |
+| MobileNetV2 | 3.5M | 83.0% | 25× | - |
+| DenseNet201 | 19.2M | 94.5% | 137× | - |
 
-**BinocularMPKNet is on the Pareto frontier.** At 0.14M parameters, it achieves higher accuracy than MobileNetV2 (25x larger), Vanilla ViT (5x larger), and Swin Transformer (3x larger). The highest accuracy-per-parameter ratio of any model tested.
+**The efficiency story**: BinocularMPKNet achieves 84% accuracy with 0.14M parameters. MobileNetV3-Small needs 18× more parameters (2.5M) to reach 92.5%—a 9.5 percentage point gain for 18× the cost. DenseNet201 requires 137× more parameters for just 10.5 points. For resource-constrained applications (edge devices, real-time medical imaging), this trade-off matters.
 
 ---
 
@@ -130,7 +131,7 @@ The architecture automatically:
 
 ## Fractal Dynamics
 
-I learned about fractal dynamics from the Sereno lab at the University of Oregon while doing my masters and was curious to explore it here. For a cool introduction to fractal dynamics, see [this Jackson Pollock-related paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC3124832/).
+I learned about fractal dynamics from the [Sereno lab](https://www.nature.com/articles/s41599-020-00648-y) at the University of Oregon while doing my masters and was curious to explore it here. For a cool introduction to fractal dynamics, see [this Jackson Pollock-related paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC3124832/).
 
 I measure Detrended Fluctuation Analysis (DFA) of prediction confidence traces during evaluation. DFA was introduced by [Peng et al. (1994)](https://journals.aps.org/pre/abstract/10.1103/PhysRevE.49.1685) and has since been applied extensively to neural signals. [Linkenkaer-Hansen et al. (2001)](https://pubmed.ncbi.nlm.nih.gov/11160408/) discovered long-range temporal correlations (LRTC) in EEG oscillations, and subsequent work suggests these correlations reflect [critical-state dynamics in neural networks](https://pmc.ncbi.nlm.nih.gov/articles/PMC3510427/).
 
