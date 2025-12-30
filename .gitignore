@@ -34,9 +34,11 @@ Thumbs.db
 # ============================================
 # Will be released upon paper publication
 mpknet_binocular.py
+mpknet_v4.py
 generate_binocular_figure.py
 figures/binocular_mpknet_architecture.png
 figures/binocular_mpknet_architecture.svg
+figures/binocular_mpknet_v4_architecture.png
 
 # ============================================
 # PRIVATE - Object detection (not released)
