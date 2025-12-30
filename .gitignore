@@ -36,9 +36,23 @@ Thumbs.db
 mpknet_binocular.py
 mpknet_v4.py
 generate_binocular_figure.py
-figures/binocular_mpknet_architecture.png
-figures/binocular_mpknet_architecture.svg
-figures/binocular_mpknet_v4_architecture.png
+figures/binocular_*
+
+# Training scripts using binocular model
+scaling_study.py
+train_cifar10_augment.py
+train_cifar10_mps.py
+train_stl10.py
+train_stl10_ablation.py
+train_stl10_control.py
+train_stl10_resume.py
+train_svhn.py
+train_stl10_v2.py
+train_v4_cuda.py
+plot_v2_*.py
+plot_v4_*.py
+visualize_stl10_comparison.py
+v2_architecture.png
 
 # ============================================
 # PRIVATE - Object detection (not released)
