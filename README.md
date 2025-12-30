@@ -63,7 +63,7 @@ This project was largely inspired by [Yamins et al. (2014)](https://www.pnas.org
 
 I am open to suggestions and collaboration. I'm hoping to apply this to drones and robotics (currently 3D printing a robot arm with a camera). I also plan to explore its ability to encode visual information for a VLM.
 
-I recognize that computers are not brains. But I haven't seen anyone try this specific approach and figured why not.
+I recognize that computers are not brains. But I haven't seen anyone try this specific approach and figured why not. I also want to work in AI alongside my neuroscience research. Building these models is a way to understand both fields in tandem. The neuroscience informs the architecture and implementing the architecture deepens my understanding of the neuroscience.
 
 ## Key Ideas
 
