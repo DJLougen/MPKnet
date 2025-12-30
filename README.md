@@ -141,6 +141,25 @@ STL-10 is a challenging dataset with only 5000 labeled training samples. The mod
 
 **Biological implication**: K-cells may be more relevant for temporal tasks (e.g., second-order motion, slow isoluminant chromatic changes) where context-dependent gain control matters. Static image benchmarks may underestimate K's contribution to real visual processing.
 
+### Channel Scaling Study (CIFAR-10)
+
+| Config | Params | Test Acc | Train Acc | Overfitting Gap |
+|--------|--------|----------|-----------|-----------------|
+| ch=24 | 0.040M | 77.7% | 82.2% | 4.5% |
+| **ch=48** | **0.14M** | **81.9%** | **88.0%** | **6.0%** |
+| ch=64 | 0.25M | 81.2% | 88.2% | 7.0% |
+
+**Finding**: ch=48 is optimal. Larger models (ch=64) show diminishing returns—more parameters, worse test accuracy, more overfitting.
+
+### Extended Training (CIFAR-10, ch=48)
+
+| Epochs | Test Acc | Train Acc | Overfitting Gap |
+|--------|----------|-----------|-----------------|
+| 100 | 81.9% | 88.0% | 6.0% |
+| **300** | **82.1%** | **97.5%** | **15.4%** |
+
+**Finding**: Extended training with SGD + cosine annealing yields modest improvement (+0.2%) but significantly increases overfitting. The 300-epoch model memorizes the training set while the architecture's implicit regularization prevents complete collapse on test data.
+
 ### Comparison Context
 
 | Model | Params | CIFAR-10 | CIFAR-100 | STL-10 | Pretrained? | Augmentation |
