@@ -135,7 +135,7 @@ STL-10 is a challenging dataset with only 5000 labeled training samples. The mod
 
 **Note on CIFAR-100 augmentation**: The heavy augmentation run (46.0%) underperforms no-augmentation (52.8%). This is *hypothesis-consistent* with MPKNet's biological structure providing intrinsic invariances, though the effect warrants further investigation across datasets.
 
-*Continuing to run on any dataset I can get - currently testing on Kvasir-v2 (medical endoscopy).*
+*Continuing to run on any dataset I can get - working on object detection next.*
 
 ## Fractal Dynamics
 
@@ -192,9 +192,9 @@ This extension adds:
 
 - **Ocular dominance organization**: Channels are assigned to left/right eye with graded mixing; some purely monocular, some binocular
 - **Stereo disparity simulation**: Horizontal shifts between eye views during training
-- **Eye-specific LGN layers**: Modeling the contralateral/ipsilateral layer organization (layers 1,4,6 vs 2,3,5)
+- **Eye-specific LGN layers**: Modeling the contralateral/ipsilateral layer organization
 
-The binocular model is significantly smaller (0.14M params) while adding biologically plausible dual-eye processing, achieving 83.0% validation accuracy on CIFAR-10.
+The binocular model is significantly smaller (0.14M params) while adding biologically plausible dual-eye processing.
 
 ## What This Project Deliberately Ignores
 
