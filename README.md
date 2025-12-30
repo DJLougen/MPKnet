@@ -124,7 +124,15 @@ The architecture automatically:
 
 ## Fractal Dynamics
 
-I learned about fractal dynamics from the Sereno lab at the University of Oregon while doing my masters and was curious to explore it here. For a cool introduction to fractal dynamics, see [this Jackson Pollock-related paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC3124832/). I measure Detrended Fluctuation Analysis (DFA) and Hurst exponent of prediction confidence traces during evaluation. Biological neural systems exhibit DFA values in the 0.5-0.75 range, indicating long-range temporal correlations. The models consistently produce dynamics in this biological range. Whether this is meaningful or simply reflects how the data is organized is an open question.
+I learned about fractal dynamics from the Sereno lab at the University of Oregon while doing my masters and was curious to explore it here. For a cool introduction to fractal dynamics, see [this Jackson Pollock-related paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC3124832/).
+
+I measure Detrended Fluctuation Analysis (DFA) of prediction confidence traces during evaluation. DFA was introduced by [Peng et al. (1994)](https://journals.aps.org/pre/abstract/10.1103/PhysRevE.49.1685) and has since been applied extensively to neural signals. [Linkenkaer-Hansen et al. (2001)](https://pubmed.ncbi.nlm.nih.gov/11287969/) discovered long-range temporal correlations (LRTC) in EEG oscillations, and subsequent work suggests these correlations reflect [critical-state dynamics in neural networks](https://pmc.ncbi.nlm.nih.gov/articles/PMC3510427/).
+
+- **DFA ≈ 0.5**: Uncorrelated noise (no long-range structure)
+- **DFA > 0.5**: Long-range temporal correlations present
+- **Biological range**: Typically 0.5–0.75 in neural systems, with ~60% of variance attributable to genetic factors
+
+The models consistently produce DFA ≈ 0.52, slightly above the uncorrelated baseline. Whether this reflects meaningful computational properties or is an artifact of data structure remains an open question.
 
 ## Code Availability
 
