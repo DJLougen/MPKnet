@@ -2,6 +2,20 @@
 
 **MPKNet** is a bio-inspired convolutional neural network that models the Magnocellular (M), Parvocellular (P), and Koniocellular (K) pathways of the Lateral Geniculate Nucleus (LGN), based on cross-species evolutionary priors observed in mammals from tree shrews to primates.
 
+---
+
+> **Status: Exploratory / Preprint Companion**
+>
+> **What's public now:** Architecture diagrams, benchmark results, supporting utilities, core MPKNet implementation
+>
+> **What's in development:** Binocular extension (private until publication)
+>
+> **Feedback welcome:** Conceptual critique, robustness evaluation ideas, collaboration inquiries
+>
+> Contact: [djlougen.github.io](https://djlougen.github.io/PersonalWebsite/)
+
+---
+
 ## Motivation
 
 This project was largely inspired by [Yamins et al. (2014)](https://www.pnas.org/doi/10.1073/pnas.1403112111) on performance-optimized hierarchical models.
@@ -49,13 +63,13 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 | Baseline CNN | 0.55M | 84.6% | - | - | 100% (overfits) |
 | MPKNet + Binocular | 0.14M | 83.0% | - | - | ~93% |
 
-**Key Findings**:
+**Preliminary Observations**:
 
-1. **Augmentation Insensitivity**: MPKNet gains only **+1.6%** from heavy augmentation (vs +8-12% typical for CNNs). This suggests the parallel M/P/K pathway structure provides intrinsic invariances that standard architectures must learn through data augmentation.
+1. **Augmentation Insensitivity**: MPKNet gains only **+1.6%** from heavy augmentation (vs +8-12% typical for CNNs). This is *consistent with the hypothesis* that the parallel M/P/K pathway structure provides intrinsic invariances, though further investigation is needed.
 
-2. **Implicit Regularization**: While the baseline CNN achieves higher peak accuracy (84.6%), it memorizes the training set (100% train acc). MPKNet's biological structure acts as implicit regularization, preventing perfect memorization.
+2. **Implicit Regularization**: While the baseline CNN achieves higher peak accuracy (84.6%), it memorizes the training set (100% train acc). MPKNet's biological structure *appears to act as* implicit regularization, preventing perfect memorization.
 
-3. **Biological Dynamics**: The models exhibit DFA ≈ 0.52, within the biological range (0.5-0.75), indicating long-range temporal correlations characteristic of neural systems at criticality.
+3. **Fractal-like Dynamics**: The models exhibit DFA ≈ 0.52, within the biological range (0.5-0.75). Whether this reflects meaningful computational properties or is an artifact of data structure remains an open question (see Fractal Dynamics section).
 
 **Note on Evaluation**: This project explores bio-inspired design principles rather than pursuing SOTA accuracy. The value lies in understanding how biological organizational principles (parallel visual streams, cross-stream modulation) translate to computational properties in artificial systems.
 
@@ -70,7 +84,7 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 
 *Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. BinocularMPKNet results are from-scratch to isolate architectural contribution.*
 
-**Note on CIFAR-100 augmentation**: The heavy augmentation run (46.0%) underperforms no-augmentation (52.8%), consistent with our finding that MPKNet's biological structure provides intrinsic invariances. Adding augmentation may interfere with these learned representations.
+**Note on CIFAR-100 augmentation**: The heavy augmentation run (46.0%) underperforms no-augmentation (52.8%). This is *hypothesis-consistent* with MPKNet's biological structure providing intrinsic invariances, though the effect warrants further investigation across datasets.
 
 *Continuing to run on any dataset I can get - currently testing on Kvasir-v2 (medical endoscopy).*
 
@@ -91,11 +105,14 @@ The core MPKNet architecture implementation will be released upon paper publicat
 
 ```
 mpknet/
-├── modelData.py        # Dataset loading utilities (released)
-├── tbLogger.py         # TensorBoard logging (released)
+├── mpkSGD.py           # Core MPKNet architecture (public)
+├── mpkSGD_kgate.py     # MPKNet with K-gating (public)
+├── cellpop.py          # CellPop retinal sampling (public)
+├── modelData.py        # Dataset loading utilities (public)
+├── tbLogger.py         # TensorBoard logging (public)
 ├── figures/            # Architecture diagrams
 ├── results/            # Experiment results
-└── [private]           # Core architecture (released upon publication)
+└── mpknet_binocular.py # [PRIVATE] Binocular extension - available upon publication
 ```
 
 ## Biological Motivation
@@ -112,7 +129,9 @@ This architecture is conserved across mammals, suggesting evolutionary optimizat
 
 ![BinocularMPKNet Architecture](figures/binocular_mpknet_architecture.png)
 
-The binocular extension (`mpknet_binocular.py`) is the current active development focus. This adds:
+The binocular extension is the current active development focus. *Code will be released upon publication; architecture diagram and preliminary results are provided for feedback.*
+
+This extension adds:
 
 - **Ocular dominance organization**: Channels are assigned to left/right eye with graded mixing; some purely monocular, some binocular
 - **Stereo disparity simulation**: Horizontal shifts between eye views during training
