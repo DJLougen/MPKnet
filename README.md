@@ -37,17 +37,41 @@
 
 ## Motivation
 
-This project was largely inspired by [Yamins et al. (2014)](https://www.pnas.org/doi/10.1073/pnas.1403112111) on performance-optimized hierarchical models.
+**The core hypothesis:** Current vision models require massive compute because they brute-force the problem. Biology solved vision with 20 watts. What if the answer isn't more parameters—it's better architecture?
 
-This project is a side project to my PhD research on the LGN at the University of Toronto. I had the idea a couple years ago and built it over the summer of 2025. After reviewing prior attempts at bio-inspired neural networks, I found that existing approaches often fail to capture the organizational principles of biological visual systems. Many borrow surface-level inspiration (such as Gabor filters) without modeling the fundamental parallel-stream architecture that evolution has conserved across mammals. Other valuable approaches, such as EEG-guided training, have demonstrated meaningful correlations between neural activity and image processing. However, these methods optimize for alignment with neural signals rather than explicitly encoding the anatomical organization of the visual system. Similarly, models that successfully replicate cellular firing patterns achieve an important goal, yet they also raise a complementary question: does matching output behavior necessarily imply that the underlying mechanism is shared? This project explores a different point in the design space, one that prioritizes structural fidelity to biological organization while remaining practically applicable.
+This project explores whether the organizational principles of biological visual systems can provide computational benefits that brute-force scaling cannot. The goal is not to beat SOTA on benchmarks, but to match performance *per parameter* and *per training sample*—making vision research accessible to labs without datacenter budgets.
 
-MPKNet directly models the laminar organization of the LGN as observed in humans, [tree shrews](https://pubmed.ncbi.nlm.nih.gov/40550685/), and macaques, where M, P, and K pathways are clearly separated into distinct layers. Rather than cherry-picking biological features, this approach explores whether faithfully representing anatomical structure leads to networks with different computational properties.
+### Why Biology?
 
-This work also represents an alternative to current scaling methodologies in AI. Rather than emphasizing parameter count and data volume, MPKNet explores a **structural approach to scaling**: the idea that architectural organization inspired by biological systems may provide computational benefits that brute-force scaling cannot.
+Most "bio-inspired" approaches borrow surface-level features (Gabor filters, etc.) without modeling the fundamental parallel-stream architecture that evolution has conserved across mammals for 200 million years. MPKNet takes a different approach: directly implementing the laminar organization of the LGN as observed in humans, [tree shrews](https://pubmed.ncbi.nlm.nih.gov/40550685/), and macaques.
 
-I am open to suggestions and collaboration. I'm hoping to apply this to drones and robotics (currently 3D printing a robot arm with a camera). I also plan to explore its ability to encode visual information for a VLM. I hope this can also be a step towards making AI easier to do for all labs with consumer hardware.
+The question isn't "can we copy biology?" but rather: **does the architecture that evolution converged on have computational properties that emerge from structure rather than scale?**
 
-To be clear: I recognize that computers are not brains. This project is more of a "why not?" exploration that seemed like it could make for a cool paper at the very least.
+### The Longer Vision
+
+The current MPKNet is just the LGN stage—essentially the thalamic preprocessing before visual cortex. The roadmap:
+
+1. **LGN** (current): M/P/K parallel pathways with binocular processing ✓
+2. **Retinotectal pathway**: Superior colliculus for fast, coarse spatial processing
+3. **V1**: Orientation columns, simple/complex cells, feedback to LGN
+4. **Pulvinar**: Thalamic hub connecting SC, V1, and higher areas
+5. **Full thalamo-cortical loops**: Testing whether attention emerges from architecture
+
+The hypothesis driving this work: **attention isn't a mechanism you bolt on—it's an emergent property of recurrent thalamo-cortical loops.** If true, transformers need attention modules because they're missing the architecture that generates it.
+
+### Compute Democratization
+
+All experiments in this repo were run on a single desktop GPU (DGX Spark). If the structural approach works, it means:
+
+- Meaningful vision research without cluster access
+- Edge deployment on real hardware constraints
+- Reproducibility for any lab, anywhere
+
+This project was largely inspired by [Yamins et al. (2014)](https://www.pnas.org/doi/10.1073/pnas.1403112111) on performance-optimized hierarchical models, and grew out of my PhD research on the LGN at the University of Toronto.
+
+I am open to suggestions and collaboration. I'm hoping to apply this to drones and robotics (currently 3D printing a robot arm with a camera). I also plan to explore its ability to encode visual information for a VLM.
+
+To be clear: I recognize that computers are not brains. But I'm curious whether the structure that brains converged on has something to teach us about efficient computation.
 
 ## Key Ideas
 
