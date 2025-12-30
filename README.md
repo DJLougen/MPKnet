@@ -122,6 +122,13 @@ The architecture automatically:
 
 STL-10 is a challenging dataset with only 5000 labeled training samples. The model shows reasonable generalization despite the limited data.
 
+**Ablation Study Hypothesis**: If the M/P/K pathways serve distinct biological functions, ablating each should produce different performance impacts on static image classification:
+- **No K-gating** (least impact): K-cells are sparse modulators/relays that provide context-dependent gain control. Removing gating should reduce adaptive flexibility but preserve core discrimination.
+- **No M pathway** (moderate impact): M-cells process global gist and motion. On static images, their contribution is less critical than P, but global context still aids classification.
+- **No P pathway** (most impact): P-cells handle fine spatial detail and are essential for discriminating between visually similar categories. Removing P should severely impair classification.
+
+*Ablation experiments in progress on STL-10.*
+
 ### Comparison Context
 
 | Model | Params | CIFAR-10 | CIFAR-100 | STL-10 | Pretrained? | Augmentation |
