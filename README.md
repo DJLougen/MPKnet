@@ -122,12 +122,24 @@ The architecture automatically:
 
 STL-10 is a challenging dataset with only 5000 labeled training samples. The model shows reasonable generalization despite the limited data.
 
-**Ablation Study Hypothesis**: If the M/P/K pathways serve distinct biological functions, ablating each should produce different performance impacts on static image classification:
-- **No K-gating** (least impact): K-cells are sparse modulators/relays that provide context-dependent gain control. Removing gating should reduce adaptive flexibility but preserve core discrimination.
-- **No M pathway** (moderate impact): M-cells process global gist and motion. On static images, their contribution is less critical than P, but global context still aids classification.
-- **No P pathway** (most impact): P-cells handle fine spatial detail and are essential for discriminating between visually similar categories. Removing P should severely impair classification.
+**Ablation Study** (Preliminary Results):
 
-*Ablation experiments in progress on STL-10.*
+| Ablation | Best Test Acc | Train Acc | Gap | Δ from Full |
+|----------|---------------|-----------|-----|-------------|
+| **Full model** | **71.0%** | ~85% | ~14pt | — |
+| No K-gating | 71.1% | ~80% | ~9pt | +0.1pt |
+| No M pathway | 70.0% | ~81% | ~11pt | −1.0pt |
+| No P pathway | 62.8% | ~71% | ~8pt | −8.2pt |
+
+**Interpretation**: Results support the hypothesis that pathways serve distinct functions:
+
+- **P is load-bearing** (−8.2pt): Parvocellular pathway is essential for fine spatial discrimination. Removing it severely impairs classification, consistent with P-cells' role in detail processing.
+
+- **M carries generalizable information** (−1.0pt): Magnocellular pathway contributes real signal that transfers to test data. The moderate gap suggests M provides useful global context even on static images.
+
+- **K-gating adds capacity that doesn't generalize on static images** (+0.1pt test, but +5pt train): K-gating increases training accuracy (~80% → ~85%) without improving test performance. This suggests K's modulatory role is optimized for dynamic/temporal contexts rather than static classification. The full model's larger train-test gap (14pt vs 9pt) indicates K adds capacity that overfits on frozen frames.
+
+**Biological implication**: K-cells may be more relevant for temporal tasks (e.g., second-order motion, slow isoluminant chromatic changes) where context-dependent gain control matters. Static image benchmarks may underestimate K's contribution to real visual processing.
 
 ### Comparison Context
 
