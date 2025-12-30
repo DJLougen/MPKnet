@@ -16,6 +16,18 @@
 
 ---
 
+## Efficiency Highlight
+
+| Model | Params | CIFAR-10 | Notes |
+|-------|--------|----------|-------|
+| **BinocularMPKNet** | **0.14M** | **83.0%** | No pretraining, no augmentation |
+| SqueezeNet | 1.2M | 84.5% | ImageNet pretrained |
+| MobileNetV3-Small | 2.5M | 92.5% | Heavy augmentation |
+
+**0.14M parameters. 83% accuracy. No tricks.** The binocular extension achieves competitive accuracy with ~9x fewer parameters than SqueezeNet and ~18x fewer than MobileNetV3, without pretraining or augmentation.
+
+---
+
 ## Motivation
 
 This project was largely inspired by [Yamins et al. (2014)](https://www.pnas.org/doi/10.1073/pnas.1403112111) on performance-optimized hierarchical models.
@@ -52,6 +64,28 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 ## Architecture
 
 ![MPKNet Architecture](figures/mpknet_architecture.png)
+
+## Quick Start
+
+```python
+from mpkSGD_kgate import MPKNet
+
+# Create model (CIFAR-10 example)
+model = MPKNet(num_classes=10, ch=48)
+print(f"Parameters: {sum(p.numel() for p in model.parameters()):,}")
+# Output: Parameters: 259,027
+
+# Forward pass
+import torch
+x = torch.randn(1, 3, 32, 32)
+out = model(x)  # [1, 10]
+```
+
+The architecture automatically:
+- Splits input into M (luminance/gist) and P (detail) streams via center-surround filtering
+- Processes each through pathway-specific conv layers
+- Uses K-pathway to generate attention gates for M and P
+- Fuses streams for final classification
 
 ## Results
 
@@ -94,12 +128,14 @@ I learned about fractal dynamics from the Sereno lab at the University of Oregon
 
 ## Code Availability
 
-The core MPKNet architecture implementation will be released upon paper publication. This repository currently contains:
-- Architecture diagrams and figures
-- Benchmark results
-- Supporting utilities (data loading, logging)
+The core MPKNet architecture is now public:
+- `mpkSGD.py` - Base MPKNet implementation
+- `mpkSGD_kgate.py` - MPKNet with K-gating (recommended)
+- `cellpop.py` - CellPop retinal sampling
 
-**For early access or collaboration inquiries**, please contact me via my [website](https://djlougen.github.io/PersonalWebsite/).
+The binocular extension (`mpknet_binocular.py`) will be released upon paper publication.
+
+**For collaboration inquiries**, please contact me via my [website](https://djlougen.github.io/PersonalWebsite/).
 
 ## File Structure
 
@@ -149,7 +185,7 @@ Several biological features are intentionally omitted. The reasoning:
 
 **Color opponent channels**: The P pathway in particular carries color opponent signals (red-green, blue-yellow). The current implementation uses standard RGB. True color opponency might improve the biological fidelity of the P stream. However, I'm still uncertain whether opponency is fundamentally baked into our visual system or if it emerges as a quirk of [utility-based coding](https://www.sciencedirect.com/science/article/pii/S136466132300147X).
 
-**Cortical processing (V1+)**: This model stops at LGN-level processing. Real vision involves extensive cortical computation. The fusion layer is a crude stand-in for V1 integration. A proper V1 model with orientation columns and complex cells would be a substantial extension. I am thinking about how the [Kakeya conjecture](https://en.wikipedia.org/wiki/Kakeya_set) might be used with Fourier-transformed data to efficiently encode and predict orientations, inspired by a recent [video](https://www.youtube.com/watch?v=5J3tYU_-IZI) on the 3D Kakeya conjecture being solved ([arXiv:2502.17655](https://arxiv.org/abs/2502.17655)).
+**Cortical processing (V1+)**: This model stops at LGN-level processing. Real vision involves extensive cortical computation. The fusion layer is a crude stand-in for V1 integration. A proper V1 model with orientation columns and complex cells would be a substantial extension.
 
 **Attention / top-down modulation**: Beyond K-gating, biological vision involves attentional modulation from higher areas. This is ignored to keep the model simple and feedforward. However, I suspect attention may emerge as a result of the architectural constraints rather than needing explicit implementation. This occurred to me through my work on Inhibition of Return (IOR), the phenomenon where attention is slower to return to a previously attended location ([Posner & Cohen, 1984](https://link.springer.com/chapter/10.1007/978-1-4612-4760-5_26)). Once you get into the literature it makes sense why IOR exists, but I simultaneously hold the question: why would the visual system care? Something can happen, the system could acknowledge that area, then go back to not caring. But it doesn't; it acknowledges the location and then immediately inhibits that area. IOR isn't the result of any one group of cells or area; it's the culmination of the retinotectal, LGN, and V1 areas talking to each other.
 
