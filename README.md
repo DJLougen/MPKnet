@@ -132,9 +132,10 @@ The architecture automatically:
 
 | Model | Params | Accuracy | Notes |
 |-------|--------|----------|-------|
-| **MPKNet (binocular)** | **0.14M** | **71.0%** | No pretraining, no augmentation |
+| **MPKNet V4 (binocular)** | **0.21M** | **72.2%** | Stride-based pathways, no pretraining |
+| MPKNet V2 (binocular) | 0.14M | 71.0% | No pretraining, no augmentation |
 
-STL-10 is a challenging dataset with only 5000 labeled training samples. The binocular model shows reasonable generalization despite the limited data.
+STL-10 is a challenging dataset with only 5000 labeled training samples. The binocular models show reasonable generalization despite the limited data.
 
 **Ablation Study** (Preliminary Results):
 
