@@ -18,13 +18,27 @@
 
 ## Efficiency Highlight
 
-| Model | Params | CIFAR-10 | Notes |
+### Kvasir-v2 (Medical Endoscopy, 8 classes)
+
+| Model | Params | Accuracy | Acc/Param | Notes |
+|-------|--------|----------|-----------|-------|
+| **BinocularMPKNet** | **0.14M** | **83.4%** | **587.6** | No pretraining, no augmentation |
+| Swin Transformer | 0.40M | 74.5% | 187.7 | - |
+| ConvMixer | 0.59M | 92.5% | 156.0 | - |
+| Vanilla ViT | 0.77M | 79.5% | 103.4 | - |
+| SqueezeNet | 1.25M | 85.6% | 68.3 | - |
+| MobileNetV2 | 3.5M | 83.0% | 23.7 | - |
+| DenseNet201 | 19.2M | 94.5% | 4.9 | - |
+
+**BinocularMPKNet is on the Pareto frontier.** At 0.14M parameters, it achieves higher accuracy than MobileNetV2 (25x larger), Vanilla ViT (5x larger), and Swin Transformer (3x larger). The highest accuracy-per-parameter ratio of any model tested.
+
+### CIFAR-10 (From Scratch)
+
+| Model | Params | Accuracy | Notes |
 |-------|--------|----------|-------|
 | **BinocularMPKNet** | **0.14M** | **83.0%** | No pretraining, no augmentation |
 | SqueezeNet | 1.2M | 84.5% | ImageNet pretrained |
 | MobileNetV3-Small | 2.5M | 92.5% | Heavy augmentation |
-
-**0.14M parameters. 83% accuracy. No tricks.** The binocular extension achieves competitive accuracy with ~9x fewer parameters than SqueezeNet and ~18x fewer than MobileNetV3, without pretraining or augmentation.
 
 ---
 
