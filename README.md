@@ -37,15 +37,11 @@
 
 ## Motivation
 
-**The core hypothesis.** Current vision models require massive compute because they brute-force the problem. Biology solved vision with 20 watts. What if the answer isn't more parameters but better architecture?
-
-This project explores whether the organizational principles of biological visual systems can provide computational benefits that brute-force scaling cannot. The goal is not to beat SOTA on benchmarks but to match performance *per parameter* and *per training sample*. This would make vision research accessible to labs without datacenter budgets.
-
-### Why Biology?
+**The core hypothesis.** Performance comes from having the right regions doing the right things. Not from parameter count or training tricks. Biology solved vision with 20 watts because the structure itself does work.
 
 Most "bio-inspired" approaches borrow surface-level features (Gabor filters and such) without modeling the fundamental parallel-stream architecture that evolution has conserved across mammals for 200 million years. MPKNet takes a different approach. It directly implements the laminar organization of the LGN as observed in humans and [tree shrews](https://pubmed.ncbi.nlm.nih.gov/40550685/) and macaques.
 
-The question isn't "can we copy biology?" but rather **does the architecture that evolution converged on have computational properties that emerge from structure rather than scale?**
+The question is **does having the right areas exist and connect the right way cause useful behaviors to emerge without being explicitly programmed?**
 
 ### The Longer Vision
 
@@ -57,15 +53,11 @@ The current MPKNet is just the LGN stage. It is essentially the thalamic preproc
 4. **Pulvinar**. Thalamic hub connecting SC and V1 and higher areas
 5. **Full thalamo-cortical loops**. Testing whether attention emerges from architecture
 
-The hypothesis driving this work is that **attention isn't a mechanism you bolt on. It's an emergent property of recurrent thalamo-cortical loops.** If true then transformers need attention modules because they're missing the architecture that generates it.
+The hypothesis is that **attention isn't a mechanism you bolt on. It emerges from having the right areas connected the right way.** Transformers need attention modules because they're missing the architecture that would generate it naturally.
 
 ### Compute Democratization
 
-All experiments in this repo were run on a DGX Spark or a MacBook M3 Max. If the structural approach works it means
-
-- Meaningful vision research without cluster access
-- Edge deployment on real hardware constraints
-- Reproducibility for any lab anywhere
+All experiments in this repo were run on a DGX Spark or a MacBook M3 Max. The whole point is to make this work on consumer grade hardware. If the structural approach is right then you don't need a datacenter to do meaningful vision research.
 
 This project was largely inspired by [Yamins et al. (2014)](https://www.pnas.org/doi/10.1073/pnas.1403112111) on performance-optimized hierarchical models and grew out of my PhD research on the LGN at the University of Toronto.
 
