@@ -39,42 +39,44 @@
 
 Most "bio-inspired" approaches borrow surface-level features (Gabor filters and such) without modeling the fundamental parallel-stream architecture that evolution has conserved across mammals for 200 million years. MPKNet takes a different approach. It directly implements the laminar organization of the LGN as observed in humans and [tree shrews](https://pubmed.ncbi.nlm.nih.gov/40550685/) and macaques.
 
-The question is **does having the right areas exist and connect the right way cause useful behaviors to emerge without being explicitly programmed?**
+The question is **does having the right areas exist and connected in the right way cause useful behaviors to emerge without being explicitly programmed?**
 
 ### The Longer Vision
 
-The current MPKNet is just the LGN stage. It is essentially the thalamic preprocessing before visual cortex. The roadmap is as follows.
+The current MPKNet is just the LGN stage, it can be thought of as a early preprocessing before the primary visual cortex.  
+
+The current roadmap is:
 
 1. **LGN** (current). M/P/K parallel pathways ✓
-2. **Retinotectal pathway**. Superior colliculus for fast coarse spatial processing
-3. **V1**. Orientation columns and simple/complex cells and feedback to LGN
-4. **Pulvinar**. Thalamic hub connecting SC and V1 and higher areas
-5. **Full thalamo-cortical loops**. Testing whether attention emerges from architecture
+2. **Retinotectal pathway**. 
+3. **V1**. Orientation columns
+4. **Full thalamo-cortical loops**. Testing whether attention emerges from architecture
 
-The hypothesis is that **attention isn't a mechanism you bolt on. It emerges from having the right areas connected the right way.** Transformers need attention modules because they're missing the architecture that would generate it naturally.
+The hypothesis is that **attention isn't the result of on set of cells or regions. It instead emerges from having the right areas connected the right way.** Transformers need attention modules because they're missing the architecture that would generate it naturally.
 
 ### Compute Democratization
 
-All experiments in this repo were run on a DGX Spark or a MacBook M3 Max. The whole point is to make this work on consumer grade hardware. If the structural approach is right then you don't need a datacenter to do meaningful vision research.
+All experiments in this repo were run on a DGX Spark (not entirely "consumer grade") or a MacBook M3 Max. The whole point is to make this work on hardware affordable for more labs with out the need for compute cluster resources. 
 
 This project was largely inspired by [Yamins et al. (2014)](https://www.pnas.org/doi/10.1073/pnas.1403112111) on performance-optimized hierarchical models and grew out of my PhD research on the LGN at the University of Toronto.
 
 I am open to suggestions and collaboration. I'm hoping to apply this to drones and robotics (currently 3D printing a robot arm with a camera). I also plan to explore its ability to encode visual information for a VLM.
 
-I recognize that computers are not brains. But I haven't seen anyone try this specific approach and figured why not. I also want to work in AI alongside my neuroscience research. Building these models is a way to understand both fields in tandem. The neuroscience informs the architecture and implementing the architecture deepens my understanding of the neuroscience.
+I recognize that computers are not brains, but I'm also a wittgensteinian so I do get pedantic about semantics... I think it could argued that both are a *computer*, the difference lies in the medium/means with which it is accomplished. I also felt like this was a cool and compelling way to learn torch/AI while working on my PhD.
+
 
 ## Key Ideas
 
 For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](https://pubmed.ncbi.nlm.nih.gov/33832683/).
 
-1. **Parallel Visual Streams**: Like the biological LGN, MPKNet processes visual information through three parallel pathways:
+1. **Parallel Visual Streams**: Like the biological LGN, MPKNet processes visual information through two specialist pathways modulated by a third grouping of cells:
    - **Magno (M)**: Large receptive fields, fast temporal processing, global "gist"
    - **Parvo (P)**: Small receptive fields, high spatial acuity, fine detail
    - **Konio (K)**: Context relay and cross-stream modulation
 
 2. **CellPop Retinal Sampling**: Structured downsampling using `pixel_unshuffle` to model retinal ganglion cell population responses
 
-3. **Konio Gating**: The K-pathway generates channel attention to modulate P and M streams, acting as a context-aware relay (novel architectural contribution)
+3. **Konio Gating**: The K-pathway generates channel attention to modulate the importance of the P and M streams, acting as a context-aware relay (novel architectural contribution)
 
 4. **Evolutionary Priors**: Kernel sizes and strides chosen to reflect biological receptive field properties across species
 
@@ -86,11 +88,9 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 
 In a standard neural network, every neuron can multiply with every other neuron in the next layer. MPKNet restricts *where* the multiplying happens: M only talks to M, P only talks to P, K modulates but doesn't mix features. The math is the same—the wiring diagram is different.
 
-The claim is that the *pattern* of who multiplies with whom encodes something useful. Biology figured out that keeping M separate from P until later produces better representations. Late fusion isn't just "where"—it's "after they've had time to become different things." The physical separation in LGN forces specialization. MPKNet recreates that isolation in software.
+The claim is that the *pattern* of who multiplies with whom encodes something useful. Biology figured out that keeping M separate from P until later produces better representations. Late fusion isn't just "where"— its "where" with from the lens of a specialist stream. MPKNet seeks to recreate that information routing in the torch software.
 
-*What you multiply, where you multiply it, and when you finally let the streams interact.* That's the whole architecture. And yes—"what" and "where" aren't accidental words. The P pathway feeds the ventral "what" stream; the M pathway feeds the dorsal "where" stream. The architecture recapitulates the biology down to the semantics.
-
-The symbolism of the semantics makes my inner Jungian happy.
+*What you multiply, where you multiply it, and when you finally let the streams interact.* That's the whole architecture. And yes—"what" and "where" aren't accidental words; The P pathway feeds the ventral "what" stream; the M pathway feeds the dorsal "where" stream, the architecture recapitulates the biology down to the semantics.
 
 ## Architecture
 
@@ -188,7 +188,7 @@ STL-10 is a challenging dataset with only 5000 labeled training samples. The bin
 
 - **K-gating adds capacity that doesn't generalize on static images** (+0.1pt test, but +5pt train): K-gating increases training accuracy (~80% → ~85%) without improving test performance. This suggests K's modulatory role is optimized for dynamic/temporal contexts rather than static classification. The full model's larger train-test gap (14pt vs 9pt) indicates K adds capacity that overfits on frozen frames.
 
-**Biological implication**: K-cells may be more relevant for temporal tasks (e.g., second-order motion, slow isoluminant chromatic changes) where context-dependent gain control matters. Static image benchmarks may underestimate K's contribution to real visual processing.
+**Biological implication**: K-cells are more relevant for slow temporal tasks (e.g., data-night cycle) where context-dependent gain control matters. Think about being in the shade in an otherwise sunny surrounding, our brains dont just assume night time. Static image benchmarks may underestimate K's contribution to real visual processing.
 
 ### Channel Scaling Study (CIFAR-10)
 
@@ -226,7 +226,7 @@ STL-10 is a challenging dataset with only 5000 labeled training samples. The bin
 
 ## Fractal Dynamics
 
-I learned about fractal dynamics from the [Sereno lab](https://www.nature.com/articles/s41599-020-00648-y) at the University of Oregon while doing my masters and was curious to explore it here. For a cool introduction to fractal dynamics, see [this Jackson Pollock-related paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC3124832/).
+I learned about fractal dynamics from the [Sereno lab](https://www.nature.com/articles/s41599-020-00648-y) at the University of Oregon while doing my masters and was curious to explore it here. For a cool introduction to fractal dynamics, see the [Jackson Pollock-related paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC3124832/) on how to know if you have a real or fake pollock painting. 
 
 I measure Detrended Fluctuation Analysis (DFA) of prediction confidence traces during evaluation. DFA was introduced by [Peng et al. (1994)](https://journals.aps.org/pre/abstract/10.1103/PhysRevE.49.1685) and has since been applied extensively to neural signals. [Linkenkaer-Hansen et al. (2001)](https://pubmed.ncbi.nlm.nih.gov/11160408/) discovered long-range temporal correlations (LRTC) in EEG oscillations, and subsequent work suggests these correlations reflect [critical-state dynamics in neural networks](https://pmc.ncbi.nlm.nih.gov/articles/PMC3510427/).
 
@@ -234,16 +234,8 @@ I measure Detrended Fluctuation Analysis (DFA) of prediction confidence traces d
 - **DFA > 0.5**: Long-range temporal correlations present
 - **Biological range**: Typically 0.5–0.75 in neural systems, with ~60% of variance attributable to genetic factors
 
-The models consistently produce DFA ≈ 0.52, slightly above the uncorrelated baseline. I mainly included this because I thought it would be cool to track—whether it reflects meaningful computational properties or is an artifact of data structure remains an open question.
+The models consistently produce DFA ≈ 0.52, slightly above the uncorrelated baseline. But, thats all it is, slightly above baseline I mainly included this because I thought it would be cool. However, whether it means something is a whole other question. 
 
-## Code Availability
-
-The core MPKNet architecture is now public:
-- `mpkSGD.py` - Base MPKNet implementation
-- `mpkSGD_kgate.py` - MPKNet with K-gating (recommended)
-- `cellpop.py` - CellPop retinal sampling
-
-The binocular extension (`mpknet_binocular.py`) will be released upon paper publication.
 
 **For collaboration inquiries**, please contact me via my [website](https://djlougen.github.io/PersonalWebsite/).
 
@@ -258,7 +250,7 @@ mpknet/
 ├── tbLogger.py         # TensorBoard logging (public)
 ├── figures/            # Architecture diagrams
 ├── results/            # Experiment results
-└── mpknet_binocular.py # [PRIVATE] Binocular extension - available upon publication
+└── mpknet_binocular.py # Binocular version (public)
 ```
 
 ## Biological Motivation
@@ -270,24 +262,25 @@ MPKNet's architecture is an amalgamation of tree shrew and human LGN organizatio
 - **Magnocellular**: 2 layers (motion, global)
 
 This architecture is conserved across mammals, suggesting evolutionary optimization for efficient visual processing.
+As for the kernels, I was choosing odd numbers as those give a center/*fovea*, however this is another area worth testing.
 
 ## What This Project Deliberately Ignores
 
 Several biological features are intentionally omitted. The reasoning:
 
-**Temporal dynamics / spiking**: The LGN exhibits rich temporal processing; M cells respond transiently, P cells have sustained responses. I chose to focus on the spatial/structural organization first. Adding temporal dynamics (e.g., spiking networks, LSTM-like recurrence) would complicate the architecture before validating that the parallel stream structure itself provides value.
+**Temporal dynamics / spiking**: The LGN exhibits rich temporal processing; M cells respond transiently, P cells have sustained responses. I chose to focus on the spatial/structural organization first. Adding temporal dynamics (e.g., spiking networks, LSTM-like recurrence) would complicate the architecture and I want to better understand what they do first.
 
-**Recurrent connections**: Real visual processing involves massive feedback from V1 to LGN and lateral connections within LGN. These are omitted because feedforward CNNs are better understood and easier to train. Recurrence is a natural next step but adds training complexity. See [arXiv:2506.21734](https://arxiv.org/abs/2506.21734) for a potentially relevant approach.
+**Recurrent connections**: Real visual processing involves massive feedback from V1 to LGN and lateral connections within LGN. These are omitted because feedforward CNNs are better understood and easier to train. Recurrence is a natural next step but adds training complexity. I did see a paper on [HRM](https://arxiv.org/abs/2506.21734) recently and wonder if there is a reccurence mechanism needed. 
 
 **Foveation / eccentricity**: Biological retinas have varying resolution across the visual field. This could be added via attention mechanisms or non-uniform sampling, but would require larger images than CIFAR-10's 32x32 to be meaningful.
 
-**Color opponent channels**: The P pathway in particular carries color opponent signals (red-green, blue-yellow). The current implementation uses standard RGB. True color opponency might improve the biological fidelity of the P stream. However, I'm still uncertain whether opponency is fundamentally baked into our visual system or if it emerges as a quirk of [utility-based coding](https://www.sciencedirect.com/science/article/pii/S136466132300147X).
+**Color opponent channels**: The P pathway in particular carries color opponent signals (red-green, blue-yellow). The current implementation uses standard RGB. True color opponency might improve the biological fidelity of the P stream. However, I'm still uncertain whether opponency (outside of cones not passing to the M pathway making it concerned with changes in brightness) is fundamentally baked into our visual system or if it emerges as a quirk of [utility-based coding](https://www.sciencedirect.com/science/article/pii/S136466132300147X). 
 
-**Cortical processing (V1+)**: This model stops at LGN-level processing. Real vision involves extensive cortical computation. The fusion layer is a crude stand-in for V1 integration. A proper V1 model with orientation columns and complex cells would be a substantial extension.
+**Cortical processing (V1+)**: This model stops at LGN-level processing, the fusion layer is a crude stand-in for V1 integration. I'm currently thinking about how to do this but need to finish a K cell related paper before properly thinking about V1.
 
-**Attention / top-down modulation**: Beyond K-gating, biological vision involves attentional modulation from higher areas. This is ignored to keep the model simple and feedforward. However, I suspect attention may emerge as a result of the architectural constraints rather than needing explicit implementation. This occurred to me through my work on Inhibition of Return (IOR), the phenomenon where attention is slower to return to a previously attended location ([Posner & Cohen, 1984](https://link.springer.com/chapter/10.1007/978-1-4612-4760-5_26)). Once you get into the literature it makes sense why IOR exists, but I simultaneously hold the question: why would the visual system care? Something can happen, the system could acknowledge that area, then go back to not caring. But it doesn't; it acknowledges the location and then immediately inhibits that area. IOR isn't the result of any one group of cells or area; it's the culmination of the retinotectal, LGN, and V1 areas talking to each other.
+**Attention / top-down modulation**: Beyond K-gating, biological vision involves attentional modulation from higher areas. This is ignored to keep the model simple and feedforward. However, I suspect attention may emerge as a result of the architectural constraints rather than needing explicit implementation. 
 
-The philosophy is to start with the most fundamental structural feature (parallel M/P/K streams) and validate that before adding complexity. Each ignored feature represents a potential future direction.
+This occurred to me through my work on Inhibition of Return (IOR), the phenomenon where attention is slower to return to a previously attended location, measureable via reaction time ([Posner & Cohen, 1984](https://link.springer.com/chapter/10.1007/978-1-4612-4760-5_26)). Once you get into the literature it makes sense why IOR exists, but I do wonder:  why does the brain/visual system care? Something can happen, the system could acknowledge that area, then go back to not caring. But it doesn't; it acknowledges the location and decides its worth inhibiting that area. IOR isn't the result of any one group of cells or area; it's the culmination of different brain areas talking to each other.
 
 ## White Paper
 
