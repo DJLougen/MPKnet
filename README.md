@@ -29,19 +29,6 @@
 | MobileNetV3-Small | 2.5M | 92.5% | 12× | - |
 | DenseNet201 | 19.2M | 94.5% | 90× | - |
 
-### Prototype-Based Retrieval (CIFAR-100)
-
-MPKx embeddings support nearest-prototype classification without retraining:
-
-| Evaluation | Prototype Acc | Linear Acc |
-|------------|---------------|------------|
-| Train (held-out 20%) | 71.2% | 88.7% |
-| Test set | 49.8% | 55.8% |
-
-*Held-out 20%: Train on 80% of training set, build class prototypes from that 80%, evaluate on remaining 20% of training set (never seen during training).*
-
-The 71% prototype accuracy shows MPKx learns retrieval-ready embeddings - no retraining needed, just compute class centroids and do nearest-neighbor lookup. Useful for few-shot learning and image search.
-
 ### MPKx (Preliminary)
 
 Architectural revision based on insights from V1-V3 experiments.
@@ -53,6 +40,19 @@ Architectural revision based on insights from V1-V3 experiments.
 | STL-10 | 0.21M | ~280M | 71.7% | 12% |
 
 ![MPKx Training Curves](figures/v4_training_curves.png)
+
+#### Prototype-Based Retrieval (CIFAR-100)
+
+MPKx embeddings support nearest-prototype classification without retraining:
+
+| Evaluation | Prototype Acc | Linear Acc |
+|------------|---------------|------------|
+| Train (held-out 20%) | 71.2% | 88.7% |
+| Test set | 49.8% | 55.8% |
+
+*Held-out 20%: Train on 80% of training set, build class prototypes from that 80%, evaluate on remaining 20% of training set (never seen during training).*
+
+The 71% prototype accuracy shows MPKx learns retrieval-ready embeddings - no retraining needed, just compute class centroids and do nearest-neighbor lookup. Useful for few-shot learning and image search.
 
 ### MPKx Summary
 
