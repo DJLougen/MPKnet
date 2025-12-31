@@ -29,12 +29,6 @@
 | MobileNetV3-Small | 2.5M | 92.5% | 12× | - |
 | DenseNet201 | 19.2M | 94.5% | 90× | - |
 
-### CIFAR-100 (100 classes)
-
-| Model | Params | Accuracy | Notes |
-|-------|--------|----------|-------|
-| **MPKx** | **0.22M** | **55.8%** | No pretraining, no augmentation |
-
 ### Prototype-Based Retrieval (CIFAR-100)
 
 MPKx embeddings support nearest-prototype classification without retraining:
