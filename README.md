@@ -86,6 +86,18 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 
 ![MPKNet Architecture](figures/mpknet_architecture.png)
 
+### Binocular MPKNet
+
+![Binocular MPKNet Architecture](figures/binocular_mpknet_architecture.png)
+
+The binocular variant models the eye-specific organization of the LGN:
+
+- **Ocular dominance**: LGN layers are eye-specific (layers 1,4,6 receive contralateral input; 2,3,5 ipsilateral). BinocularMPKNet implements this with channels assigned to left/right eye processing, with graded mixing from purely monocular to fully binocular.
+- **Stereo disparity**: Simulates the slight positional difference between two eyes via horizontal shifts, providing depth cues even from single images during training.
+- **Separate preprocessing**: Each eye gets its own center-surround filtering before pathway processing.
+
+The binocular architecture achieves comparable or better results with fewer parameters (0.14M vs 0.26M for base MPKNet) while adding biological plausibility.
+
 ## Quick Start
 
 ```python
@@ -99,6 +111,19 @@ print(f"Parameters: {sum(p.numel() for p in model.parameters()):,}")
 # Forward pass
 import torch
 x = torch.randn(1, 3, 32, 32)
+out = model(x)  # [1, 10]
+```
+
+```python
+from binocular_mpknet import BinocularMPKNet
+
+# Create binocular model (STL-10 example)
+model = BinocularMPKNet(num_classes=10, ch=48, use_stereo=True)
+print(f"Parameters: {sum(p.numel() for p in model.parameters()):,}")
+# Output: Parameters: ~140,000
+
+# Forward pass (stereo views generated internally)
+x = torch.randn(1, 3, 96, 96)
 out = model(x)  # [1, 10]
 ```
 
