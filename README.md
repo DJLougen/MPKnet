@@ -252,6 +252,7 @@ STL-10 is a challenging dataset with only 5000 labeled training samples. The bin
 
 | Model | Params | CIFAR-10 | CIFAR-100 | STL-10 | Pretrained? | Augmentation |
 |-------|--------|----------|-----------|--------|-------------|--------------|
+| **MPKx** | 0.22M | - | 58.8% | 71.7% | No | None |
 | **MPKNet (binocular)** | 0.14M | 83.0% | 52.8% | 71.0% | No | None |
 | **MPKNet (binocular)** | 0.14M | - | 46.0% | - | No | Heavy |
 | MobileNetV3-Small | 2.5M | 92.5% | 75.4% | - | No | Heavy |
