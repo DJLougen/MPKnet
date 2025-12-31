@@ -308,6 +308,10 @@ Several biological features are intentionally omitted. The reasoning:
 
 This occurred to me through my work on Inhibition of Return (IOR), the phenomenon where attention is slower to return to a previously attended location, measureable via reaction time ([Posner & Cohen, 1984](https://link.springer.com/chapter/10.1007/978-1-4612-4760-5_26)). Once you get into the literature it makes sense why IOR exists, but I do wonder:  why does the brain/visual system care? Something can happen, the system could acknowledge that area, then go back to not caring. But it doesn't; it acknowledges the location and decides its worth inhibiting that area. IOR isn't the result of any one group of cells or area; it's the culmination of different brain areas talking to each other.
 
+## Future Directions
+
+**Parallel pathway execution**: The M/P/K pathways are independent until V1 fusion, making them natural candidates for parallel execution. Multi-threaded CPU inference could run all 6 streams (left/right × M/P/K) simultaneously, potentially improving throughput on multi-core processors without requiring GPU resources.
+
 ## White Paper
 
 *Coming soon*, once I figure out how to write it!
