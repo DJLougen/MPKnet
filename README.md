@@ -35,7 +35,7 @@
 
 ## Motivation
 
-**The core hypothesis.** Performance comes from having the right regions doing the right things. Not from parameter count or training tricks. Biology solved vision with 20 watts because the structure itself does work.
+**The core hypothesis.** Performance comes from having the right regions doing the right things, and to quote Radiohead "Everything in its right place". Not from parameter count or training tricks. Biology solved vision with 20 watts because the structure itself does work.
 
 Most "bio-inspired" approaches borrow surface-level features (Gabor filters and such) without modeling the fundamental parallel-stream architecture that evolution has conserved across mammals for 200 million years. MPKNet takes a different approach. It directly implements the laminar organization of the LGN as observed in humans and [tree shrews](https://pubmed.ncbi.nlm.nih.gov/40550685/) and macaques.
 
