@@ -82,6 +82,14 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 
 6. **Task Agnostic**: The goal is for the model architecture to remain unchanged regardless of task. Just like biological visual systems, you don't modify the structure, you simply give it a task and it learns.
 
+### The Core Insight
+
+In a standard neural network, every neuron can multiply with every other neuron in the next layer. MPKNet restricts *where* the multiplying happens: M only talks to M, P only talks to P, K modulates but doesn't mix features. The math is the same—the wiring diagram is different.
+
+The claim is that the *pattern* of who multiplies with whom encodes something useful. Biology figured out that keeping M separate from P until later produces better representations. Late fusion isn't just "where"—it's "after they've had time to become different things." The physical separation in LGN forces specialization. MPKNet recreates that isolation in software.
+
+*What you multiply, where you multiply it, and when you finally let the streams touch.* That's the whole architecture. And yes—"what" and "where" aren't accidental words. The P pathway feeds the ventral "what" stream; the M pathway feeds the dorsal "where" stream. The architecture recapitulates the biology down to the semantics.
+
 ## Architecture
 
 ![MPKNet Architecture](figures/mpknet_architecture.png)
