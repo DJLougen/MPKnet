@@ -3,15 +3,7 @@
 **MPKNet** is a bio-inspired convolutional neural network that models the Magnocellular (M), Parvocellular (P), and Koniocellular (K) pathways of the Lateral Geniculate Nucleus (LGN), based on cross-species evolutionary priors observed in mammals from tree shrews to primates.
 
 ---
-
-> **Status: Exploratory / Preprint Companion**
->
-> **What's public now:** Architecture diagrams, benchmark results, supporting utilities, core MPKNet implementation
->
-> **Feedback welcome:** Conceptual critique, robustness evaluation ideas, collaboration inquiries
->
-> Contact: [djlougen.github.io](https://djlougen.github.io/PersonalWebsite/)
-
+> Contact: [djlougen.github.io](https://djlougen.github.io/PersonalWebsite/) or d.lougen@mail.utoronto.ca
 ---
 
 ## Efficiency Highlight
