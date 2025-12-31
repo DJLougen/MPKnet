@@ -130,14 +130,11 @@ The architecture automatically:
 
 ### STL-10 (96x96 images, 5000 train samples)
 
-| Model | Params | FLOPs | Accuracy | Notes |
-|-------|--------|-------|----------|-------|
-| **MPKNet V4 (binocular)** | **0.21M** | **1.28G** | **72.2%** | Stride-based pathways, no pretraining |
-| MPKNet V2 (binocular) | 0.17M | 1.48G | 71.0% | No pretraining, no augmentation |
+| Model | Params | Accuracy | Notes |
+|-------|--------|----------|-------|
+| MPKNet (binocular) | 0.14M | 71.0% | No pretraining, no augmentation |
 
-STL-10 is a challenging dataset with only 5000 labeled training samples. The binocular models show reasonable generalization despite the limited data.
-
-**V4 efficiency**: The stride-based architecture (P=1, K=2, M=3 strides) is both faster and more accurate than V2. V4 uses **14% fewer FLOPs** while achieving +1.2% accuracy. The higher strides produce smaller feature maps, reducing computation in subsequent layers.
+STL-10 is a challenging dataset with only 5000 labeled training samples. The binocular model shows reasonable generalization despite the limited data.
 
 **Ablation Study** (Preliminary Results):
 
