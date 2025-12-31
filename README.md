@@ -58,7 +58,7 @@ Architectural revision based on insights from V1-V3 experiments.
 | Kvasir | 0.21M | ~280M | 89.2% | 8% |
 | STL-10 | 0.21M | ~280M | 71.7% | 12% |
 
-![MPKNet V4 Training Curves](figures/v4_training_curves.png)
+![MPKx Training Curves](figures/v4_training_curves.png)
 
 ### MPKx Summary
 
