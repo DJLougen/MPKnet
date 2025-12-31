@@ -62,7 +62,7 @@ The 71% prototype accuracy shows MPKx learns retrieval-ready embeddings - no ret
 | Embedding size | 96 floats (384 bytes) |
 | FLOPs | ~280M |
 
-**The efficiency story**: MPKx achieves 89.2% on Kvasir with 0.21M parameters, within 3.3 points of ConvMixer (92.5%) at 3× fewer parameters. The 96-float embeddings are 5-20× more compact than CLIP/ResNet (512-2048 floats). For resource-constrained applications (edge devices, real-time medical imaging, VLM vision encoders), this trade-off matters.
+**The efficiency story**: MPKx achieves 89.2% on Kvasir with 0.21M parameters and ~280M FLOPs, within 3.3 points of ConvMixer (92.5%) at 3× fewer parameters and comparable FLOPs. The 96-float embeddings are 5-20× more compact than CLIP/ResNet (512-2048 floats). For resource-constrained applications (edge devices, real-time medical imaging, VLM vision encoders), this trade-off matters.
 
 ---
 
