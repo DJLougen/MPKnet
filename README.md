@@ -46,7 +46,7 @@ MPKx embeddings support nearest-prototype classification without retraining:
 
 *Held-out 20%: Train on 80% of training set, build class prototypes from that 80%, evaluate on remaining 20% of training set (never seen during training).*
 
-The 71% prototype accuracy shows MPKx learns retrieval-ready embeddings—no retraining needed, just compute class centroids and do nearest-neighbor lookup. Useful for few-shot learning and image search.
+The 71% prototype accuracy shows MPKx learns retrieval-ready embeddings - no retraining needed, just compute class centroids and do nearest-neighbor lookup. Useful for few-shot learning and image search.
 
 ### MPKNet V4 (Preliminary)
 
@@ -65,7 +65,7 @@ Architectural revision based on insights from V1-V3 experiments.
 | Embedding size | 96 floats (384 bytes) |
 | FLOPs | 14% fewer than MPKNet V2 |
 
-**The efficiency story**: MPKx achieves 89.2% on Kvasir with 0.21M parameters—within 3.3 points of ConvMixer (92.5%) at 3× fewer parameters. The 96-float embeddings are 5-20× more compact than CLIP/ResNet (512-2048 floats). For resource-constrained applications (edge devices, real-time medical imaging, VLM vision encoders), this trade-off matters.
+**The efficiency story**: MPKx achieves 89.2% on Kvasir with 0.21M parameters, within 3.3 points of ConvMixer (92.5%) at 3× fewer parameters. The 96-float embeddings are 5-20× more compact than CLIP/ResNet (512-2048 floats). For resource-constrained applications (edge devices, real-time medical imaging, VLM vision encoders), this trade-off matters.
 
 ---
 
@@ -122,11 +122,11 @@ For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](htt
 
 ### The Core Insight
 
-In a standard neural network, every neuron can multiply with every other neuron in the next layer. MPKNet restricts *where* the multiplying happens: M only talks to M, P only talks to P, K modulates but doesn't mix features. The math is the same—the wiring diagram is different.
+In a standard neural network, every neuron can multiply with every other neuron in the next layer. MPKNet restricts *where* the multiplying happens: M only talks to M, P only talks to P, K modulates but doesn't mix features. The math is the same; the wiring diagram is different.
 
-The claim is that the *pattern* of who multiplies with whom encodes something useful. Biology figured out that keeping M separate from P until later produces better representations. Late fusion isn't just "where"— its "where" with from the lens of a specialist stream. MPKNet seeks to recreate that information routing in the torch software.
+The claim is that the *pattern* of who multiplies with whom encodes something useful. Biology figured out that keeping M separate from P until later produces better representations. Late fusion isn't just "where": its "where" from the lens of a specialist stream. MPKNet seeks to recreate that information routing in the torch software.
 
-*What you multiply, where you multiply it, and when you finally let the streams interact.* That's the whole architecture. And yes—"what" and "where" aren't accidental words; The P pathway feeds the ventral "what" stream; the M pathway feeds the dorsal "where" stream, the architecture recapitulates the biology down to the semantics.
+*What you multiply, where you multiply it, and when you finally let the streams interact.* That's the whole architecture. And yes, "what" and "where" aren't accidental words; The P pathway feeds the ventral "what" stream; the M pathway feeds the dorsal "where" stream, the architecture recapitulates the biology down to the semantics.
 
 ## Architecture
 
@@ -211,7 +211,7 @@ STL-10 is a challenging dataset with only 5000 labeled training samples. The bin
 
 | Ablation | Best Test Acc | Train Acc | Gap | Δ from Full |
 |----------|---------------|-----------|-----|-------------|
-| **Full model** | **71.0%** | ~85% | ~14pt | — |
+| **Full model** | **71.0%** | ~85% | ~14pt | - |
 | No K-gating | 71.1% | ~80% | ~9pt | +0.1pt |
 | No M pathway | 70.0% | ~81% | ~11pt | −1.0pt |
 | No P pathway | 62.8% | ~71% | ~8pt | −8.2pt |
@@ -234,7 +234,7 @@ STL-10 is a challenging dataset with only 5000 labeled training samples. The bin
 | **ch=48** | **0.14M** | **81.9%** | **88.0%** | **6.0%** |
 | ch=64 | 0.25M | 81.2% | 88.2% | 7.0% |
 
-**Finding**: ch=48 is optimal. Larger models (ch=64) show diminishing returns—more parameters, worse test accuracy, more overfitting.
+**Finding**: ch=48 is optimal. Larger models (ch=64) show diminishing returns: more parameters, worse test accuracy, more overfitting.
 
 ### Extended Training (CIFAR-10, ch=48)
 
