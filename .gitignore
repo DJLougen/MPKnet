@@ -30,51 +30,14 @@ Thumbs.db
 *.log
 
 # ============================================
-# PRIVATE - V4 stride-based architecture
+# PRIVATE FOLDER - All unreleased content
 # ============================================
-# V4 uses stride-based pathway differentiation (P=1, K=2, M=3)
-# Keep private until paper publication
-mpknet_v4.py
-train_v4_cuda.py
-train_v4_kvasir.py
-plot_v4_*.py
+private/
 
-# Training scripts (private)
-scaling_study.py
-train_cifar10_augment.py
-train_cifar10_mps.py
-train_stl10.py
-train_stl10_ablation.py
-train_stl10_control.py
-train_stl10_resume.py
-train_svhn.py
-train_stl10_v2.py
-plot_v2_*.py
-visualize_stl10_comparison.py
-v2_architecture.png
-
-# ============================================
-# PRIVATE - Object detection (not released)
-# ============================================
-# Detection module using BinocularMPKNet backbone
-mpknet_detection.py
-train_voc.py
-
-# ============================================
-# PRIVATE - Binocular V2/V3/V4 versions
-# ============================================
-# mpknet_binocular.py contains V1/V2/V3 - keep private
-mpknet_binocular.py
-generate_binocular_figure.py
-
-# V2/V4 figures (keep private)
+# Private figures
 figures/binocular_mpknet_v2_architecture.png
 figures/binocular_mpknet_v4_architecture.png
 figures/binocular_mpknet_v4_simple.png
 figures/binocular_mpknet_architecture.svg
 
-# Note: binocular_mpknet.py (V1 only) and
-# figures/binocular_mpknet_architecture.png are PUBLIC
-
-# Patent documentation (private)
-PATENT_V4_PRIVATE.md
+# Note: public/ folder and figures/binocular_mpknet_architecture.png are PUBLIC

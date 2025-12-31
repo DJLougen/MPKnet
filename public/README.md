@@ -20,16 +20,53 @@
 
 | Model | Params | Accuracy | Param Ratio | Notes |
 |-------|--------|----------|-------------|-------|
-| **MPKNet (binocular)** | **0.14M** | **84.1%** | **1×** | No pretraining, no augmentation |
-| Swin Transformer | 0.40M | 74.5% | 3× | - |
-| ConvMixer | 0.59M | 92.5% | 4× | - |
-| Vanilla ViT | 0.77M | 79.5% | 6× | - |
-| SqueezeNet | 1.25M | 85.6% | 9× | - |
-| MobileNetV3-Small | 2.5M | 92.5% | 18× | - |
-| MobileNetV2 | 3.5M | 83.0% | 25× | - |
-| DenseNet201 | 19.2M | 94.5% | 137× | - |
+| **MPKx** | **0.21M** | **89.2%** | **1×** | No pretraining, no augmentation |
+| MPKNet (binocular) | 0.14M | 84.1% | 0.7× | No pretraining, no augmentation |
+| Swin Transformer | 0.40M | 74.5% | 2× | - |
+| ConvMixer | 0.59M | 92.5% | 3× | - |
+| Vanilla ViT | 0.77M | 79.5% | 4× | - |
+| SqueezeNet | 1.25M | 85.6% | 6× | - |
+| MobileNetV3-Small | 2.5M | 92.5% | 12× | - |
+| YOLOv8n | 3.2M | - | 15× | Detection backbone |
+| DenseNet201 | 19.2M | 94.5% | 90× | - |
 
-**The efficiency story**: MPKNet (binocular version) achieves 84.1% accuracy with 0.14M parameters. MobileNetV3-Small needs 18× more parameters (2.5M) to reach 92.5%—an 8.4 percentage point gain for 18× the cost. DenseNet201 requires 137× more parameters for just 10.4 points. For resource-constrained applications (edge devices, real-time medical imaging), this trade-off matters.
+### CIFAR-100 (100 classes)
+
+| Model | Params | Accuracy | Notes |
+|-------|--------|----------|-------|
+| **MPKx** | **0.22M** | **55.8%** | No pretraining, no augmentation |
+
+### Prototype-Based Retrieval (CIFAR-100)
+
+MPKx embeddings support nearest-prototype classification without retraining:
+
+| Evaluation | Prototype Acc | Linear Acc |
+|------------|---------------|------------|
+| Train (held-out 20%) | 71.2% | 88.7% |
+| Test set | 49.8% | 55.8% |
+
+*Held-out 20%: Train on 80% of training set, build class prototypes from that 80%, evaluate on remaining 20% of training set (never seen during training).*
+
+The 71% prototype accuracy shows MPKx learns retrieval-ready embeddings—no retraining needed, just compute class centroids and do nearest-neighbor lookup. Useful for few-shot learning and image search.
+
+### MPKNet V4 (Preliminary)
+
+Architectural revision based on insights from V1-V3 experiments.
+
+| Dataset | Params | FLOPS | Test Acc | Train/Test Gap |
+|---------|--------|-------|----------|----------------|
+| CIFAR-100 | 0.22M | 281M | 58.8% | 11% |
+| Kvasir | 0.21M | ~280M | 89.2% | 8% |
+
+### MPKx Summary
+
+| Metric | Value |
+|--------|-------|
+| Parameters | 0.21-0.22M |
+| Embedding size | 96 floats (384 bytes) |
+| FLOPs | 14% fewer than MPKNet V2 |
+
+**The efficiency story**: MPKx achieves 89.2% on Kvasir with 0.21M parameters—within 3.3 points of ConvMixer (92.5%) at 3× fewer parameters. The 96-float embeddings are 5-20× more compact than CLIP/ResNet (512-2048 floats). For resource-constrained applications (edge devices, real-time medical imaging, VLM vision encoders), this trade-off matters.
 
 ---
 
