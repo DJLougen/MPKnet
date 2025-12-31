@@ -75,3 +75,6 @@ figures/binocular_mpknet_architecture.svg
 
 # Note: binocular_mpknet.py (V1 only) and
 # figures/binocular_mpknet_architecture.png are PUBLIC
+
+# Patent documentation (private)
+PATENT_V4_PRIVATE.md

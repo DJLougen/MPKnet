@@ -90,7 +90,7 @@ The claim is that the *pattern* of who multiplies with whom encodes something us
 
 *What you multiply, where you multiply it, and when you finally let the streams touch.* That's the whole architecture. And yes—"what" and "where" aren't accidental words. The P pathway feeds the ventral "what" stream; the M pathway feeds the dorsal "where" stream. The architecture recapitulates the biology down to the semantics.
 
-The fact that the semantics line up makes my inner Wittgensteinian warm.
+The symbolism of the semantics makes my inner Jungian happy.
 
 ## Architecture
 
