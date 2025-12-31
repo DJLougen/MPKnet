@@ -42,7 +42,7 @@ MPKx embeddings support nearest-prototype classification without retraining:
 | Train (held-out 20%) | 71.2% | 88.7% |
 | Test set | 49.8% | 55.8% |
 
-*Held-out 20%: Train on 80% of training set, build class prototypes from that 80%, evaluate on remaining 20% of training set (never seen during training).*
+*Held-out 20%: Train on 80% of training set, build class prototypes from that 80%, evaluate on remaining 20% of training set.*
 
 The 71% prototype accuracy shows MPKx learns retrieval-ready embeddings - no retraining needed, just compute class centroids and do nearest-neighbor lookup. Useful for few-shot learning and image search.
 
