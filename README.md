@@ -126,7 +126,7 @@ In a standard neural network, every neuron can multiply with every other neuron 
 
 The claim is that the *pattern* of who multiplies with whom encodes something useful. Biology figured out that keeping M separate from P until later produces better representations. Late fusion isn't just "where": its "where" from the lens of a specialist stream. MPKNet seeks to recreate that information routing in the torch software.
 
-*What you multiply, where you multiply it, and when you finally let the streams interact.* That's the whole architecture. And yes, "what" and "where" aren't accidental words; The P pathway feeds the ventral "what" stream; the M pathway feeds the dorsal "where" stream, the architecture recapitulates the biology down to the semantics.
+*Its what you multiply and where you multiply.* That's the whole architecture. And yes, "what" and "where" aren't accidental words; The P pathway feeds the ventral "what" stream; the M pathway feeds the dorsal "where" stream, the architecture recapitulates the biology down to the semantics.
 
 ## Architecture
 
