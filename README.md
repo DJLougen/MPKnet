@@ -310,7 +310,7 @@ This occurred to me through my work on Inhibition of Return (IOR), the phenomeno
 
 ## Future Directions
 
-**Parallel pathway execution**: The M/P/K pathways are independent until V1 fusion, making them natural candidates for parallel execution. Multi-threaded CPU inference could run all 6 streams (left/right × M/P/K) simultaneously, potentially improving throughput on multi-core processors without requiring GPU resources. I wonder if this could be done with multi-threading, but I have no clue how to implement it.
+**Parallel pathway execution**: The M/P/K pathways are independent until V1 fusion, so I do wonder "could this be multi-threaded on a cpu?" I dont understand that stuff well enough, but would love to test/know. 
 
 ## White Paper
 
