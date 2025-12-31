@@ -27,7 +27,6 @@
 | Vanilla ViT | 0.77M | 79.5% | 4× | - |
 | SqueezeNet | 1.25M | 85.6% | 6× | - |
 | MobileNetV3-Small | 2.5M | 92.5% | 12× | - |
-| YOLOv8n | 3.2M | - | 15× | Detection backbone |
 | DenseNet201 | 19.2M | 94.5% | 90× | - |
 
 ### CIFAR-100 (100 classes)
