@@ -274,7 +274,7 @@ Several biological features are intentionally omitted. The reasoning:
 
 **Foveation / eccentricity**: Biological retinas have varying resolution across the visual field. This could be added via attention mechanisms or non-uniform sampling, but would require larger images than CIFAR-10's 32x32 to be meaningful.
 
-**Color opponent channels**: The P pathway in particular carries color opponent signals (red-green, blue-yellow). The current implementation uses standard RGB. True color opponency might improve the biological fidelity of the P stream. However, I'm still uncertain whether opponency (outside of cones not passing to the M pathway making it concerned with changes in brightness) is fundamentally baked into our visual system or if it emerges as a quirk of [utility-based coding](https://www.sciencedirect.com/science/article/pii/S136466132300147X). 
+**Color opponent channels**: The P pathway in particular carries color opponent signals (red-green). The current implementation uses standard RGB. True color opponency might improve the biological fidelity of the P stream. However, I'm still uncertain whether opponency (outside of cones not passing to the M pathway making it concerned with changes in brightness) is fundamentally baked into our visual system or if it emerges as a quirk of [utility-based coding](https://www.sciencedirect.com/science/article/pii/S136466132300147X). 
 
 **Cortical processing (V1+)**: This model stops at LGN-level processing, the fusion layer is a crude stand-in for V1 integration. I'm currently thinking about how to do this but need to finish a K cell related paper before properly thinking about V1.
 
