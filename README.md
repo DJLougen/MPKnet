@@ -232,7 +232,7 @@ I measure Detrended Fluctuation Analysis (DFA) of prediction confidence traces d
 
 - **DFA ≈ 0.5**: Uncorrelated noise (no long-range structure)
 - **DFA > 0.5**: Long-range temporal correlations present
-- **Biological range**: Typically 0.5–0.75 in neural systems, with ~60% of variance attributable to genetic factors
+- **Biological range**: Typically 0.75 or higher in neural systems
 
 The models consistently produce DFA ≈ 0.52, slightly above the uncorrelated baseline. But, thats all it is, slightly above baseline I mainly included this because I thought it would be cool. However, whether it means something is a whole other question. 
 
