@@ -32,6 +32,8 @@ Architectural revision based on insights from V1-V3 experiments. Stride-based pa
 | Kvasir | 0.21M | ~280M | 89.2% | 8% | |
 | STL-10 | 0.21M | ~280M | 71.7% | 12% | |
 
+![MPKx Test Accuracy](figures/v4_training_curves.png)
+
 **TinyImageNet comparison** (200 classes, 64x64):
 
 | Model | Params | Test Acc | Notes |
@@ -46,8 +48,6 @@ Architectural revision based on insights from V1-V3 experiments. Stride-based pa
 ![TinyImageNet Training Curves](figures/tinyimagenet_training_curves.png)
 
 *The train/test gap stays tight (~3.4%) throughout training despite no augmentation. The curve shape is unusual - not sure what to make of it yet, but the model isn't overfitting much even on 200 classes.*
-
-![MPKx Training Curves](figures/v4_training_curves.png)
 
 #### Prototype-Based Retrieval (CIFAR-100)
 
