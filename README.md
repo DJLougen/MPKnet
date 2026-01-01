@@ -21,15 +21,31 @@
 | MobileNetV3-Small | 2.5M | 92.5% | 12× | - |
 | DenseNet201 | 19.2M | 94.5% | 90× | - |
 
-### MPKx (Preliminary)
+### MPKx (V4)
 
-Architectural revision based on insights from V1-V3 experiments.
+Architectural revision based on insights from V1-V3 experiments. Stride-based pathway differentiation (P=stride 1, K=stride 2, M=stride 3).
 
-| Dataset | Params | FLOPS | Test Acc | Train/Test Gap |
-|---------|--------|-------|----------|----------------|
-| CIFAR-100 | 0.22M | 281M | 58.8% | 11% |
-| Kvasir | 0.21M | ~280M | 89.2% | 8% |
-| STL-10 | 0.21M | ~280M | 71.7% | 12% |
+| Dataset | Params | FLOPS | Test Acc | Train/Test Gap | Notes |
+|---------|--------|-------|----------|----------------|-------|
+| TinyImageNet | 0.21M | ~142M | 40.6% | 3.5% | 200 classes, 64x64, no aug |
+| CIFAR-100 | 0.22M | 281M | 58.8% | 11% | |
+| Kvasir | 0.21M | ~280M | 89.2% | 8% | |
+| STL-10 | 0.21M | ~280M | 71.7% | 12% | |
+
+**TinyImageNet comparison** (200 classes, 64x64):
+
+| Model | Params | Test Acc | Notes |
+|-------|--------|----------|-------|
+| **MPKx** | **0.21M** | **40.6%** | No augmentation, 100 epochs |
+| ResNet18 | 11M | 41.5% | 52× more params |
+| MobileNetV2 | 3.4M | 33.1% | 16× more params |
+| EfficientNet | - | 36.9% | |
+
+*MPKx matches ResNet18 accuracy with 52× fewer parameters on TinyImageNet-200.*
+
+![TinyImageNet Training Curves](figures/tinyimagenet_training_curves.png)
+
+*The train/test gap stays tight (~3.4%) throughout training despite no augmentation. The curve shape is unusual - not sure what to make of it yet, but the model isn't overfitting much even on 200 classes.*
 
 ![MPKx Training Curves](figures/v4_training_curves.png)
 
@@ -51,10 +67,11 @@ The 71% prototype accuracy shows MPKx learns retrieval-ready embeddings - no ret
 | Metric | Value |
 |--------|-------|
 | Parameters | 0.21-0.22M |
+| Model size | 0.89MB |
 | Embedding size | 96 floats (384 bytes) |
-| FLOPs | ~280M |
+| FLOPs | ~142-280M (task dependent) |
 
-**The efficiency story**: MPKx achieves 89.2% on Kvasir with 0.21M parameters and ~280M FLOPs, within 3.3 points of ConvMixer (92.5%) at 3× fewer parameters and comparable FLOPs. The 96-float embeddings are 5-20× more compact than CLIP/ResNet (512-2048 floats). For resource-constrained applications (edge devices, real-time medical imaging, VLM vision encoders), this trade-off matters.
+**The efficiency story**: MPKx achieves 89.2% on Kvasir with 0.21M parameters, within 3.3 points of ConvMixer (92.5%) at 3× fewer parameters. On TinyImageNet-200, it matches ResNet18 (41.5%) with 52× fewer parameters and beats MobileNetV2 by 7+ points. The 96-float embeddings are 5-20× more compact than CLIP/ResNet (512-2048 floats). For resource-constrained applications (edge devices, real-time medical imaging, VLM vision encoders), this trade-off matters.
 
 ---
 
@@ -236,13 +253,14 @@ STL-10 is a challenging dataset with only 5000 labeled training samples. The bin
 
 ### Comparison Context
 
-| Model | Params | CIFAR-10 | CIFAR-100 | STL-10 | Pretrained? | Augmentation |
-|-------|--------|----------|-----------|--------|-------------|--------------|
-| **MPKx** | 0.22M | - | 58.8% | 71.7% | No | None |
-| **MPKNet (binocular)** | 0.14M | 83.0% | 52.8% | 71.0% | No | None |
-| **MPKNet (binocular)** | 0.14M | - | 46.0% | - | No | Heavy |
-| MobileNetV3-Small | 2.5M | 92.5% | 75.4% | - | No | Heavy |
-| SqueezeNet | 1.2M | 84.5% | 58.5% | - | Yes (ImageNet) | Standard |
+| Model | Params | CIFAR-10 | CIFAR-100 | STL-10 | TinyImageNet | Pretrained? | Augmentation |
+|-------|--------|----------|-----------|--------|--------------|-------------|--------------|
+| **MPKx** | 0.21M | - | 58.8% | 71.7% | **40.6%** | No | None |
+| **MPKNet (binocular)** | 0.14M | 83.0% | 52.8% | 71.0% | - | No | None |
+| **MPKNet (binocular)** | 0.14M | - | 46.0% | - | - | No | Heavy |
+| ResNet18 | 11M | - | - | - | 41.5% | No | Standard |
+| MobileNetV3-Small | 2.5M | 92.5% | 75.4% | - | - | No | Heavy |
+| SqueezeNet | 1.2M | 84.5% | 58.5% | - | - | Yes (ImageNet) | Standard |
 
 *Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. MPKNet (binocular) results are from-scratch to isolate architectural contribution.*
 
