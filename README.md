@@ -83,6 +83,8 @@ Most "bio-inspired" approaches borrow surface-level features (Gabor filters and 
 
 The question is **does having the right areas exist and connected in the right way cause useful behaviors to emerge without being explicitly programmed?**
 
+This project was largely inspired by [Yamins et al. (2014)](https://www.pnas.org/doi/10.1073/pnas.1403112111) on performance-optimized hierarchical models and grew out of my PhD research on the LGN at the University of Toronto.
+
 ### The Longer Vision
 
 The current MPKNet is just the LGN stage, it can be thought of as a early preprocessing before the primary visual cortex.  
