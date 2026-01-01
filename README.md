@@ -23,7 +23,7 @@
 
 ### MPKx (V4)
 
-Architectural revision based on insights from V1-V3 experiments. Stride-based pathway differentiation (P=stride 1, K=stride 2, M=stride 3).
+Architectural revision based on insights from V1-V3 experiments.
 
 | Dataset | Params | FLOPS | Test Acc | Acc/Param | Train/Test Gap | Notes |
 |---------|--------|-------|----------|-----------|----------------|-------|
