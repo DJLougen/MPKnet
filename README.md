@@ -39,11 +39,12 @@ Architectural revision based on insights from V1-V3 experiments.
 | Model | Params | Test Acc | Acc/Param | Notes |
 |-------|--------|----------|-----------|-------|
 | **MPKx** | **0.21M** | **40.6%** | **193** | No augmentation, 100 epochs |
+| MPKx (with aug) | 0.21M | 24.1% | 115 | Augmentation hurts performance |
 | ResNet18 | 11M | 41.5% | 3.8 | 52× more params |
 | MobileNetV2 | 3.4M | 33.1% | 9.7 | 16× more params |
 | EfficientNet | - | 36.9% | - | |
 
-*MPKx matches ResNet18 accuracy with 52× fewer parameters on TinyImageNet-200.*
+*MPKx matches ResNet18 accuracy with 52× fewer parameters on TinyImageNet-200. Accidentally ran with augmentation on - dropped to 24%, reinforcing that augmentation interferes with the model's intrinsic invariances.*
 
 ![TinyImageNet Training Curves](figures/tinyimagenet_training_curves.png)
 
