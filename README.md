@@ -10,38 +10,38 @@
 
 ### Kvasir-v2 (Medical Endoscopy, 8 classes)
 
-| Model | Params | Accuracy | Param Ratio | Notes |
-|-------|--------|----------|-------------|-------|
-| **MPKx** | **0.21M** | **89.2%** | **1×** | No pretraining, no augmentation |
-| MPKNet (binocular) | 0.14M | 84.1% | 0.7× | No pretraining, no augmentation |
-| Swin Transformer | 0.40M | 74.5% | 2× | - |
-| ConvMixer | 0.59M | 92.5% | 3× | - |
-| Vanilla ViT | 0.77M | 79.5% | 4× | - |
-| SqueezeNet | 1.25M | 85.6% | 6× | - |
-| MobileNetV3-Small | 2.5M | 92.5% | 12× | - |
-| DenseNet201 | 19.2M | 94.5% | 90× | - |
+| Model | Params | Accuracy | Acc/Param | Notes |
+|-------|--------|----------|-----------|-------|
+| **MPKx** | **0.21M** | **89.2%** | **425** | No pretraining, no augmentation |
+| MPKNet (binocular) | 0.14M | 84.1% | 601 | No pretraining, no augmentation |
+| Swin Transformer | 0.40M | 74.5% | 186 | - |
+| ConvMixer | 0.59M | 92.5% | 157 | - |
+| Vanilla ViT | 0.77M | 79.5% | 103 | - |
+| SqueezeNet | 1.25M | 85.6% | 68 | - |
+| MobileNetV3-Small | 2.5M | 92.5% | 37 | - |
+| DenseNet201 | 19.2M | 94.5% | 5 | - |
 
 ### MPKx (V4)
 
 Architectural revision based on insights from V1-V3 experiments. Stride-based pathway differentiation (P=stride 1, K=stride 2, M=stride 3).
 
-| Dataset | Params | FLOPS | Test Acc | Train/Test Gap | Notes |
-|---------|--------|-------|----------|----------------|-------|
-| TinyImageNet | 0.21M | ~142M | 40.6% | 3.5% | 200 classes, 64x64, no aug |
-| CIFAR-100 | 0.22M | 281M | 58.8% | 11% | |
-| Kvasir | 0.21M | ~280M | 89.2% | 8% | |
-| STL-10 | 0.21M | ~280M | 71.7% | 12% | |
+| Dataset | Params | FLOPS | Test Acc | Acc/Param | Train/Test Gap | Notes |
+|---------|--------|-------|----------|-----------|----------------|-------|
+| TinyImageNet | 0.21M | ~142M | 40.6% | 193 | 3.5% | 200 classes, 64x64, no aug |
+| CIFAR-100 | 0.22M | 281M | 58.8% | 267 | 11% | |
+| Kvasir | 0.21M | ~280M | 89.2% | 425 | 8% | |
+| STL-10 | 0.21M | ~280M | 71.7% | 341 | 12% | |
 
 ![MPKx Test Accuracy](figures/v4_training_curves.png)
 
 **TinyImageNet comparison** (200 classes, 64x64):
 
-| Model | Params | Test Acc | Notes |
-|-------|--------|----------|-------|
-| **MPKx** | **0.21M** | **40.6%** | No augmentation, 100 epochs |
-| ResNet18 | 11M | 41.5% | 52× more params |
-| MobileNetV2 | 3.4M | 33.1% | 16× more params |
-| EfficientNet | - | 36.9% | |
+| Model | Params | Test Acc | Acc/Param | Notes |
+|-------|--------|----------|-----------|-------|
+| **MPKx** | **0.21M** | **40.6%** | **193** | No augmentation, 100 epochs |
+| ResNet18 | 11M | 41.5% | 3.8 | 52× more params |
+| MobileNetV2 | 3.4M | 33.1% | 9.7 | 16× more params |
+| EfficientNet | - | 36.9% | - | |
 
 *MPKx matches ResNet18 accuracy with 52× fewer parameters on TinyImageNet-200.*
 
