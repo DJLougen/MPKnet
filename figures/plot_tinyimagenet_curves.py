@@ -1,4 +1,4 @@
-"""Plot TinyImageNet training curves for MPKx V4"""
+"""Plot TinyImageNet training curves for MPKx"""
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -13,14 +13,18 @@ test_acc = test_df['Value'].values
 # Create figure
 fig, ax = plt.subplots(figsize=(10, 6))
 
+# Pastel colors
+pastel_rose = '#E8B4B8'    # dusty rose for train
+pastel_blue = '#A8D5E5'    # soft sky blue for test
+
 # Plot curves
-ax.plot(epochs, train_acc, color='#E57373', linewidth=2, label='Train')
-ax.plot(epochs, test_acc, color='#64B5F6', linewidth=2, label='Test')
+ax.plot(epochs, train_acc, color=pastel_rose, linewidth=2, label='Train')
+ax.plot(epochs, test_acc, color=pastel_blue, linewidth=2, label='Test')
 
 # Styling
 ax.set_xlabel('Epoch', fontsize=12)
 ax.set_ylabel('Accuracy (%)', fontsize=12)
-ax.set_title('MPKx V4 on TinyImageNet-200 (0.21M params, no augmentation)', fontsize=14)
+ax.set_title('MPKx on TinyImageNet-200 (0.21M params, no augmentation)', fontsize=14)
 ax.legend(loc='lower right', fontsize=11)
 ax.grid(True, alpha=0.3)
 ax.set_xlim(0, 100)
