@@ -100,7 +100,7 @@ The hypothesis is that **attention isn't the result of on set of cells or region
 
 ### Compute Democratization
 
-All experiments in this repo were run on a DGX Spark (not entirely "consumer grade") or a MacBook M3 Max. The whole point is to make this work on hardware affordable for more labs with out the need for compute cluster resources. 
+This project was developed during summer 2025 in my free time, using my own resources. All experiments were run on a DGX Spark (not entirely "consumer grade") or a MacBook M3 Max. The whole point is to make this work on hardware affordable for more labs without the need for compute cluster resources. 
 
 This project was largely inspired by [Yamins et al. (2014)](https://www.pnas.org/doi/10.1073/pnas.1403112111) on performance-optimized hierarchical models and grew out of my PhD research on the LGN at the University of Toronto.
 
