@@ -101,7 +101,13 @@ The hypothesis is that **attention isn't the result of on set of cells or region
 
 ### Compute Democratization
 
-This project was developed during summer 2025 in my free time at home, using my own hardware (not university resources). All experiments were run on a DGX Spark or a MacBook M3 Max. The whole point is to make this work on hardware affordable for more labs without the need for compute cluster resources.
+This project was developed during summer 2025 in my free time at home, using my own hardware (not university resources). All experiments ran on a DGX Spark or a MacBook M3 Max.
+
+Two motivations drove the efficiency focus:
+
+1. **Accessibility**: Making vision research possible on hardware affordable to more labs, without requiring compute cluster access.
+
+2. **Sustainability**: Scaling is a dead end and a massive power drain. Models that can be trained and run on local hardware offer privacy, lower energy costs, and independence from cloud infrastructure. If the architecture is right, you should not need a data center.
 
 I am open to suggestions and collaboration. I'm hoping to apply this to drones and robotics (currently 3D printing a robot arm with a camera). I also plan to explore its ability to encode visual information for a VLM.
 
