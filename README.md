@@ -95,6 +95,14 @@ Everything ran on a single **NVIDIA DGX Spark** with Ollama serving models local
 | **STL-10** | 10 | 96×96 | **71.7%** | 0.21M | Only 5K training samples |
 | **ImageNet-100** | 100 | 224×224 | **60.8%** | 0.54M | |
 
+### Video Classification (V6.2 Temporal)
+
+| Dataset | Classes | Resolution | Accuracy | Params | Notes |
+|---------|---------|------------|----------|--------|-------|
+| **UCF-101** | 101 | 112×112 | **77%** | 0.58M | 8-frame temporal M-pathway, from scratch |
+
+V6.2 adds a **sequential temporal M-pathway** — the M stream processes 8 consecutive frames and computes inter-frame deltas for motion detection, while P sees only the current frame for spatial detail. K gates both. This mirrors the biological role of magnocellular neurons in motion processing.
+
 ### Edge Deployment
 
 | Device | Model | Size | FPS | Accuracy |
