@@ -1,14 +1,14 @@
 <h1 align="center">MPKNet V6</h1>
 
 <p align="center">
-  <strong>A brain-inspired vision model — researched, designed, and coded with Ollama on an NVIDIA DGX Spark</strong>
+  <strong>Bio-inspired vision that runs on a Raspberry Pi</strong>
 </p>
 
 <p align="center">
-  <a href="#built-with-ollama">Built with Ollama</a> •
   <a href="#benchmarks">Benchmarks</a> •
   <a href="#architecture">Architecture</a> •
   <a href="#quick-start">Quick Start</a> •
+  <a href="#built-with-ollama">Built with Ollama</a> •
   <a href="#license--commercial-use">License</a>
 </p>
 
@@ -17,26 +17,6 @@
 </p>
 
 ---
-
-## Built with Ollama
-
-MPKNet V6 was built entirely using **local LLMs served by Ollama** on an **NVIDIA DGX Spark** (Grace Blackwell, 128GB unified memory). No cloud APIs. No data leaving the machine. No proprietary research leaking to third-party servers. Just Ollama making it dead simple to run capable models locally from day one of Spark support.
-
-**Why local matters:** Every architecture idea, every code iteration, every training result discussion stayed on-device. Running locally with Ollama meant I could iterate freely without sending unpublished research to cloud providers. I kept my entire development process private without sacrificing the quality of AI assistance.
-
-**Models used:** Primarily **Qwen3 32B MoE** for architecture brainstorming, **MiniMax** and **Kimi** when deeper reasoning was needed, and currently testing **[GLM-4.7-Flash](https://ollama.com/library/glm-4.7-flash)** (30B MoE, 16-bit) for agentic workflows — plus several others as the project evolved. Ollama made switching between models trivial — `ollama run` and go.
-
-**What Ollama enabled:**
-
-- **Architecture research** — Spitballing ideas with Qwen3 about mammalian visual neuroscience (LGN pathways, koniocellular gating, Fibonacci spatial frequency tuning) and iterating on how to translate biology into CNN design
-- **Code development** — Writing and debugging PyTorch implementations of parallel M/P/K pathways, cross-stream gating mechanisms, retinal preprocessing layers, and training pipelines
-- **Rapid iteration** — Swapping between models for different tasks (reasoning about architecture tradeoffs, generating code, reviewing training results) without network latency or API rate limits. The 128GB unified memory on Spark meant even 32B+ models ran comfortably alongside training jobs
-
-**Why it matters:** Most Ollama showcases are chatbots or RAG pipelines. I used local LLMs to produce a **novel neural network architecture** — a 76KB vision model that runs on a Raspberry Pi at 33 FPS. The entire research-to-code pipeline ran locally on a single DGX Spark.
-
----
-
-## The Result
 
 MPKNet V6 implements the **parallel visual pathways** found in mammalian brains. Instead of stacking more layers, it asks: what if *how* information flows matters more than parameter count?
 
@@ -51,35 +31,7 @@ MPKNet V6 implements the **parallel visual pathways** found in mammalian brains.
 
 **161× fewer parameters** than MobileNetV3-S. Train in an hour, not a week. Deploy on a $35 Raspberry Pi, not a cloud GPU.
 
-**V6 is not about beating SOTA.** It's about *competitive accuracy at a fraction of the cost* — and proving what you can build when AI runs locally.
-
----
-
-## Development Workflow
-
-Everything ran on a single **NVIDIA DGX Spark** with Ollama serving models locally.
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    DGX Spark (GB10)                      │
-│                 128GB Unified Memory                     │
-│                                                         │
-│  ┌──────────────┐    ┌──────────────────────────────┐   │
-│  │    Ollama     │    │       PyTorch Training        │   │
-│  │              │    │                              │   │
-│  │  Research &   │───>│  MPKNet V6 Architecture       │   │
-│  │  Code Gen     │    │  Training Pipelines           │   │
-│  │  Debugging    │    │  Benchmarking                 │   │
-│  └──────────────┘    └──────────────────────────────┘   │
-│         │                         │                      │
-│         v                         v                      │
-│  Architecture ideas         Trained models               │
-│  Code iterations            Benchmark results            │
-│  Bug fixes                  76KB → Raspberry Pi          │
-└─────────────────────────────────────────────────────────┘
-```
-
-**The loop:** Ask Ollama about neuroscience → translate insight into PyTorch → train on Spark → analyze results with Ollama → iterate. No cloud dependency at any stage.
+**V6 is not about beating SOTA.** It's about *competitive accuracy at a fraction of the cost*.
 
 ---
 
@@ -274,6 +226,16 @@ MPKNet V6 implements the **LGN stage** of mammalian vision. What I'm working on 
 - [ ] **VLM encoder** - Lightweight vision encoder for vision-language models
 - [ ] **Webcam eye tracking** - Real-time gaze estimation from eye crops
 - [ ] **Thermal glider fire detection** - 3D-printed gliders for wildfire monitoring
+
+---
+
+## Built with Ollama
+
+I built MPKNet entirely using **local LLMs served by [Ollama](https://ollama.com)** on an **NVIDIA DGX Spark** (Grace Blackwell, 128GB unified memory). No cloud APIs — every idea, iteration, and result stayed on-device.
+
+**Models used:** Primarily **Qwen3 32B MoE** for architecture brainstorming, **MiniMax** and **Kimi** for deeper reasoning, and currently testing **[GLM-4.7-Flash](https://ollama.com/library/glm-4.7-flash)** (30B MoE, 16-bit) for agentic workflows. Ollama made switching between models trivial — `ollama run` and go. The Spark's 128GB unified memory meant 32B+ models ran comfortably alongside active training jobs.
+
+Ollama helped with research (neuroscience → architecture ideas), code (PyTorch implementations), and analysis (interpreting training results). The whole research-to-deployment pipeline ran locally on a single machine.
 
 ---
 
