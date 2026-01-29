@@ -22,7 +22,7 @@
 
 MPKNet V6 was built entirely using **local LLMs served by Ollama** on an **NVIDIA DGX Spark** (Grace Blackwell, 128GB unified memory). No cloud APIs. No data leaving the machine. No proprietary research leaking to third-party servers. Just Ollama making it dead simple to run capable models locally from day one of Spark support.
 
-**Why local matters:** This project involves a **patent-pending architecture** (US 63/950,391). Every architecture idea, every code iteration, every training result discussion stayed on-device. Ollama made it possible to get full LLM-assisted development without exposing unpublished IP to cloud providers — critical when you're building something novel enough to patent. I kept my entire research process private without sacrificing the quality of AI assistance.
+**Why local matters:** Every architecture idea, every code iteration, every training result discussion stayed on-device. Running locally with Ollama meant I could iterate freely without sending unpublished research to cloud providers. I kept my entire development process private without sacrificing the quality of AI assistance.
 
 **Models used:** Primarily **Qwen3 32B MoE** for architecture brainstorming, **MiniMax** and **Kimi** when deeper reasoning was needed, and currently testing **[GLM-4.7-Flash](https://ollama.com/library/glm-4.7-flash)** (30B MoE, 16-bit) for agentic workflows — plus several others as the project evolved. Ollama made switching between models trivial — `ollama run` and go.
 
@@ -32,7 +32,7 @@ MPKNet V6 was built entirely using **local LLMs served by Ollama** on an **NVIDI
 - **Code development** — Writing and debugging PyTorch implementations of parallel M/P/K pathways, cross-stream gating mechanisms, retinal preprocessing layers, and training pipelines
 - **Rapid iteration** — Swapping between models for different tasks (reasoning about architecture tradeoffs, generating code, reviewing training results) without network latency or API rate limits. The 128GB unified memory on Spark meant even 32B+ models ran comfortably alongside training jobs
 
-**Why it matters:** Most Ollama showcases are chatbots or RAG pipelines. I used local LLMs to produce a **novel, patented neural network architecture** — a 76KB vision model that runs on a Raspberry Pi at 33 FPS. The entire research-to-code pipeline ran locally on a single DGX Spark.
+**Why it matters:** Most Ollama showcases are chatbots or RAG pipelines. I used local LLMs to produce a **novel neural network architecture** — a 76KB vision model that runs on a Raspberry Pi at 33 FPS. The entire research-to-code pipeline ran locally on a single DGX Spark.
 
 ---
 
