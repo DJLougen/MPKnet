@@ -30,9 +30,10 @@ Thumbs.db
 *.log
 
 # ============================================
-# PRIVATE FOLDER - All unreleased content
+# PRIVATE / WIP - All unreleased content
 # ============================================
 private/
+paper/
 
 # Private figures
 figures/binocular_mpknet_v2_architecture.png
