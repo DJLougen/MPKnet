@@ -20,9 +20,11 @@
 
 ## Built with Ollama
 
-MPKNet V6 was built entirely using **local LLMs served by Ollama** on an **NVIDIA DGX Spark** (Grace Blackwell, 128GB unified memory). No cloud APIs. No data leaving the machine. Just Ollama making it dead simple to run capable models locally from day one of Spark support.
+MPKNet V6 was built entirely using **local LLMs served by Ollama** on an **NVIDIA DGX Spark** (Grace Blackwell, 128GB unified memory). No cloud APIs. No data leaving the machine. No proprietary research leaking to third-party servers. Just Ollama making it dead simple to run capable models locally from day one of Spark support.
 
-**Models used:** Primarily **Qwen3 32B MoE** for architecture brainstorming, **MiniMax** and **Kimi** when deeper reasoning was needed, and currently testing **GLM-4 9B Flash (16-bit)** for agentic workflows — plus several others as the project evolved. Ollama made switching between models trivial — `ollama run` and go.
+**Why local matters:** This project involves a **patent-pending architecture** (US 63/950,391). Every architecture idea, every code iteration, every training result discussion stayed on-device. Ollama made it possible to get full LLM-assisted development without exposing unpublished IP to cloud providers — critical when you're building something novel enough to patent. I kept my entire research process private without sacrificing the quality of AI assistance.
+
+**Models used:** Primarily **Qwen3 32B MoE** for architecture brainstorming, **MiniMax** and **Kimi** when deeper reasoning was needed, and currently testing **[GLM-4.7-Flash](https://ollama.com/library/glm-4.7-flash)** (30B MoE, 16-bit) for agentic workflows — plus several others as the project evolved. Ollama made switching between models trivial — `ollama run` and go.
 
 **What Ollama enabled:**
 
@@ -30,7 +32,7 @@ MPKNet V6 was built entirely using **local LLMs served by Ollama** on an **NVIDI
 - **Code development** — Writing and debugging PyTorch implementations of parallel M/P/K pathways, cross-stream gating mechanisms, retinal preprocessing layers, and training pipelines
 - **Rapid iteration** — Swapping between models for different tasks (reasoning about architecture tradeoffs, generating code, reviewing training results) without network latency or API rate limits. The 128GB unified memory on Spark meant even 32B+ models ran comfortably alongside training jobs
 
-**Why it matters:** Most Ollama showcases are chatbots or RAG pipelines. This project used local LLMs to produce a **novel, patented neural network architecture** — a 76KB vision model that runs on a Raspberry Pi at 33 FPS. The entire research-to-code pipeline ran locally on a single DGX Spark.
+**Why it matters:** Most Ollama showcases are chatbots or RAG pipelines. I used local LLMs to produce a **novel, patented neural network architecture** — a 76KB vision model that runs on a Raspberry Pi at 33 FPS. The entire research-to-code pipeline ran locally on a single DGX Spark.
 
 ---
 
@@ -45,7 +47,7 @@ MPKNet V6 implements the **parallel visual pathways** found in mammalian brains.
 | FPS (RPi5) | 5-8 | — | **33** |
 | Accuracy (Kvasir) | ~92%* | **89%** | **82%** |
 
-*MobileNetV3-S accuracy from published benchmarks (not our evaluation). V6/V6-Pi measured on Kvasir-v2 val set (1600 samples). Direct comparison requires same-dataset evaluation with identical training protocol.*
+*MobileNetV3-S accuracy from published benchmarks (not my evaluation). V6/V6-Pi measured on Kvasir-v2 val set (1600 samples). Direct comparison requires same-dataset evaluation with identical training protocol.*
 
 **161× fewer parameters** than MobileNetV3-S. Train in an hour, not a week. Deploy on a $35 Raspberry Pi, not a cloud GPU.
 
@@ -175,7 +177,7 @@ MPKNet models the **Lateral Geniculate Nucleus (LGN)** - the relay station betwe
 
 Biology processes vision with **20 watts**. One hypothesis: efficiency comes from the *wiring diagram*, not raw neuron count.
 
-MPKNet borrows this principle: restrict **where** multiplication happens. M and P process in parallel streams before fusion. K modulates both. The math is standard convolutions. The connectivity pattern is inspired by biology.
+MPKNet borrows this principle: I restrict **where** multiplication happens. M and P process in parallel streams before fusion. K modulates both. The math is standard convolutions. The connectivity pattern is inspired by biology.
 
 > *"It's what you multiply and where you multiply."*
 
@@ -189,7 +191,7 @@ Pathway ablations currently running across a variety of datasets. Results forthc
 
 ## Interpretable Failures
 
-**Method:** Evaluated V6-Pi on Kvasir-v2 validation set (1600 samples), tracked all misclassifications with confidence scores.
+**Method:** I evaluated V6-Pi on Kvasir-v2 validation set (1600 samples), tracking all misclassifications with confidence scores.
 
 **Key finding:** 63% of errors (183/292) cluster in just two bidirectional pairs.
 
@@ -246,19 +248,7 @@ Pathway ablations currently running across a variety of datasets. Results forthc
 
 ## Roadmap
 
-MPKNet V6 implements the **LGN stage** of mammalian vision. Future work:
-
-### V6.1: Efficiency + Accuracy Improvements
-
-**Free accuracy (no parameter increase):**
-- [ ] **Reparameterization** - MobileOne-style multi-branch training, fused to single conv at deploy (+2-4pt)
-- [ ] **Training recipe** - AdamW, 300 epochs, EMA, stochastic depth (+3-6pt)
-- [ ] **Knowledge distillation** - Train V6 to match EfficientNet-B4 soft labels (+5-10pt)
-
-**Minimal parameter increase:**
-- [ ] **Deeper P pathway** - 6 layers vs 4 (P carries 80% of info biologically) (+2-4pt, +15% params)
-- [ ] **Richer K-gating** - Two-layer MLP instead of Linear→Sigmoid (+1-2pt, +5K params)
-- [ ] **Improved V1 fusion** - Learnable pathway weighting before concat (+1-2pt, +1K params)
+MPKNet V6 implements the **LGN stage** of mammalian vision. What I'm working on next:
 
 **Biological extensions:**
 - [ ] **Surround suppression** - V1-like center-surround for better edge discrimination
@@ -268,7 +258,7 @@ MPKNet V6 implements the **LGN stage** of mammalian vision. Future work:
 - [ ] **RGC layer** - Midget/Parasol/Bistratified cells feeding M/P/K pathways
 - [ ] **Retinotectal pathway** - Superior colliculus for saccades
 - [ ] **V1 orientation columns** - Edge detection specialization
-- [ ] **Thalamo-cortical loops** - Exploring whether attention-like behavior emerges from architecture
+- [ ] **Thalamo-cortical loops** - Exploring whether attention-like behavior emerges from architecture alone
 
 ### Applications
 - [ ] **Detection head** - YOLO-style head using M/P as multi-scale FPN
@@ -307,7 +297,7 @@ Patent pending: US 63/950,391
 | Non-profits & NGOs | Free |
 | Educational institutions | Free |
 | Low-income region deployment | Free |
-| Commercial (>$100K revenue) | [Contact us](mailto:d.lougen@mail.utoronto.ca) |
+| Commercial (>$100K revenue) | [Contact me](mailto:d.lougen@mail.utoronto.ca) |
 
 ### Why This License?
 
