@@ -1,345 +1,283 @@
-# MPKNet: A LGN-Inspired Architecture for Efficient Visual Processing
+<h1 align="center">MPKNet V6</h1>
 
-**MPKNet** is a bio-inspired convolutional neural network that models the Magnocellular (M), Parvocellular (P), and Koniocellular (K) pathways of the Lateral Geniculate Nucleus (LGN), based on cross-species evolutionary priors observed in mammals from tree shrews to primates.
+<p align="center">
+  <strong>A brain-inspired vision model — researched, designed, and coded with Ollama on an NVIDIA DGX Spark</strong>
+</p>
 
----
-> Contact: [djlougen.github.io](https://djlougen.github.io/PersonalWebsite/) or d.lougen@mail.utoronto.ca
----
+<p align="center">
+  <a href="#built-with-ollama">Built with Ollama</a> •
+  <a href="#benchmarks">Benchmarks</a> •
+  <a href="#architecture">Architecture</a> •
+  <a href="#quick-start">Quick Start</a> •
+  <a href="#license--commercial-use">License</a>
+</p>
 
-## Efficiency Highlight
-
-### Kvasir-v2 (Medical Endoscopy, 8 classes)
-
-| Model | Params | Accuracy | Acc/Param | Notes |
-|-------|--------|----------|-----------|-------|
-| **MPKx** | **0.21M** | **89.2%** | **425** | No pretraining, no augmentation |
-| MPKNet (binocular) | 0.14M | 84.1% | 601 | No pretraining, no augmentation |
-| Swin Transformer | 0.40M | 74.5% | 186 | - |
-| ConvMixer | 0.59M | 92.5% | 157 | - |
-| Vanilla ViT | 0.77M | 79.5% | 103 | - |
-| SqueezeNet | 1.25M | 85.6% | 68 | - |
-| MobileNetV3-Small | 2.5M | 92.5% | 37 | - |
-| DenseNet201 | 19.2M | 94.5% | 5 | - |
-
-### MPKx (V4)
-
-Architectural revision based on insights from V1-V3 experiments.
-
-| Dataset | Params | FLOPS | Test Acc | Acc/Param | Train/Test Gap | Notes |
-|---------|--------|-------|----------|-----------|----------------|-------|
-| TinyImageNet | 0.21M | ~142M | 40.6% | 193 | 3.5% | 200 classes, 64x64, no aug |
-| CIFAR-100 | 0.22M | 281M | 58.8% | 267 | 11% | |
-| Kvasir | 0.21M | ~280M | 89.2% | 425 | 8% | |
-| STL-10 | 0.21M | ~280M | 71.7% | 341 | 12% | |
-
-![MPKx Test Accuracy](figures/v4_training_curves.png)
-
-**TinyImageNet comparison** (200 classes, 64x64):
-
-| Model | Params | Test Acc | Acc/Param | Notes |
-|-------|--------|----------|-----------|-------|
-| **MPKx** | **0.21M** | **40.6%** | **193** | No augmentation, 100 epochs |
-| MPKx (with aug) | 0.21M | 24.1% | 115 | Augmentation hurts performance |
-| ResNet18 | 11M | 41.5% | 3.8 | 52× more params |
-| MobileNetV2 | 3.4M | 33.1% | 9.7 | 16× more params |
-| EfficientNet | - | 36.9% | - | |
-
-*MPKx matches ResNet18 accuracy with 52× fewer parameters on TinyImageNet-200. Accidentally ran with augmentation on - dropped to 24%, reinforcing that augmentation interferes with the model's intrinsic invariances.*
-
-![TinyImageNet Training Curves](figures/tinyimagenet_training_curves.png)
-
-*The train/test gap stays tight (~3.4%) throughout training despite no augmentation. The curve shape is unusual - not sure what to make of it yet, but the model isn't overfitting much even on 200 classes.*
-
-#### Prototype-Based Retrieval (CIFAR-100)
-
-MPKx embeddings support nearest-prototype classification without retraining:
-
-| Evaluation | Prototype Acc | Linear Acc |
-|------------|---------------|------------|
-| Train (held-out 20%) | 71.2% | 88.7% |
-| Test set | 49.8% | 55.8% |
-
-*Held-out 20%: Train on 80% of training set, build class prototypes from that 80%, evaluate on remaining 20% of training set.*
-
-The 71% prototype accuracy shows MPKx learns retrieval-ready embeddings - no retraining needed, just compute class centroids and do nearest-neighbor lookup. Useful for few-shot learning and image search.
-
-### MPKx Summary
-
-| Metric | Value |
-|--------|-------|
-| Parameters | 0.21-0.22M |
-| Model size | 0.89MB |
-| Embedding size | 96 floats (384 bytes) |
-| FLOPs | ~142-280M (task dependent) |
-
-**The efficiency story**: MPKx achieves 89.2% on Kvasir with 0.21M parameters, within 3.3 points of ConvMixer (92.5%) at 3× fewer parameters. On TinyImageNet-200, it matches ResNet18 (41.5%) with 52× fewer parameters and beats MobileNetV2 by 7+ points. The 96-float embeddings are 5-20× more compact than CLIP/ResNet (512-2048 floats). For resource-constrained applications (edge devices, real-time medical imaging, VLM vision encoders), this trade-off matters.
+<p align="center">
+  <code>76KB</code> model • <code>33 FPS</code> on RPi5 • <code>89%</code> Kvasir-v2 • <code>No pretraining</code> • <code>No augmentation</code> • <code>161× fewer params than MobileNetV3</code>
+</p>
 
 ---
 
-## Motivation
+## Built with Ollama
 
-**The core hypothesis.** Performance comes from having the right regions doing the right things, and to quote Radiohead "Everything in its right place". Not from parameter count or training tricks. Biology solved vision with 20 watts because the structure itself does work.
+MPKNet V6 was built entirely using **local LLMs served by Ollama** on an **NVIDIA DGX Spark** (Grace Blackwell, 128GB unified memory). No cloud APIs. No data leaving the machine. Just Ollama making it dead simple to run capable models locally from day one of Spark support.
 
-Most "bio-inspired" approaches borrow surface-level features (Gabor filters and such) without modeling the fundamental parallel-stream architecture that evolution has conserved across mammals for 200 million years. MPKNet takes a different approach. It directly implements the laminar organization of the LGN as observed in humans and [tree shrews](https://pubmed.ncbi.nlm.nih.gov/40550685/) and macaques.
+**Models used:** Primarily **Qwen3 32B MoE** for architecture brainstorming, **MiniMax** and **Kimi** when deeper reasoning was needed, and currently testing **GLM-4 9B Flash (16-bit)** for agentic workflows — plus several others as the project evolved. Ollama made switching between models trivial — `ollama run` and go.
 
-The question is **does having the right areas exist and connected in the right way cause useful behaviors to emerge without being explicitly programmed?**
+**What Ollama enabled:**
 
-This project was largely inspired by [Yamins et al. (2014)](https://www.pnas.org/doi/10.1073/pnas.1403112111) on performance-optimized hierarchical models and grew out of my PhD research on the LGN at the University of Toronto.
+- **Architecture research** — Spitballing ideas with Qwen3 about mammalian visual neuroscience (LGN pathways, koniocellular gating, Fibonacci spatial frequency tuning) and iterating on how to translate biology into CNN design
+- **Code development** — Writing and debugging PyTorch implementations of parallel M/P/K pathways, cross-stream gating mechanisms, retinal preprocessing layers, and training pipelines
+- **Rapid iteration** — Swapping between models for different tasks (reasoning about architecture tradeoffs, generating code, reviewing training results) without network latency or API rate limits. The 128GB unified memory on Spark meant even 32B+ models ran comfortably alongside training jobs
 
-### The Longer Vision
+**Why it matters:** Most Ollama showcases are chatbots or RAG pipelines. This project used local LLMs to produce a **novel, patented neural network architecture** — a 76KB vision model that runs on a Raspberry Pi at 33 FPS. The entire research-to-code pipeline ran locally on a single DGX Spark.
 
-The current MPKNet is just the LGN stage, it can be thought of as a early preprocessing before the primary visual cortex.  
+---
 
-The current roadmap is:
+## The Result
 
-1. **LGN** (current). M/P/K parallel pathways ✓
-2. **Retinotectal pathway**. 
-3. **V1**. Orientation columns
-4. **Full thalamo-cortical loops**. Testing whether attention emerges from architecture
+MPKNet V6 implements the **parallel visual pathways** found in mammalian brains. Instead of stacking more layers, it asks: what if *how* information flows matters more than parameter count?
 
-The hypothesis is that **attention isn't the result of on set of cells or regions. It instead emerges from having the right areas connected the right way.** Transformers need attention modules because they're missing the architecture that would generate it naturally.
+| | MobileNetV3-S | **MPKNet V6** | **MPKNet V6-Pi** |
+|---|---------------|---------------|------------------|
+| Parameters | 2.5M | **0.21M** | **15.5K** |
+| Model size | 10MB | **0.89MB** | **76KB** |
+| FPS (RPi5) | 5-8 | — | **33** |
+| Accuracy (Kvasir) | ~92%* | **89%** | **82%** |
 
-### Compute Democratization
+*MobileNetV3-S accuracy from published benchmarks (not our evaluation). V6/V6-Pi measured on Kvasir-v2 val set (1600 samples). Direct comparison requires same-dataset evaluation with identical training protocol.*
 
-This project was developed during summer 2025 in my free time at home, using my own hardware (not university resources). All experiments ran on a DGX Spark or a MacBook M3 Max.
+**161× fewer parameters** than MobileNetV3-S. Train in an hour, not a week. Deploy on a $35 Raspberry Pi, not a cloud GPU.
 
-Two motivations drove the efficiency focus:
+**V6 is not about beating SOTA.** It's about *competitive accuracy at a fraction of the cost* — and proving what you can build when AI runs locally.
 
-1. **Accessibility**: Making vision research possible on hardware affordable to more labs, without requiring compute cluster access.
+---
 
-2. **Sustainability**: Scaling is a dead end and a massive power drain. Models that can be trained and run on local hardware offer privacy, lower energy costs, and independence from cloud infrastructure. If the architecture is right, you should not need a data center.
+## Development Workflow
 
-I am open to suggestions and collaboration. I'm hoping to apply this to drones and robotics (currently 3D printing a robot arm with a camera). I also plan to explore its ability to encode visual information for a VLM.
+Everything ran on a single **NVIDIA DGX Spark** with Ollama serving models locally.
 
-I recognize that computers are not brains, but I'm also a wittgensteinian so I do get pedantic about semantics... I think it could argued that both are a *computer*, the difference lies in the medium/means with which it is accomplished. I also felt like this was a cool and compelling way to learn torch/AI while working on my PhD.
+```
+┌─────────────────────────────────────────────────────────┐
+│                    DGX Spark (GB10)                      │
+│                 128GB Unified Memory                     │
+│                                                         │
+│  ┌──────────────┐    ┌──────────────────────────────┐   │
+│  │    Ollama     │    │       PyTorch Training        │   │
+│  │              │    │                              │   │
+│  │  Research &   │───>│  MPKNet V6 Architecture       │   │
+│  │  Code Gen     │    │  Training Pipelines           │   │
+│  │  Debugging    │    │  Benchmarking                 │   │
+│  └──────────────┘    └──────────────────────────────┘   │
+│         │                         │                      │
+│         v                         v                      │
+│  Architecture ideas         Trained models               │
+│  Code iterations            Benchmark results            │
+│  Bug fixes                  76KB → Raspberry Pi          │
+└─────────────────────────────────────────────────────────┘
+```
 
+**The loop:** Ask Ollama about neuroscience → translate insight into PyTorch → train on Spark → analyze results with Ollama → iterate. No cloud dependency at any stage.
 
-## Key Ideas
+---
 
-For a thorough explanation of the LGN and its pathways, see [Solomon (2021)](https://pubmed.ncbi.nlm.nih.gov/33832683/).
+## Benchmarks
 
-1. **Parallel Visual Streams**: Like the biological LGN, MPKNet processes visual information through two specialist pathways modulated by a third grouping of cells:
-   - **Magno (M)**: Large receptive fields, fast temporal processing, global "gist"
-   - **Parvo (P)**: Small receptive fields, high spatial acuity, fine detail
-   - **Konio (K)**: Context relay and cross-stream modulation
+### Image Classification
 
-2. **CellPop Retinal Sampling**: Structured downsampling using `pixel_unshuffle` to model retinal ganglion cell population responses
+| Dataset | Classes | Resolution | Accuracy | Params | Notes |
+|---------|---------|------------|----------|--------|-------|
+| **Kvasir-v2** | 8 | 224×224 | **89%** | 0.21M | Medical endoscopy (research only) |
+| **TinyImageNet** | 200 | 64×64 | **40.6%** | 0.21M | ResNet18 gets ~41.5% with 52× more params |
+| **CIFAR-100** | 100 | 32×32 | **58.8%** | 0.22M | |
+| **STL-10** | 10 | 96×96 | **71.7%** | 0.21M | Only 5K training samples |
+| **ImageNet-100** | 100 | 224×224 | **60.8%** | 0.54M | |
 
-3. **Konio Gating**: The K-pathway generates channel attention to modulate the importance of the P and M streams, acting as a context-aware relay (novel architectural contribution)
+### Edge Deployment
 
-4. **Evolutionary Priors**: Kernel sizes and strides chosen to reflect biological receptive field properties across species
+| Device | Model | Size | FPS | Accuracy |
+|--------|-------|------|-----|----------|
+| Raspberry Pi 5 (no heatsink) | V6-Pi | 76KB | 33 | 82% |
+| MacBook M3 | V6 | 0.89MB | 200+ | 89% |
 
-5. **Late Pooling**: Pooling is deferred until the final GAP layer. This preserves spatial noise throughout the network. The hypothesis is that "what is not" (negative space, noise patterns) may carry information that aids discrimination, similar to how biological systems may use absence of signal as informative.
+### Finding: Augmentation Hurts at Small Scales
 
-6. **Task Agnostic**: The goal is for the model architecture to remain unchanged regardless of task. Just like biological visual systems, you don't modify the structure, you simply give it a task and it learns.
+| Dataset | No Augmentation | With Augmentation | Change |
+|---------|-----------------|-------------------|--------|
+| CIFAR-100 (32×32) | **52.8%** | 46.0% | -6.8% |
+| TinyImageNet (64×64) | **40.6%** | 24.1% | -16.5% |
+| ImageNet-100 (224×224) | 60.8% | ~62% | +1-2% |
 
-### The Core Insight
+This is consistent with NetAug (Cai et al., 2022), which showed regularization hurts tiny models that underfit rather than overfit. At small resolutions, the Fibonacci stride architecture provides sufficient multi-scale coverage that augmentation becomes redundant noise. At 224×224, mild augmentation helps marginally.
 
-In a standard neural network, every neuron can multiply with every other neuron in the next layer. MPKNet restricts *where* the multiplying happens: M only talks to M, P only talks to P, K modulates but doesn't mix features. The math is the same; the wiring diagram is different.
-
-The claim is that the *pattern* of who multiplies with whom encodes something useful. Biology figured out that keeping M separate from P until later produces better representations. Late fusion isn't just "where": its "where" from the lens of a specialist stream. MPKNet seeks to recreate that information routing in the torch software.
-
-*Its what you multiply and where you multiply.* That's the whole architecture. And yes, "what" and "where" aren't accidental words; The P pathway feeds the ventral "what" stream; the M pathway feeds the dorsal "where" stream, the architecture recapitulates the biology down to the semantics.
-
-## Architecture
-
-![MPKNet Architecture](figures/mpknet_architecture.png)
-
-### Binocular MPKNet
-
-![Binocular MPKNet Architecture](figures/binocular_mpknet_architecture.png)
-
-The binocular variant models the eye-specific organization of the LGN:
-
-- **Ocular dominance**: LGN layers are eye-specific (layers 1,4,6 receive contralateral input; 2,3,5 ipsilateral). BinocularMPKNet implements this with channels assigned to left/right eye processing, with graded mixing from purely monocular to fully binocular.
-- **Stereo disparity**: Simulates the slight positional difference between two eyes via horizontal shifts, providing depth cues even from single images during training.
-- **Separate preprocessing**: Each eye gets its own center-surround filtering before pathway processing.
-
-The binocular architecture achieves comparable or better results with fewer parameters (0.14M vs 0.26M for base MPKNet) while adding biological plausibility.
+---
 
 ## Quick Start
 
 ```python
-from mpkSGD_kgate import MPKNet
-
-# Create model (CIFAR-10 example)
-model = MPKNet(num_classes=10, ch=48)
-print(f"Parameters: {sum(p.numel() for p in model.parameters()):,}")
-# Output: Parameters: 259,027
-
-# Forward pass
 import torch
-x = torch.randn(1, 3, 32, 32)
-out = model(x)  # [1, 10]
-```
+from MPKx import MPKNetV6
 
-```python
-from binocular_mpknet import BinocularMPKNet
-
-# Create binocular model (STL-10 example)
-model = BinocularMPKNet(num_classes=10, ch=48, use_stereo=True)
+# Create model
+model = MPKNetV6(num_classes=8)  # e.g., Kvasir-v2
 print(f"Parameters: {sum(p.numel() for p in model.parameters()):,}")
-# Output: Parameters: ~140,000
+# Output: Parameters: 210,000
 
-# Forward pass (stereo views generated internally)
-x = torch.randn(1, 3, 96, 96)
-out = model(x)  # [1, 10]
+# Inference
+x = torch.randn(1, 3, 224, 224)
+out = model(x)  # [1, 8]
 ```
 
-The architecture automatically:
-- Splits input into M (luminance/gist) and P (detail) streams via center-surround filtering
-- Processes each through pathway-specific conv layers
-- Uses K-pathway to generate attention gates for M and P
-- Fuses streams for final classification
+### Training
 
-## Results
+```bash
+# Clone and install
+git clone https://github.com/DJLougen/MPKnet.git
+cd MPKnet
+pip install -r requirements.txt
 
-### CIFAR-10 (From Scratch, No Pretraining)
-
-| Model | Params | Val Acc (no aug) | Val Acc (aug) | DFA | Train Acc |
-|-------|--------|------------------|---------------|-----|-----------|
-| MPKNet + CellPop | 0.54M | 79.5% | 81.1% | 0.52 | ~95% |
-| Baseline CNN | 0.55M | 84.6% | - | - | 100% (overfits) |
-| MPKNet (binocular) | 0.14M | 83.0% | - | - | ~93% |
-
-**Preliminary Observations**:
-
-1. **Augmentation Insensitivity**: MPKNet gains only **+1.6%** from heavy augmentation (vs +8-12% typical for CNNs). This is *consistent with the hypothesis* that the parallel M/P/K pathway structure provides intrinsic invariances, though further investigation is needed.
-
-2. **Implicit Regularization**: While the baseline CNN achieves higher peak accuracy (84.6%), it memorizes the training set (100% train acc). MPKNet's biological structure *appears to act as* implicit regularization, preventing perfect memorization.
-
-3. **Fractal-like Dynamics**: The models exhibit DFA ≈ 0.52, within the biological range (0.5-0.75). Whether this reflects meaningful computational properties or is an artifact of data structure remains an open question (see Fractal Dynamics section).
-
-**Note on Evaluation**: This project explores bio-inspired design principles rather than pursuing SOTA accuracy. The value lies in understanding how biological organizational principles (parallel visual streams, cross-stream modulation) translate to computational properties in artificial systems.
-
-### STL-10 (96x96 images, 5000 train samples)
-
-| Model | Params | Accuracy | Notes |
-|-------|--------|----------|-------|
-| MPKNet (binocular) | 0.14M | 71.0% | No pretraining, no augmentation |
-
-STL-10 is a challenging dataset with only 5000 labeled training samples. The binocular model shows reasonable generalization despite the limited data.
-
-**Ablation Study** (Preliminary Results):
-
-| Ablation | Best Test Acc | Train Acc | Gap | Δ from Full |
-|----------|---------------|-----------|-----|-------------|
-| **Full model** | **71.0%** | ~85% | ~14pt | - |
-| No K-gating | 71.1% | ~80% | ~9pt | +0.1pt |
-| No M pathway | 70.0% | ~81% | ~11pt | −1.0pt |
-| No P pathway | 62.8% | ~71% | ~8pt | −8.2pt |
-
-**Interpretation**: Results support the hypothesis that pathways serve distinct functions:
-
-- **P is load-bearing** (−8.2pt): Parvocellular pathway is essential for fine spatial discrimination. Removing it severely impairs classification, consistent with P-cells' role in detail processing.
-
-- **M carries generalizable information** (−1.0pt): Magnocellular pathway contributes real signal that transfers to test data. The moderate gap suggests M provides useful global context even on static images.
-
-- **K-gating adds capacity that doesn't generalize on static images** (+0.1pt test, but +5pt train): K-gating increases training accuracy (~80% → ~85%) without improving test performance. This suggests K's modulatory role is optimized for dynamic/temporal contexts rather than static classification. The full model's larger train-test gap (14pt vs 9pt) indicates K adds capacity that overfits on frozen frames.
-
-**Biological implication**: K-cells are more relevant for slow temporal tasks (e.g., data-night cycle) where context-dependent gain control matters. Think about being in the shade in an otherwise sunny surrounding, our brains dont just assume night time. Static image benchmarks may underestimate K's contribution to real visual processing.
-
-### Channel Scaling Study (CIFAR-10)
-
-| Config | Params | Test Acc | Train Acc | Overfitting Gap |
-|--------|--------|----------|-----------|-----------------|
-| ch=24 | 0.040M | 77.7% | 82.2% | 4.5% |
-| **ch=48** | **0.14M** | **81.9%** | **88.0%** | **6.0%** |
-| ch=64 | 0.25M | 81.2% | 88.2% | 7.0% |
-
-**Finding**: ch=48 is optimal. Larger models (ch=64) show diminishing returns: more parameters, worse test accuracy, more overfitting.
-
-### Extended Training (CIFAR-10, ch=48)
-
-| Epochs | Test Acc | Train Acc | Overfitting Gap |
-|--------|----------|-----------|-----------------|
-| 100 | 81.9% | 88.0% | 6.0% |
-| **300** | **82.1%** | **97.5%** | **15.4%** |
-
-**Finding**: Extended training with SGD + cosine annealing yields modest improvement (+0.2%) but significantly increases overfitting. The 300-epoch model memorizes the training set while the architecture's implicit regularization prevents complete collapse on test data.
-
-### Comparison Context
-
-| Model | Params | CIFAR-10 | CIFAR-100 | STL-10 | TinyImageNet | Pretrained? | Augmentation |
-|-------|--------|----------|-----------|--------|--------------|-------------|--------------|
-| **MPKx** | 0.21M | - | 58.8% | 71.7% | **40.6%** | No | None |
-| **MPKNet (binocular)** | 0.14M | 83.0% | 52.8% | 71.0% | - | No | None |
-| **MPKNet (binocular)** | 0.14M | - | 46.0% | - | - | No | Heavy |
-| ResNet18 | 11M | - | - | - | 41.5% | No | Standard |
-| MobileNetV3-Small | 2.5M | 92.5% | 75.4% | - | - | No | Heavy |
-| SqueezeNet | 1.2M | 84.5% | 58.5% | - | - | Yes (ImageNet) | Standard |
-
-*Comparison numbers from [Benchmark Analysis of Deep Learning Models on CIFAR-10/100](https://arxiv.org/abs/2505.03303). Most published results use pretraining and/or heavy augmentation. MPKNet (binocular) results are from-scratch to isolate architectural contribution.*
-
-**Note on CIFAR-100 augmentation**: The heavy augmentation run (46.0%) underperforms no-augmentation (52.8%). This is *hypothesis-consistent* with MPKNet's biological structure providing intrinsic invariances, though the effect warrants further investigation across datasets.
-
-*Continuing to run on any dataset I can get - working on object detection next.*
-
-## Fractal Dynamics
-
-I learned about fractal dynamics from the [Sereno lab](https://www.nature.com/articles/s41599-020-00648-y) at the University of Oregon while doing my masters and was curious to explore it here. For a cool introduction to fractal dynamics, see the [Jackson Pollock-related paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC3124832/) on how to know if you have a real or fake pollock painting. 
-
-I measure Detrended Fluctuation Analysis (DFA) of prediction confidence traces during evaluation. DFA was introduced by [Peng et al. (1994)](https://journals.aps.org/pre/abstract/10.1103/PhysRevE.49.1685) and has since been applied extensively to neural signals. [Linkenkaer-Hansen et al. (2001)](https://pubmed.ncbi.nlm.nih.gov/11160408/) discovered long-range temporal correlations (LRTC) in EEG oscillations, and subsequent work suggests these correlations reflect [critical-state dynamics in neural networks](https://pmc.ncbi.nlm.nih.gov/articles/PMC3510427/).
-
-- **DFA ≈ 0.5**: Uncorrelated noise (no long-range structure)
-- **DFA > 0.5**: Long-range temporal correlations present
-- **Biological range**: Typically 0.75 or higher in neural systems
-
-The models consistently produce DFA ≈ 0.52, slightly above the uncorrelated baseline. But, thats all it is, slightly above baseline I mainly included this because I thought it would be cool. However, whether it means something is a whole other question. 
-
-
-**For collaboration inquiries**, please contact me via my [website](https://djlougen.github.io/PersonalWebsite/).
-
-## File Structure
-
-```
-mpknet/
-├── mpkSGD.py           # Core MPKNet architecture (public)
-├── mpkSGD_kgate.py     # MPKNet with K-gating (public)
-├── cellpop.py          # CellPop retinal sampling (public)
-├── modelData.py        # Dataset loading utilities (public)
-├── tbLogger.py         # TensorBoard logging (public)
-├── figures/            # Architecture diagrams
-├── results/            # Experiment results
-└── mpknet_binocular.py # Binocular version (public)
+# Train on your dataset
+python train.py --dataset kvasir --epochs 100
 ```
 
-## Biological Motivation
+---
 
-MPKNet's architecture is an amalgamation of tree shrew and human LGN organization. The tree shrew (*Tupaia*) LGN provides an excellent model for studying parallel visual processing due to its clearly laminated structure, with clean separation between pathway types. This inspired the parallel-stream approach. The specific layer counts are based on human LGN anatomy:
+## Architecture
 
-- **Koniocellular**: 3 layers (sparse, modulatory)
-- **Parvocellular**: 4 layers (color, detail)
-- **Magnocellular**: 2 layers (motion, global)
+MPKNet models the **Lateral Geniculate Nucleus (LGN)** - the relay station between retina and visual cortex.
 
-This architecture is conserved across mammals, suggesting evolutionary optimization for efficient visual processing.
-As for the kernels, I was choosing odd numbers as those give a center/*fovea*, however this is another area worth testing.
+<p align="center">
+  <img src="figures/mpknet_architecture.png" alt="MPKNet V6 Architecture" width="600"/>
+</p>
 
-## What This Project Deliberately Ignores
+### The Three Pathways
 
-Several biological features are intentionally omitted. The reasoning:
+| Pathway | Biological Role | Implementation | What It Captures |
+|---------|-----------------|----------------|------------------|
+| **M** (Magnocellular) | ~10% of LGN, motion, global gist | Stride 5 (coarse) | Shape, motion, layout |
+| **P** (Parvocellular) | ~80% of LGN, fine detail, color | Stride 2 (fine) | Texture, edges, color |
+| **K** (Koniocellular) | ~10% of LGN, projects to M and P | Stride 3 (intermediate) | Context-dependent gating |
 
-**Temporal dynamics / spiking**: The LGN exhibits rich temporal processing; M cells respond transiently, P cells have sustained responses. I chose to focus on the spatial/structural organization first. Adding temporal dynamics (e.g., spiking networks, LSTM-like recurrence) would complicate the architecture and I want to better understand what they do first.
+### Core Principles
 
-**Recurrent connections**: Real visual processing involves massive feedback from V1 to LGN and lateral connections within LGN. These are omitted because feedforward CNNs are better understood and easier to train. Recurrence is a natural next step but adds training complexity. I did see a paper on [HRM](https://arxiv.org/abs/2506.21734) recently and wonder if there is a reccurence mechanism needed. 
+1. **Same kernel, different stride** - All pathways use 5×5 kernels. Fibonacci strides (2:3:5) differentiate them, producing resolutions that converge toward the golden ratio.
+2. **Parallel processing** - M/P/K run independently until fusion. No cross-talk within pathways.
+3. **Late fusion only** - No pooling within pathways. Global pool only at the end.
+4. **K modulates, doesn't process** - K-pathway generates cross-stream attention gates for M and P (extends Bahdanau attention, FiLM with biological grounding).
 
-**Foveation / eccentricity**: Biological retinas have varying resolution across the visual field. This could be added via attention mechanisms or non-uniform sampling, but would require larger images than CIFAR-10's 32x32 to be meaningful.
+### What's Novel
 
-**Color opponent channels**: The P pathway in particular carries color opponent signals (red-green). The current implementation uses standard RGB. True color opponency might improve the biological fidelity of the P stream. However, I'm still uncertain whether opponency (outside of cones not passing to the M pathway making it concerned with changes in brightness) is fundamentally baked into our visual system or if it emerges as a quirk of [utility-based coding](https://www.sciencedirect.com/science/article/pii/S136466132300147X). 
+- **First Fibonacci strides in CNNs** - Derived from biological spatial frequency tuning, not empirical search
+- **First complete M/P/K implementation** - Prior work (Magno-Parvo CNN, EVNets, SlowFast) models M/P only
+- **Biologically-grounded cross-stream gating** - K→M/P gating mirrors koniocellular projections in LGN
 
-**Cortical processing (V1+)**: This model stops at LGN-level processing, the fusion layer is a crude stand-in for V1 integration. I'm currently thinking about how to do this but need to finish a K cell related paper before properly thinking about V1.
+### Why This Works
 
-**Attention / top-down modulation**: Beyond K-gating, biological vision involves attentional modulation from higher areas. This is ignored to keep the model simple and feedforward. However, I suspect attention may emerge as a result of the architectural constraints rather than needing explicit implementation. 
+Biology processes vision with **20 watts**. One hypothesis: efficiency comes from the *wiring diagram*, not raw neuron count.
 
-This occurred to me through my work on Inhibition of Return (IOR), the phenomenon where attention is slower to return to a previously attended location, measureable via reaction time ([Posner & Cohen, 1984](https://link.springer.com/chapter/10.1007/978-1-4612-4760-5_26)). Once you get into the literature it makes sense why IOR exists, but I do wonder:  why does the brain/visual system care? Something can happen, the system could acknowledge that area, then go back to not caring. But it doesn't; it acknowledges the location and decides its worth inhibiting that area. IOR isn't the result of any one group of cells or area; it's the culmination of different brain areas talking to each other.
+MPKNet borrows this principle: restrict **where** multiplication happens. M and P process in parallel streams before fusion. K modulates both. The math is standard convolutions. The connectivity pattern is inspired by biology.
 
-## Future Directions
+> *"It's what you multiply and where you multiply."*
 
-**Parallel pathway execution**: The M/P/K pathways are independent until V1 fusion, so I do wonder "could this be multi-threaded on a cpu?" I dont understand that stuff well enough, but would love to test/know. 
+---
 
-## White Paper
+## Ablation Study
 
-*Coming soon*, once I figure out how to write it!
+Pathway ablations currently running across a variety of datasets. Results forthcoming.
+
+---
+
+## Interpretable Failures
+
+**Method:** Evaluated V6-Pi on Kvasir-v2 validation set (1600 samples), tracked all misclassifications with confidence scores.
+
+**Key finding:** 63% of errors (183/292) cluster in just two bidirectional pairs.
+
+### Per-Class Accuracy
+
+| Class | Accuracy | Confusion Pattern |
+|-------|----------|-------------------|
+| esophagitis | 67.9% | → normal-z-line (58 errors) |
+| dyed-lifted-polyps | 70.4% | → dyed-resection-margins (51 errors) |
+| polyps | 76.9% | Scattered across multiple classes |
+| normal-pylorus | 99.0% | Nearly perfect |
+
+### Top Confusion Pairs (with Confidence)
+
+| True Class | → Predicted | Count | Mean Conf | Range |
+|------------|-------------|-------|-----------|-------|
+| esophagitis | → normal-z-line | 58 | 68% | 50-94% |
+| dyed-lifted-polyps | → dyed-resection-margins | 51 | 69% | 34-97% |
+| dyed-resection-margins | → dyed-lifted-polyps | 40 | 60% | 30-96% |
+| normal-z-line | → esophagitis | 34 | 61% | 48-81% |
+
+**What it means:** The discriminative signal between these pairs is weak enough that errors concentrate here. External context (patient history, procedure timeline, endoscope position) would help, but is unavailable to any vision-only system.
+
+### Failure Categories
+
+| Type | Count | % of Failures | Meaning |
+|------|-------|---------------|---------|
+| **Confident failures** (≥80% conf) | 44 | 15% | Model is wrong but sure — miscalibrated |
+| **Ambiguous failures** (<50% conf) | 22 | 8% | Model knows it doesn't know — honest |
+| **Close calls** (<15% margin) | 69 | 24% | True class almost won — fixable |
+
+### Semantic Group Confusion
+
+| Direction | Errors | Clinical Impact |
+|-----------|--------|-----------------|
+| pathology to normal | 66 | **Missed disease** |
+| normal to pathology | 39 | False alarm |
+| polyp to procedure | 52 | Dye similarity |
+| procedure to polyp | 42 | Dye similarity |
+
+### Clinical Limitations
+
+**This model is a research prototype, not a clinical tool.**
+
+| Metric | V6-Pi Result | Clinical Requirement |
+|--------|--------------|----------------------|
+| Polyp sensitivity | ~75% | >=95% for screening |
+| Pathology to Normal errors | 66 cases | Near zero |
+| Confident false negatives | 44 @ 88% conf | Unacceptable |
+
+**Why it's interpretable:** Failures cluster in predictable, explainable pairs rather than scattering randomly across 8 classes. You know *which* cases need human review and *why* the model failed.
+
+---
+
+## Roadmap
+
+MPKNet V6 implements the **LGN stage** of mammalian vision. Future work:
+
+### V6.1: Efficiency + Accuracy Improvements
+
+**Free accuracy (no parameter increase):**
+- [ ] **Reparameterization** - MobileOne-style multi-branch training, fused to single conv at deploy (+2-4pt)
+- [ ] **Training recipe** - AdamW, 300 epochs, EMA, stochastic depth (+3-6pt)
+- [ ] **Knowledge distillation** - Train V6 to match EfficientNet-B4 soft labels (+5-10pt)
+
+**Minimal parameter increase:**
+- [ ] **Deeper P pathway** - 6 layers vs 4 (P carries 80% of info biologically) (+2-4pt, +15% params)
+- [ ] **Richer K-gating** - Two-layer MLP instead of Linear→Sigmoid (+1-2pt, +5K params)
+- [ ] **Improved V1 fusion** - Learnable pathway weighting before concat (+1-2pt, +1K params)
+
+**Biological extensions:**
+- [ ] **Surround suppression** - V1-like center-surround for better edge discrimination
+- [ ] **Temporal M pathway** - 3D convolutions in M pathway for video (matches M-cell motion sensitivity)
+
+### Biological Extensions
+- [ ] **RGC layer** - Midget/Parasol/Bistratified cells feeding M/P/K pathways
+- [ ] **Retinotectal pathway** - Superior colliculus for saccades
+- [ ] **V1 orientation columns** - Edge detection specialization
+- [ ] **Thalamo-cortical loops** - Exploring whether attention-like behavior emerges from architecture
+
+### Applications
+- [ ] **Detection head** - YOLO-style head using M/P as multi-scale FPN
+- [ ] **Medical uncertainty** - MC Dropout for epistemic uncertainty quantification
+- [ ] **VLM encoder** - Lightweight vision encoder for vision-language models
+- [ ] **Webcam eye tracking** - Real-time gaze estimation from eye crops
+- [ ] **Thermal glider fire detection** - 3D-printed gliders for wildfire monitoring
+
+---
 
 ## Citation
 
@@ -353,18 +291,48 @@ This occurred to me through my work on Inhibition of Return (IOR), the phenomeno
 }
 ```
 
+Patent pending: US 63/950,391
+
+---
+
+## License & Commercial Use
+
+**PolyForm Small Business License** with Humanitarian Exception.
+
+| Use Case | Cost |
+|----------|------|
+| Academic research | Free |
+| Personal projects | Free |
+| Startups (<$100K revenue) | Free |
+| Non-profits & NGOs | Free |
+| Educational institutions | Free |
+| Low-income region deployment | Free |
+| Commercial (>$100K revenue) | [Contact us](mailto:d.lougen@mail.utoronto.ca) |
+
+### Why This License?
+
+A 76KB model on a $35 Raspberry Pi can enable:
+- **Research prototypes** for medical image analysis (not clinical deployment)
+- Agricultural monitoring on small farms
+- Educational tools in underfunded schools
+- Disaster response with limited infrastructure
+
+**These use cases should never be paywalled.**
+
+**Note:** For medical applications, see [Clinical Limitations](#clinical-limitations). This model is a research tool, not a diagnostic device.
+
+For commercial licensing: [d.lougen@mail.utoronto.ca](mailto:d.lougen@mail.utoronto.ca)
+
+---
+
 ## Acknowledgements
 
-Thanks to my then-advisor at UO, Paul Dassonville, for telling me about these cells in the first place, and to my current advisor Jay Pratt for helping me with a forthcoming paper that redefines the role of koniocells in the LGN.
+Thanks to Paul Dassonville (UO) for introducing me to these cells, and Jay Pratt (U of T) for ongoing collaboration on koniocellular research.
 
-## License
+Built with [Ollama](https://ollama.com) on [NVIDIA DGX Spark](https://www.nvidia.com/en-us/products/workstations/dgx-spark/).
 
-Dual-licensed under MIT OR Apache-2.0 (your choice).
+---
 
-Patent pending (US 63/950,391).
-
-## More About Me
-
-[djlougen.github.io/PersonalWebsite](https://djlougen.github.io/PersonalWebsite/)
-
-
+<p align="center">
+  <a href="https://djlougen.github.io/PersonalWebsite/">Daniel J. Lougen</a> · University of Toronto
+</p>
