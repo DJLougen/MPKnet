@@ -8,7 +8,6 @@
   <a href="#benchmarks">Benchmarks</a> •
   <a href="#architecture">Architecture</a> •
   <a href="#quick-start">Quick Start</a> •
-  <a href="#built-with-ollama">Built with Ollama</a> •
   <a href="#license--commercial-use">License</a>
 </p>
 
@@ -227,17 +226,7 @@ MPKNet V6 implements the **LGN stage** of mammalian vision. What I'm working on 
 - [ ] **Webcam eye tracking** - Real-time gaze estimation from eye crops
 - [ ] **Thermal glider fire detection** - 3D-printed gliders for wildfire monitoring
 
----
 
-## Built with Ollama
-
-I built MPKNet entirely using **local LLMs served by [Ollama](https://ollama.com)** on an **NVIDIA DGX Spark** (Grace Blackwell, 128GB unified memory). Ideas, iterations, and result stayed on-device.
-
-**Models used:** Primarily **Qwen3 32B MoE** for architecture brainstorming, **MiniMax** and **Kimi** for deeper reasoning, and currently using **[Nemotron-3-Nano](https://ollama.com/library/nemotron-3-nano)** and **[GLM-4.7-Flash](https://ollama.com/library/glm-4.7-flash)** (30B MoE, 16-bit) for agentic workflows. Ollama made switching between models trivial — `ollama run` and go. The Spark's 128GB unified memory meant 32B+ models ran comfortably alongside active training jobs.
-
-Ollama helped with research (neuroscience → architecture ideas), code (PyTorch implementations), and analysis (interpreting training results). The whole research-to-deployment pipeline ran locally on a single machine.
-
----
 
 ## Citation
 
@@ -289,7 +278,6 @@ For commercial licensing: [d.lougen@mail.utoronto.ca](mailto:d.lougen@mail.utoro
 
 Thanks to Paul Dassonville (UO) for introducing me to these cells, and Jay Pratt (U of T) for ongoing collaboration on koniocellular research.
 
-Built with [Ollama](https://ollama.com) on [NVIDIA DGX Spark](https://www.nvidia.com/en-us/products/workstations/dgx-spark/).
 
 ---
 
