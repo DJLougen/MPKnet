@@ -228,6 +228,17 @@ MPKNet V6 implements the **LGN stage** of mammalian vision. What I'm working on 
 
 
 
+
+## V1-to-LGN Feedback Variant
+
+MPKNet now includes an experimental recurrent cortical feedback variant. The feedforward pass builds LGN-like M/P streams and a V1 representation, then V1 sends corticogeniculate gain back to the LGN-like M/P streams before recomputing the refined V1 state. This keeps the model compact while making the visual loop explicit:
+
+```text
+retina -> LGN(M/P) -> V1 -> LGN gain feedback -> refined V1 -> classifier
+```
+
+The main `MPKx.py` contains the feedback-enabled MPKx implementation. A public standalone variant is also available at `public/mpknet_v6_feedback.py`.
+
 ## Citation
 
 ```bibtex

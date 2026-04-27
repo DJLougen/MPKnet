@@ -1,5 +1,5 @@
 """
-MPKx: An Interpretable, LGN-Inspired Architecture for Efficient Visual Processing
+BinocularMPKNetV6Feedback: MPKNet V6 with V1-to-LGN feedback
 
 Daniel J. Lougen
 University of Toronto
@@ -149,9 +149,9 @@ class StridedMonocularBlock(nn.Module):
 # MAIN MODEL
 # =============================================================================
 
-class MPKx(nn.Module):
+class BinocularMPKNetV6Feedback(nn.Module):
     """
-    MPKx: LGN-inspired architecture with stride-based pathway differentiation.
+    BinocularMPKNetV6Feedback: LGN-inspired architecture with stride-based pathway differentiation.
 
     Architecture:
     - Retinal preprocessing: center-surround filtering (parameter-free)
@@ -311,16 +311,16 @@ def count_params(model: nn.Module) -> int:
 
 if __name__ == "__main__":
     # Example: STL-10 (96x96, 10 classes)
-    model = MPKx(num_classes=10, ch=48, use_stereo=True)
-    print(f"MPKx parameters: {count_params(model)/1e6:.3f}M")
+    model = BinocularMPKNetV6Feedback(num_classes=10, ch=48, use_stereo=True)
+    print(f"BinocularMPKNetV6Feedback parameters: {count_params(model)/1e6:.3f}M")
 
     x = torch.randn(2, 3, 96, 96)
     y = model(x)
     print(f"Input: {x.shape}, Output: {y.shape}")
 
     # Example: TinyImageNet (64x64, 200 classes)
-    model_tiny = MPKx(num_classes=200, ch=48, use_stereo=True)
-    print(f"\nMPKx for TinyImageNet: {count_params(model_tiny)/1e6:.3f}M parameters")
+    model_tiny = BinocularMPKNetV6Feedback(num_classes=200, ch=48, use_stereo=True)
+    print(f"\nBinocularMPKNetV6Feedback for TinyImageNet: {count_params(model_tiny)/1e6:.3f}M parameters")
 
     x_tiny = torch.randn(2, 3, 64, 64)
     y_tiny = model_tiny(x_tiny)
