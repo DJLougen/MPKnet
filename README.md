@@ -112,10 +112,6 @@ python train.py --dataset kvasir --epochs 100
 MPKNet models the **Lateral Geniculate Nucleus (LGN)** - the relay station between retina and visual cortex.
 
 <p align="center">
-  <img src="figures/mpknet_architecture.png" alt="MPKNet V6 Architecture" width="600"/>
-</p>
-
-<p align="center">
   <img src="figures/mpknet_v6_feedback_architecture.svg" alt="MPKNet V6 Feedback Architecture" width="900"/>
 </p>
 
