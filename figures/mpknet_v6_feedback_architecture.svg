@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1080" viewBox="0 0 1800 1080">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#334155" />
+    </marker>
+    <marker id="arrowFeedback" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#c026d3" />
+    </marker>
+    <style>
+      .title{font:700 50px system-ui, -apple-system, Segoe UI, sans-serif; fill:#0f172a}
+      .subtitle{font:26px system-ui, -apple-system, Segoe UI, sans-serif; fill:#475569}
+      .head{font:700 32px system-ui, -apple-system, Segoe UI, sans-serif; fill:#0f172a}
+      .body{font:24px system-ui, -apple-system, Segoe UI, sans-serif; fill:#334155}
+      .small{font:21px system-ui, -apple-system, Segoe UI, sans-serif; fill:#475569}
+      .arrow{stroke:#334155; stroke-width:7; fill:none; marker-end:url(#arrow)}
+      .fb{stroke:#c026d3; stroke-width:7; fill:none; marker-end:url(#arrowFeedback)}
+      .box{rx:26; ry:26; stroke-width:5}
+    </style>
+  </defs>
+  <rect width="1800" height="1080" fill="#f8fafc"/>
+  <text x="90" y="92" class="title">MPKNet V6 Feedback: Feedforward Vision with V1 -> LGN Modulation</text>
+  <text x="92" y="137" class="subtitle">A compact recurrent thalamo-cortical loop: V1 context modulates LGN M/P gain, then V1 recomputes a refined state.</text>
+
+  <rect class="box" x="85" y="250" width="230" height="140" fill="#dbeafe" stroke="#2563eb"/>
+  <text x="109" y="305" class="head">Image</text><text x="109" y="346" class="body">RGB input</text><text x="109" y="378" class="body">224 x 224</text>
+
+  <rect class="box" x="400" y="220" width="270" height="200" fill="#e0f2fe" stroke="#0284c7"/>
+  <text x="424" y="275" class="head">Retina</text><text x="424" y="316" class="body">center-surround</text><text x="424" y="348" class="body">luminance/detail split</text><text x="424" y="380" class="body">binocular views</text>
+
+  <rect class="box" x="760" y="150" width="280" height="155" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="784" y="205" class="head">LGN P</text><text x="784" y="246" class="body">parvocellular</text><text x="784" y="278" class="body">fine detail/color</text>
+  <rect class="box" x="760" y="365" width="280" height="155" fill="#fef9c3" stroke="#ca8a04"/>
+  <text x="784" y="420" class="head">LGN K</text><text x="784" y="461" class="body">koniocellular</text><text x="784" y="493" class="body">context gates</text>
+  <rect class="box" x="760" y="585" width="280" height="155" fill="#fee2e2" stroke="#dc2626"/>
+  <text x="784" y="640" class="head">LGN M</text><text x="784" y="681" class="body">magnocellular</text><text x="784" y="713" class="body">global gist/motion</text>
+
+  <rect class="box" x="1140" y="305" width="295" height="280" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="1164" y="360" class="head">V1</text><text x="1164" y="401" class="body">first cortical pass</text><text x="1164" y="433" class="body">M/P fusion</text><text x="1164" y="465" class="body">K-gated modulation</text><text x="1164" y="497" class="body">refined recurrent state</text>
+
+  <rect class="box" x="1525" y="360" width="205" height="170" fill="#f1f5f9" stroke="#475569"/>
+  <text x="1549" y="415" class="head">Head</text><text x="1549" y="456" class="body">global pool</text><text x="1549" y="488" class="body">classifier</text>
+
+  <rect class="box" x="1120" y="770" width="335" height="185" fill="#fae8ff" stroke="#c026d3"/>
+  <text x="1144" y="825" class="head">V1 -> LGN Feedback</text><text x="1144" y="866" class="body">V1 context vector</text><text x="1144" y="898" class="body">per-stream gain gates</text><text x="1144" y="930" class="body">modulates LGN M/P</text>
+
+  <rect class="box" x="90" y="760" width="440" height="185" fill="#ffffff" stroke="#94a3b8" stroke-width="3"/>
+  <text x="114" y="815" class="head">Biological Mapping</text><text x="114" y="856" class="body">Retina: center-surround preprocessing</text><text x="114" y="888" class="body">LGN: M/P/K parallel pathways</text><text x="114" y="920" class="body">Feedback: corticogeniculate gain control</text>
+
+  <path class="arrow" d="M315 320 L400 320"/><path class="arrow" d="M670 320 L760 228"/><path class="arrow" d="M670 320 L760 442"/><path class="arrow" d="M670 320 L760 662"/>
+  <path class="arrow" d="M1040 228 C1085 245 1100 340 1140 395"/><path class="arrow" d="M1040 442 L1140 445"/><path class="arrow" d="M1040 662 C1085 645 1100 555 1140 500"/><path class="arrow" d="M1435 445 L1525 445"/>
+  <path class="fb" d="M1290 585 L1290 770"/><path class="fb" d="M1120 855 C1000 820 990 265 1040 228"/><path class="fb" d="M1120 875 C990 895 985 700 1040 662"/>
+  <text x="925" y="795" class="small" fill="#a21caf">corticogeniculate feedback</text>
+  <text x="1165" y="620" class="small" fill="#7c3aed">refined V1 pass after feedback</text>
+</svg>

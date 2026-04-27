@@ -1,7 +1,7 @@
 <h1 align="center">MPKNet V6</h1>
 
 <p align="center">
-  <strong>Bio-inspired vision that runs on a Raspberry Pi</strong>
+  <strong>Bio-inspired vision with LGN pathways, V1 fusion, and corticogeniculate feedback</strong>
 </p>
 
 <p align="center">
@@ -12,12 +12,12 @@
 </p>
 
 <p align="center">
-  <code>76KB</code> model • <code>33 FPS</code> on RPi5 • <code>89%</code> Kvasir-v2 • <code>No pretraining</code> • <code>No augmentation</code> • <code>161× fewer params than MobileNetV3</code>
+  <code>76KB</code> Pi model • <code>33 FPS</code> on RPi5 • <code>89%</code> Kvasir-v2 • <code>V1->LGN feedback variant</code> • <code>No pretraining</code>
 </p>
 
 ---
 
-MPKNet V6 implements the **parallel visual pathways** found in mammalian brains. Instead of stacking more layers, it asks: what if *how* information flows matters more than parameter count?
+MPKNet V6 implements the **parallel visual pathways** found in mammalian brains. The feedback variant extends the model from a one-pass LGN-inspired network into a compact thalamo-cortical loop: retina/LGN feed forward into V1, and V1 sends gain feedback back to LGN-like M/P streams before the final cortical readout.
 
 | | MobileNetV3-S | **MPKNet V6** | **MPKNet V6-Pi** |
 |---|---------------|---------------|------------------|
@@ -77,12 +77,16 @@ This is consistent with NetAug (Cai et al., 2022), which showed regularization h
 
 ```python
 import torch
-from MPKx import MPKNetV6
+from MPKx import MPKx
+from public.mpknet_v6_feedback import BinocularMPKNetV6Feedback
 
-# Create model
-model = MPKNetV6(num_classes=8)  # e.g., Kvasir-v2
+# Main feedback-enabled model
+model = MPKx(num_classes=8)  # e.g., Kvasir-v2
+
+# Public standalone feedback variant
+feedback_model = BinocularMPKNetV6Feedback(num_classes=8)
 print(f"Parameters: {sum(p.numel() for p in model.parameters()):,}")
-# Output: Parameters: 210,000
+# Output: ~562K params for TinyImageNet-200 / ~543K for 8 classes
 
 # Inference
 x = torch.randn(1, 3, 224, 224)
@@ -111,6 +115,20 @@ MPKNet models the **Lateral Geniculate Nucleus (LGN)** - the relay station betwe
   <img src="figures/mpknet_architecture.png" alt="MPKNet V6 Architecture" width="600"/>
 </p>
 
+<p align="center">
+  <img src="figures/mpknet_v6_feedback_architecture.svg" alt="MPKNet V6 Feedback Architecture" width="900"/>
+</p>
+
+### V1-to-LGN Feedback Variant
+
+The feedback-enabled MPKx adds a second cortical pass. First, retina/LGN M/P/K streams feed forward into V1. Then a pooled V1 context vector generates per-stream gain gates for the LGN-like M/P inputs. V1 is recomputed from this modulated LGN state before classification.
+
+```text
+retina -> LGN(M/P/K) -> V1 -> LGN gain feedback -> refined V1 -> classifier
+```
+
+This is intentionally lightweight: feedback is gain modulation, not pixel reconstruction. The goal is to test whether a biologically plausible corticogeniculate loop improves compact vision models under the same parameter budget.
+
 ### The Three Pathways
 
 | Pathway | Biological Role | Implementation | What It Captures |
@@ -125,12 +143,14 @@ MPKNet models the **Lateral Geniculate Nucleus (LGN)** - the relay station betwe
 2. **Parallel processing** - M/P/K run independently until fusion. No cross-talk within pathways.
 3. **Late fusion only** - No pooling within pathways. Global pool only at the end.
 4. **K modulates, doesn't process** - K-pathway generates cross-stream attention gates for M and P (extends Bahdanau attention, FiLM with biological grounding).
+5. **V1 can modulate LGN** - The feedback variant makes corticogeniculate feedback explicit: a first V1 pass generates context, gates LGN-like M/P streams, and recomputes a refined V1 state.
 
 ### What's Novel
 
 - **First Fibonacci strides in CNNs** - Derived from biological spatial frequency tuning, not empirical search
 - **First complete M/P/K implementation** - Prior work (Magno-Parvo CNN, EVNets, SlowFast) models M/P only
-- **Biologically-grounded cross-stream gating** - K→M/P gating mirrors koniocellular projections in LGN
+- **Biologically-grounded cross-stream gating** - K->M/P gating mirrors koniocellular projections in LGN
+- **Explicit V1->LGN feedback** - The feedback variant models corticogeniculate modulation as learned gain control over LGN-like M/P streams
 
 ### Why This Works
 
@@ -217,7 +237,7 @@ MPKNet V6 implements the **LGN stage** of mammalian vision. What I'm working on 
 - [ ] **RGC layer** - Midget/Parasol/Bistratified cells feeding M/P/K pathways
 - [ ] **Retinotectal pathway** - Superior colliculus for saccades
 - [ ] **V1 orientation columns** - Edge detection specialization
-- [ ] **Thalamo-cortical loops** - Exploring whether attention-like behavior emerges from architecture alone
+- [x] **Thalamo-cortical loop prototype** - V1-to-LGN gain feedback implemented as an experimental variant
 
 ### Applications
 - [ ] **Detection head** - YOLO-style head using M/P as multi-scale FPN
@@ -228,16 +248,6 @@ MPKNet V6 implements the **LGN stage** of mammalian vision. What I'm working on 
 
 
 
-
-## V1-to-LGN Feedback Variant
-
-MPKNet now includes an experimental recurrent cortical feedback variant. The feedforward pass builds LGN-like M/P streams and a V1 representation, then V1 sends corticogeniculate gain back to the LGN-like M/P streams before recomputing the refined V1 state. This keeps the model compact while making the visual loop explicit:
-
-```text
-retina -> LGN(M/P) -> V1 -> LGN gain feedback -> refined V1 -> classifier
-```
-
-The main `MPKx.py` contains the feedback-enabled MPKx implementation. A public standalone variant is also available at `public/mpknet_v6_feedback.py`.
 
 ## Citation
 
