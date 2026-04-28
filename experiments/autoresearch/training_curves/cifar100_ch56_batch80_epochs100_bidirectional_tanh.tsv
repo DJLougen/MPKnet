@@ -1,0 +1,2 @@
+epoch	step	seen	train_loss	smooth_loss	val_acc	val_top5	lr
+1	625	50000	4.252357	3.864412	0.036600	0.156300	4.99207987e-04

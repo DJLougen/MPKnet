@@ -1,0 +1,49 @@
+commit	val_acc	memory_gb	status	description
+44a9bbc	0.007900	14.4	keep	mpknet vision baseline
+3fd5e1c	0.006100	11.9	discard	channels 80 batch 64 lr 0.002
+4056acc	0.006700	14.9	discard	channels 112 batch 32 lr 0.0015
+6e3c9f8	0.008400	14.4	keep	no stereo baseline
+e4641d1	0.009600	14.4	keep	no label smoothing baseline
+4abfb27	0.007000	14.3	discard	channels 64 batch 96
+4f315bb	0.006800	14.4	discard	baseline lr 0.0025 retry
+4f315bb	0.008000	14.4	discard	baseline lr 0.0025 retry
+4f315bb	0.010600	14.4	keep	baseline lr 0.0025 retry
+4f315bb	0.008400	14.4	discard	baseline lr 0.0025 retry
+4f315bb	0.008300	14.4	discard	baseline lr 0.0025 retry
+4f315bb	0.007900	14.4	discard	baseline lr 0.0025 retry
+4f315bb	0.009400	14.4	discard	baseline lr 0.0025 retry
+4f315bb	0.010900	14.4	keep	baseline lr 0.0025 retry
+4f315bb	0.008100	14.4	discard	baseline lr 0.0025 retry
+4f315bb	0.009000	14.4	discard	baseline lr 0.0025 retry
+4f315bb	0.009300	14.4	discard	baseline lr 0.0025 retry
+4c2b3c2	0.007700	14.4	discard	baseline lr 0.0025 retry orphan
+4c2b3c2	0.008100	14.4	discard	no smooth lr0025
+1dc5428	0.008400	14.4	discard	no stereo no smooth lr0025
+9816220	0.011000	14.4	keep	slower cosine floor lr0025
+069a4dc	0.000000	0.0	crash	short warmup lr0025
+00abed6	0.060900	4.1	keep	v6 full224 noaug sgd baseline
+00abed6	0.067000	4.1	keep	v6 full224 mildaug sgd
+f2b6bff	0.123400	4.1	keep	v6 full224 adamw baseline
+f2b6bff	0.126200	4.1	keep	v6 full224 retry
+f2b6bff	0.130700	4.1	keep	v6 full224 retry
+f2b6bff	0.125800	4.1	discard	v6 full224 retry
+f2b6bff	0.125100	4.1	discard	v6 full224 retry
+f2b6bff	0.132800	4.1	keep	v6 full224 retry
+f2b6bff	0.131900	4.1	discard	v6 full224 retry
+f2b6bff	0.132700	4.1	discard	v6 full224 retry
+f2b6bff	0.125900	4.1	discard	v6 full224 retry
+f2b6bff	0.127800	4.1	discard	v6 full224 retry
+adb1b52	0.054700	8.1	discard	v1-lgn feedback full224 adamw
+adb1b52	0.054800	8.1	discard	v1-lgn feedback retry
+adb1b52	0.065000	8.1	discard	v1-lgn feedback retry
+adb1b52	0.037800	8.1	discard	v1-lgn feedback retry
+adb1b52	0.000000	0.0	crash	v1-lgn feedback retry
+dcf24ce	0.039400	4.5	discard	residual v1-lgn feedback full224
+dcf24ce	0.000000	0.0	crash	residual v1-lgn feedback retry
+771449b	0.044200	4.5	discard	layered v1-lgn feedback full224
+9557b4b	0.116200	6.3	discard	late hybrid KSync full224
+83e49d2	0.100900	8.4	discard	two-stage KSync full224
+a848fe6	0.203000	4.1	keep	batch96 dropout0.1 ch56
+b88f83f	0.211200	3.7	keep	no dropout batch96 ch56
+1f17c00	0.344800	3.1	keep	batch80 datapass no dropout ch56 full50
+0d83c8c	0.392500	3.1	keep	bidirectional K gate alpha0.5 ch56 batch80 100ep
