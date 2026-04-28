@@ -10,7 +10,7 @@ echo "[$(date -Is)] starting CIFAR-100 on RTX 6000"
 echo "[$(date -Is)] starting STL-10 on RTX 6000"
 /workspace/venv-mamba3/bin/python train_mpk_smallvision.py --dataset stl10 --epochs 100 2>&1 | tee run_stl10_ch56_bidir_100ep_rtx6000.log
 
-echo "[$(date -Is)] starting Fashion-MNIST on RTX 6000"
-/workspace/venv-mamba3/bin/python train_mpk_smallvision.py --dataset fashion_mnist --epochs 100 2>&1 | tee run_fashion_mnist_ch56_bidir_100ep_rtx6000.log
+echo "[$(date -Is)] starting Caltech-101 on RTX 6000"
+/workspace/venv-mamba3/bin/python train_mpk_smallvision.py --dataset caltech101 --epochs 100 2>&1 | tee run_caltech101_ch56_bidir_100ep_rtx6000.log
 
 echo "[$(date -Is)] all dataset runs complete"

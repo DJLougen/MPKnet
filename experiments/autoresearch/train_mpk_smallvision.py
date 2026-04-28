@@ -15,6 +15,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn.functional as F
+from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 
 from model import MPKx
@@ -137,12 +138,70 @@ def load_fashion_mnist(cache_root: Path) -> tuple[torch.Tensor, torch.Tensor, to
     return x_train, y_train, x_val, y_val, 10
 
 
+def load_caltech101(cache_root: Path) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, int]:
+    cache_dir = cache_root / "caltech101"
+    archive = cache_dir / "101_ObjectCategories.tar.gz"
+    data_dir = cache_dir / "101_ObjectCategories"
+    tensor_dir = cache_dir / "tensor_cache"
+    train_cache = tensor_dir / "train.pt"
+    val_cache = tensor_dir / "test.pt"
+    if train_cache.exists() and val_cache.exists():
+        tr = torch.load(train_cache, map_location="cpu", weights_only=True)
+        va = torch.load(val_cache, map_location="cpu", weights_only=True)
+        return tr["x"], tr["y"], va["x"], va["y"], int(tr["num_classes"])
+    download("https://data.caltech.edu/records/mzrjq-6wc02/files/caltech-101.zip", cache_dir / "caltech-101.zip")
+    if not data_dir.exists():
+        import zipfile
+        print("[caltech101] extracting", flush=True)
+        with zipfile.ZipFile(cache_dir / "caltech-101.zip") as zf:
+            zf.extractall(cache_dir)
+        nested = cache_dir / "caltech-101" / "101_ObjectCategories"
+        if nested.exists():
+            nested.rename(data_dir)
+    classes = sorted(p for p in data_dir.iterdir() if p.is_dir() and p.name != "BACKGROUND_Google")
+    class_to_idx = {p.name: i for i, p in enumerate(classes)}
+    train_items: list[tuple[Path, int]] = []
+    val_items: list[tuple[Path, int]] = []
+    rng = np.random.default_rng(42)
+    for cls_dir in classes:
+        images = sorted([p for p in cls_dir.iterdir() if p.suffix.lower() in {".jpg", ".jpeg", ".png"}])
+        order = rng.permutation(len(images))
+        split = min(30, max(1, len(images) // 2))
+        idx = class_to_idx[cls_dir.name]
+        for j in order[:split]:
+            train_items.append((images[int(j)], idx))
+        for j in order[split:]:
+            val_items.append((images[int(j)], idx))
+
+    def load_items(items: list[tuple[Path, int]]) -> tuple[torch.Tensor, torch.Tensor]:
+        xs = []
+        ys = []
+        for path, label in items:
+            img = Image.open(path).convert("RGB").resize((IMAGE_SIZE, IMAGE_SIZE), Image.BILINEAR)
+            arr = np.asarray(img, dtype=np.uint8).transpose(2, 0, 1).copy()
+            xs.append(torch.from_numpy(arr))
+            ys.append(label)
+        return torch.stack(xs, dim=0).contiguous(), torch.tensor(ys, dtype=torch.long)
+
+    x_train, y_train = load_items(train_items)
+    x_val, y_val = load_items(val_items)
+    tensor_dir.mkdir(parents=True, exist_ok=True)
+    payload_train = {"x": x_train, "y": y_train, "num_classes": len(classes)}
+    payload_val = {"x": x_val, "y": y_val, "num_classes": len(classes)}
+    torch.save(payload_train, train_cache)
+    torch.save(payload_val, val_cache)
+    print(f"[caltech101] train {tuple(x_train.shape)} val {tuple(x_val.shape)} classes {len(classes)}", flush=True)
+    return x_train, y_train, x_val, y_val, len(classes)
+
+
 def load_dataset(name: str):
     cache_root = Path(os.path.expanduser("~")) / ".cache" / "autoresearch_vision"
     if name == "stl10":
         return load_stl10(cache_root)
     if name == "fashion_mnist":
         return load_fashion_mnist(cache_root)
+    if name == "caltech101":
+        return load_caltech101(cache_root)
     raise ValueError(f"unknown dataset: {name}")
 
 
@@ -181,7 +240,7 @@ def cosine_schedule(progress: float, cfg: TrainConfig) -> float:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset", choices=["stl10", "fashion_mnist"], required=True)
+    parser.add_argument("--dataset", choices=["stl10", "fashion_mnist", "caltech101"], required=True)
     parser.add_argument("--epochs", type=int, default=100)
     args = parser.parse_args()
 
