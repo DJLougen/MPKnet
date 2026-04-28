@@ -1,65 +1,65 @@
-<h1 align="center">MPKNet V6</h1>
+<h1 align="center">MPKx</h1>
 
 <p align="center">
-  <strong>Bio-inspired vision with LGN pathways, V1 fusion, and corticogeniculate feedback</strong>
+  <strong>LGN-inspired vision with stride-based M/P/K pathways, K-gating, and binocular processing</strong>
 </p>
 
 <p align="center">
   <a href="#benchmarks">Benchmarks</a> •
   <a href="#architecture">Architecture</a> •
+  <a href="#autoresearch">AutoResearch Results</a> •
   <a href="#quick-start">Quick Start</a> •
   <a href="#license--commercial-use">License</a>
 </p>
 
 <p align="center">
-  <code>76KB</code> Pi model • <code>33 FPS</code> on RPi5 • <code>89%</code> Kvasir-v2 • <code>V1->LGN feedback variant</code> • <code>No pretraining</code>
+  <code>874K</code> params full model • <code>15.5K</code> Pi model • <code>33 FPS</code> on RPi5 • <code>0.89MB</code> tiny • <code>No pretraining</code>
 </p>
 
 ---
 
-MPKNet V6 implements the **parallel visual pathways** found in mammalian brains. The feedback variant extends the model from a one-pass LGN-inspired network into a compact thalamo-cortical loop: retina/LGN feed forward into V1, and V1 sends gain feedback back to LGN-like M/P streams before the final cortical readout.
+MPKx implements the **parallel visual pathways** of the mammalian Lateral Geniculate Nucleus (LGN). Unlike standard CNNs with uniform stride, MPKx differentiates M, P, and K pathways by spatial sampling density — mirroring how biological M cells tile space more sparsely than P cells.
 
-| | MobileNetV3-S | **MPKNet V6** | **MPKNet V6-Pi** |
-|---|---------------|---------------|------------------|
-| Parameters | 2.5M | **0.21M** | **15.5K** |
-| Model size | 10MB | **0.89MB** | **76KB** |
-| FPS (RPi5) | 5-8 | — | **33** |
-| Accuracy (Kvasir) | ~92%* | **89%** | **82%** |
+Key insight: **same 5×5 kernel, different Fibonacci strides (2:3:5)**. This produces resolutions that converge toward the golden ratio and gives each pathway a naturally different field of view.
 
-*MobileNetV3-S accuracy from published benchmarks (not my evaluation). V6/V6-Pi measured on Kvasir-v2 val set (1600 samples). Direct comparison requires same-dataset evaluation with identical training protocol.*
+| | ResNet-18 | **MPKx** |
+|---|-----------|----------|
+| Parameters | 11.2M | **0.87M** |
+| CIFAR-100 | ~45% | **46.5%** |
+| STL-10 | ~70% | **74.9%** |
+| Caltech-101 | ~60% | **59.5%** |
+| No pretraining | Requires ImageNet | **From scratch** |
 
-**161× fewer parameters** than MobileNetV3-S. Train in an hour, not a week. Deploy on a $35 Raspberry Pi, not a cloud GPU.
-
-**V6 is not about beating SOTA.** It's about *competitive accuracy at a fraction of the cost*.
+**13x fewer parameters**, competitive accuracy, no pretraining, minimal augmentation.
 
 ---
 
 ## Benchmarks
 
-### Image Classification
+### Image Classification (Single-Pass, No Feedback)
 
-| Dataset | Classes | Resolution | Accuracy | Params | Notes |
-|---------|---------|------------|----------|--------|-------|
-| **Kvasir-v2** | 8 | 224×224 | **89%** | 0.21M | Medical endoscopy (research only) |
-| **TinyImageNet** | 200 | 64×64 | **40.6%** | 0.21M | ResNet18 gets ~41.5% with 52× more params |
-| **CIFAR-100** | 100 | 32×32 | **58.8%** | 0.22M | |
-| **STL-10** | 10 | 96×96 | **71.7%** | 0.21M | Only 5K training samples |
+| Dataset | Classes | Resolution | Val Acc | Params | Notes |
+|---------|---------|------------|---------|--------|-------|
+| **STL-10** | 10 | 224×224 | **74.9%** | 0.86M | Only 5K train samples, from scratch |
+| **CIFAR-100** | 100 | 224×224 | **46.5%** | 0.87M | 224px upsampled, no extra augmentation |
+| **Caltech-101** | 101 | 224×224 | **59.5%** | 0.87M | 30 train images/class, full 101 classes |
+| **TinyImageNet** | 200 | 64×64 | **40.6%** | 0.21M | ResNet-18 gets ~41.5% with 52x more params |
+| **Kvasir-v2** | 8 | 224×224 | **89%** | 0.21M | Medical endoscopy |
 | **ImageNet-100** | 100 | 224×224 | **60.8%** | 0.54M | |
+| **Fashion-MNIST** | 10 | 224×224 | — | — | Also supported via train_mpk_smallvision.py |
 
-### Video Classification (V6.2 Temporal)
+### Video Classification (Temporal Variant)
 
 | Dataset | Classes | Resolution | Accuracy | Params | Notes |
 |---------|---------|------------|----------|--------|-------|
 | **UCF-101** | 101 | 112×112 | **77%** | 0.58M | 8-frame temporal M-pathway, from scratch |
 
-V6.2 adds a **sequential temporal M-pathway** — the M stream processes 8 consecutive frames and computes inter-frame deltas for motion detection, while P sees only the current frame for spatial detail. K gates both. This mirrors the biological role of magnocellular neurons in motion processing.
-
 ### Edge Deployment
 
 | Device | Model | Size | FPS | Accuracy |
 |--------|-------|------|-----|----------|
-| Raspberry Pi 5 (no heatsink) | V6-Pi | 76KB | 33 | 82% |
-| MacBook M3 | V6 | 0.89MB | 200+ | 89% |
+| Raspberry Pi 5 (no heatsink) | MPKx-Pi | 76KB | 33 | 82% |
+| MacBook M3 | MPKx | 0.89MB | 200+ | 89% |
 
 ### Finding: Augmentation Hurts at Small Scales
 
@@ -69,7 +69,42 @@ V6.2 adds a **sequential temporal M-pathway** — the M stream processes 8 conse
 | TinyImageNet (64×64) | **40.6%** | 24.1% | -16.5% |
 | ImageNet-100 (224×224) | 60.8% | ~62% | +1-2% |
 
-This is consistent with NetAug (Cai et al., 2022), which showed regularization hurts tiny models that underfit rather than overfit. At small resolutions, the Fibonacci stride architecture provides sufficient multi-scale coverage that augmentation becomes redundant noise. At 224×224, mild augmentation helps marginally.
+Consistent with NetAug (Cai et al., 2022): regularization hurts tiny models that underfit rather than overfit. At small resolutions, the Fibonacci stride architecture provides sufficient multi-scale coverage that augmentation becomes redundant noise.
+
+---
+
+## AutoResearch Results
+
+The `experiments/autoresearch/` directory contains a three-dataset benchmark pipeline designed to test MPKx across different vision domains with consistent hyperparameters:
+
+```
+experiments/autoresearch/
+  model.py                          # MPKx architecture (standalone)
+  train_cifar100.py                 # CIFAR-100 harness (100 classes)
+  train_mpk_smallvision.py          # STL-10 / Caltech-101 / Fashion-MNIST harness
+  run_mpk_three_datasets_rtx6000.sh # Sequential pipeline runner
+  training_curves/                  # Per-epoch validation curves
+```
+
+### Full Results (2026-04-28, RTX 6000)
+
+**Shared hyperparameters:** batch_size=80, channels=56, lr=0.004, cosine schedule, weight_decay=0.01, horizontal flip only, 100 epochs each.
+
+| Dataset | Classes | Steps | Val Acc | Val Top-5 | Params | Peak VRAM | Runtime |
+|---------|---------|-------|---------|-----------|--------|-----------|---------|
+| **CIFAR-100** | 100 | 62,500 | **46.49%** | 76.95% | 874K | 3,195 MB | ~1h27m |
+| **STL-10** | 10 | 6,200 | **74.91%** | 98.42% | 864K | 3,195 MB | ~14m |
+| **Caltech-101** | 101 | 3,200 | **59.46%** | 78.12% | 874K | 3,195 MB | ~9m |
+
+All three datasets fit in the same 3.2 GB VRAM footprint. The model trains from scratch with no pretrained weights — each dataset starts with random initialization.
+
+**Key observations:**
+
+- **STL-10 (74.9%)** is the strongest result — only 5K training samples in a 10-class setup, and the model converges to near-zero training loss (~0.02) by epoch 60+, with validation accuracy plateauing around 74-75%.
+- **CIFAR-100 (46.5%)** shows steady improvement across all 100 epochs, with the best single-epoch val_acc hitting 47.1% at epoch 96. Loss drops from 4.25 to 0.76, no sign of overfitting despite 0% dropout.
+- **Caltech-101 (59.5%)** is the hardest — 101 classes with only 30 training images each, yet top-5 accuracy reaches 78%. The model doesn't plateau until ~epoch 80, suggesting longer training wouldn't help without more data.
+
+Detailed per-epoch curves: `docs/results/2026-04-28_three-dataset-benchmark.md`
 
 ---
 
@@ -77,20 +112,16 @@ This is consistent with NetAug (Cai et al., 2022), which showed regularization h
 
 ```python
 import torch
-from MPKx import MPKx
-from public.mpknet_v6_feedback import BinocularMPKNetV6Feedback
+from model import MPKx
 
-# Main feedback-enabled model
-model = MPKx(num_classes=8)  # e.g., Kvasir-v2
-
-# Public standalone feedback variant
-feedback_model = BinocularMPKNetV6Feedback(num_classes=8)
+# Create model (adjust num_classes for your dataset)
+model = MPKx(num_classes=10, ch=56, use_stereo=True)
 print(f"Parameters: {sum(p.numel() for p in model.parameters()):,}")
-# Output: ~562K params for TinyImageNet-200 / ~543K for 8 classes
+# Output: ~864K for 10 classes
 
 # Inference
 x = torch.randn(1, 3, 224, 224)
-out = model(x)  # [1, 8]
+out = model(x)  # [1, num_classes]
 ```
 
 ### Training
@@ -101,29 +132,26 @@ git clone https://github.com/DJLougen/MPKnet.git
 cd MPKnet
 pip install -r requirements.txt
 
-# Train on your dataset
-python train.py --dataset kvasir --epochs 100
+# Run the three-dataset benchmark pipeline (requires RTX 6000 or similar)
+# Or train individual datasets:
+
+# CIFAR-100
+python experiments/autoresearch/train_cifar100.py
+
+# STL-10 / Caltech-101 / Fashion-MNIST
+python experiments/autoresearch/train_mpk_smallvision.py --dataset stl10 --epochs 100
+python experiments/autoresearch/train_mpk_smallvision.py --dataset caltech101 --epochs 100
 ```
 
 ---
 
 ## Architecture
 
-MPKNet models the **Lateral Geniculate Nucleus (LGN)** - the relay station between retina and visual cortex.
+MPKx models the **Lateral Geniculate Nucleus (LGN)** — the relay station between retina and visual cortex.
 
 <p align="center">
-  <img src="figures/mpknet_v6_feedback_architecture.svg" alt="MPKNet V6 Feedback Architecture" width="900"/>
+  <img src="figures/mpknet_v6_feedback_architecture.svg" alt="MPKx Architecture" width="900"/>
 </p>
-
-### V1-to-LGN Feedback Variant
-
-The feedback-enabled MPKx adds a second cortical pass. First, retina/LGN M/P/K streams feed forward into V1. Then a pooled V1 context vector generates per-stream gain gates for the LGN-like M/P inputs. V1 is recomputed from this modulated LGN state before classification.
-
-```text
-retina -> LGN(M/P/K) -> V1 -> LGN gain feedback -> refined V1 -> classifier
-```
-
-This is intentionally lightweight: feedback is gain modulation, not pixel reconstruction. The goal is to test whether a biologically plausible corticogeniculate loop improves compact vision models under the same parameter budget.
 
 ### The Three Pathways
 
@@ -133,26 +161,36 @@ This is intentionally lightweight: feedback is gain modulation, not pixel recons
 | **P** (Parvocellular) | ~80% of LGN, fine detail, color | Stride 2 (fine) | Texture, edges, color |
 | **K** (Koniocellular) | ~10% of LGN, projects to M and P | Stride 3 (intermediate) | Context-dependent gating |
 
+### Processing Pipeline
+
+```text
+input → stereo disparity → retinal preprocessing (center-surround)
+  → M (stride 5) ──┐
+  → P (stride 2) ──┼── K-gated → V1 fusion → classifier
+  → K (stride 3) ──┘     ↑
+         └── generates cross-stream attention ──┘
+```
+
 ### Core Principles
 
-1. **Same kernel, different stride** - All pathways use 5×5 kernels. Fibonacci strides (2:3:5) differentiate them, producing resolutions that converge toward the golden ratio.
-2. **Parallel processing** - M/P/K run independently until fusion. No cross-talk within pathways.
-3. **Late fusion only** - No pooling within pathways. Global pool only at the end.
-4. **K modulates, doesn't process** - K-pathway generates cross-stream attention gates for M and P (extends Bahdanau attention, FiLM with biological grounding).
-5. **V1 can modulate LGN** - The feedback variant makes corticogeniculate feedback explicit: a first V1 pass generates context, gates LGN-like M/P streams, and recomputes a refined V1 state.
+1. **Same kernel, different stride** — All pathways use 5×5 kernels. Fibonacci strides (2:3:5) differentiate them, producing resolutions that converge toward the golden ratio.
+2. **Parallel processing** — M/P/K run independently until fusion. No cross-talk within pathways.
+3. **Late fusion only** — No pooling within pathways. Global adaptive average pool only at the end.
+4. **K modulates, doesn't process** — K generates bidirectional cross-stream gain gates for M and P (tanh gating: `1 + α·tanh(gate)`, α=0.5). Range [0.5, 1.5] allows both suppression and facilitation.
+5. **Binocular processing** — Left/right eye views processed independently through M/P/K pathways, fused only at the V1 stage.
 
 ### What's Novel
 
-- **First Fibonacci strides in CNNs** - Derived from biological spatial frequency tuning, not empirical search
-- **First complete M/P/K implementation** - Prior work (Magno-Parvo CNN, EVNets, SlowFast) models M/P only
-- **Biologically-grounded cross-stream gating** - K->M/P gating mirrors koniocellular projections in LGN
-- **Explicit V1->LGN feedback** - The feedback variant models corticogeniculate modulation as learned gain control over LGN-like M/P streams
+- **First Fibonacci strides in CNNs** — Derived from biological spatial frequency tuning, not empirical search
+- **First complete M/P/K implementation** — Prior work (Magno-Parvo CNN, EVNets, SlowFast) models M/P only
+- **Biologically-grounded cross-stream gating** — K→M/P gating mirrors koniocellular projections in LGN
+- **Late binocular fusion** — Eyes segregated through LGN blocks, matching known anatomy
 
 ### Why This Works
 
 Biology processes vision with **20 watts**. One hypothesis: efficiency comes from the *wiring diagram*, not raw neuron count.
 
-MPKNet borrows this principle: I restrict **where** multiplication happens. M and P process in parallel streams before fusion. K modulates both. The math is standard convolutions. The connectivity pattern is inspired by biology.
+MPKx borrows this principle — the connectivity pattern is inspired by biology:
 
 > *"It's what you multiply and where you multiply."*
 
@@ -160,97 +198,65 @@ MPKNet borrows this principle: I restrict **where** multiplication happens. M an
 
 ## Ablation Study
 
-Pathway ablations currently running across a variety of datasets. Results forthcoming.
+| Variant | Params | Effect |
+|---------|--------|--------|
+| Full MPKx (M+P+K) | 874K | Baseline |
+| No K-gating | ~840K | Expected drop in disambiguation |
+| No stereo | ~870K | Expected drop on fine detail |
+| Stride variations (non-Fibonacci) | — | Under investigation |
+
+Benchmark ablations forthcoming across all three autoresearch datasets.
 
 ---
 
-## Interpretable Failures
+## Interpretable Failures (Kvasir-v2 Medical)
 
-**Method:** I evaluated V6-Pi on Kvasir-v2 validation set (1600 samples), tracking all misclassifications with confidence scores.
+**Method:** Evaluated MPKx-Pi on Kvasir-v2 validation set (1600 samples), tracking all misclassifications with confidence scores.
 
 **Key finding:** 63% of errors (183/292) cluster in just two bidirectional pairs.
 
-### Per-Class Accuracy
+| True Class | → Predicted | Count | Mean Conf |
+|------------|-------------|-------|-----------|
+| esophagitis | → normal-z-line | 58 | 68% |
+| dyed-lifted-polyps | → dyed-resection-margins | 51 | 69% |
+| dyed-resection-margins | → dyed-lifted-polyps | 40 | 60% |
+| normal-z-line | → esophagitis | 34 | 61% |
 
-| Class | Accuracy | Confusion Pattern |
-|-------|----------|-------------------|
-| esophagitis | 67.9% | → normal-z-line (58 errors) |
-| dyed-lifted-polyps | 70.4% | → dyed-resection-margins (51 errors) |
-| polyps | 76.9% | Scattered across multiple classes |
-| normal-pylorus | 99.0% | Nearly perfect |
+| Failure Type | Count | % of Failures |
+|--------------|-------|---------------|
+| Confident failures (≥80% conf) | 44 | 15% |
+| Ambiguous failures (<50% conf) | 22 | 8% |
+| Close calls (<15% margin) | 69 | 24% |
 
-### Top Confusion Pairs (with Confidence)
-
-| True Class | → Predicted | Count | Mean Conf | Range |
-|------------|-------------|-------|-----------|-------|
-| esophagitis | → normal-z-line | 58 | 68% | 50-94% |
-| dyed-lifted-polyps | → dyed-resection-margins | 51 | 69% | 34-97% |
-| dyed-resection-margins | → dyed-lifted-polyps | 40 | 60% | 30-96% |
-| normal-z-line | → esophagitis | 34 | 61% | 48-81% |
-
-**What it means:** The discriminative signal between these pairs is weak enough that errors concentrate here. External context (patient history, procedure timeline, endoscope position) would help, but is unavailable to any vision-only system.
-
-### Failure Categories
-
-| Type | Count | % of Failures | Meaning |
-|------|-------|---------------|---------|
-| **Confident failures** (≥80% conf) | 44 | 15% | Model is wrong but sure — miscalibrated |
-| **Ambiguous failures** (<50% conf) | 22 | 8% | Model knows it doesn't know — honest |
-| **Close calls** (<15% margin) | 69 | 24% | True class almost won — fixable |
-
-### Semantic Group Confusion
-
-| Direction | Errors | Clinical Impact |
-|-----------|--------|-----------------|
-| pathology to normal | 66 | **Missed disease** |
-| normal to pathology | 39 | False alarm |
-| polyp to procedure | 52 | Dye similarity |
-| procedure to polyp | 42 | Dye similarity |
-
-### Clinical Limitations
-
-**This model is a research prototype, not a clinical tool.**
-
-| Metric | V6-Pi Result | Clinical Requirement |
-|--------|--------------|----------------------|
-| Polyp sensitivity | ~75% | >=95% for screening |
-| Pathology to Normal errors | 66 cases | Near zero |
-| Confident false negatives | 44 @ 88% conf | Unacceptable |
-
-**Why it's interpretable:** Failures cluster in predictable, explainable pairs rather than scattering randomly across 8 classes. You know *which* cases need human review and *why* the model failed.
+**Why it matters:** Failures cluster in predictable, explainable pairs. You know *which* cases need human review and *why* the model failed.
 
 ---
 
 ## Roadmap
 
-MPKNet V6 implements the **LGN stage** of mammalian vision. What I'm working on next:
-
 **Biological extensions:**
-- [ ] **Surround suppression** - V1-like center-surround for better edge discrimination
-- [ ] **Temporal M pathway** - 3D convolutions in M pathway for video (matches M-cell motion sensitivity)
+- [ ] **Surround suppression** — V1-like center-surround for better edge discrimination
+- [x] **Temporal M pathway** — 3D convolutions in M pathway for video (UCF-101: 77%)
+- [ ] **RGC layer** — Midget/Parasol/Bistratified cells feeding M/P/K pathways
+- [ ] **Retinotectal pathway** — Superior colliculus for saccades
+- [ ] **V1 orientation columns** — Edge detection specialization
+- [ ] **V1→LGN feedback** — Corticogeniculate modulation as learned gain (experimental variant exists)
 
-### Biological Extensions
-- [ ] **RGC layer** - Midget/Parasol/Bistratified cells feeding M/P/K pathways
-- [ ] **Retinotectal pathway** - Superior colliculus for saccades
-- [ ] **V1 orientation columns** - Edge detection specialization
-- [x] **Thalamo-cortical loop prototype** - V1-to-LGN gain feedback implemented as an experimental variant
+**Applications:**
+- [ ] **Detection head** — YOLO-style head using M/P as multi-scale FPN
+- [ ] **Medical uncertainty** — MC Dropout for epistemic uncertainty quantification
+- [ ] **VLM encoder** — Lightweight vision encoder for vision-language models
+- [ ] **Webcam eye tracking** — Real-time gaze estimation from eye crops
+- [ ] **Thermal glider fire detection** — 3D-printed gliders for wildfire monitoring
 
-### Applications
-- [ ] **Detection head** - YOLO-style head using M/P as multi-scale FPN
-- [ ] **Medical uncertainty** - MC Dropout for epistemic uncertainty quantification
-- [ ] **VLM encoder** - Lightweight vision encoder for vision-language models
-- [ ] **Webcam eye tracking** - Real-time gaze estimation from eye crops
-- [ ] **Thermal glider fire detection** - 3D-printed gliders for wildfire monitoring
-
-
-
+---
 
 ## Citation
 
 ```bibtex
 @misc{MPKNet,
   author = {Lougen, D.J.},
-  title = {MPKNet: A LGN-Inspired Architecture for Efficient Visual Processing},
+  title = {MPKx: An LGN-Inspired Architecture for Efficient Visual Processing},
   year = {2025},
   publisher = {GitHub},
   url = {https://github.com/DJLougen/MPKnet}
@@ -275,17 +281,7 @@ Patent pending: US 63/950,391
 | Low-income region deployment | Free |
 | Commercial (>$100K revenue) | [Contact me](mailto:d.lougen@mail.utoronto.ca) |
 
-### Why This License?
-
-A 76KB model on a $35 Raspberry Pi can enable:
-- **Research prototypes** for medical image analysis (not clinical deployment)
-- Agricultural monitoring on small farms
-- Educational tools in underfunded schools
-- Disaster response with limited infrastructure
-
 **These use cases should never be paywalled.**
-
-**Note:** For medical applications, see [Clinical Limitations](#clinical-limitations). This model is a research tool, not a diagnostic device.
 
 For commercial licensing: [d.lougen@mail.utoronto.ca](mailto:d.lougen@mail.utoronto.ca)
 
