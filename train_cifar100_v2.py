@@ -41,15 +41,15 @@ VAL_TENSORS = TENSOR_CACHE / "val.pt"
 
 @dataclass
 class TrainConfig:
-    batch_size: int = 1024  # maximize VRAM usage
+    batch_size: int = 2048  # maximize VRAM on H100 80GB
     channels: int = 48  # ~831K params
     context_ch: int = 32
-    lr: float = 0.008  # scaled for batch_size=1024
+    lr: float = 0.016  # scaled for batch_size=2048 (linear scaling)
     weight_decay: float = 0.01
     epochs: int = 100
     warmup_ratio: float = 0.05
     final_lr_frac: float = 0.01
-    num_workers: int = 4  # parallel CPU workers
+    num_workers: int = 8  # more workers for H100 CPU
     dropout: float = 0.2
     label_smoothing: float = 0.1
     device: str = "cuda" if torch.cuda.is_available() else "cpu"
