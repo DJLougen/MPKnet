@@ -8,6 +8,7 @@
   <a href="#benchmarks">Benchmarks</a> •
   <a href="#architecture">Architecture</a> •
   <a href="#autoresearch">AutoResearch Results</a> •
+  <a href="#kuramoto-vlm">Kuramoto-VLM</a> •
   <a href="#quick-start">Quick Start</a> •
   <a href="#license--commercial-use">License</a>
 </p>
@@ -105,6 +106,33 @@ All three datasets fit in the same 3.2 GB VRAM footprint. The model trains from 
 - **Caltech-101 (59.5%)** is the hardest — 101 classes with only 30 training images each, yet top-5 accuracy reaches 78%. The model doesn't plateau until ~epoch 80, suggesting longer training wouldn't help without more data.
 
 Detailed per-epoch curves: `docs/results/2026-04-28_three-dataset-benchmark.md`
+
+---
+
+## Kuramoto-VLM
+
+An experimental thread — and an open collaboration with
+[Unconventional AI](https://unconv.ai) — replaces the CNN pathways with a
+population of **coupled Kuramoto oscillators** and uses them as the **vision
+head of a frozen Qwen3.5-2B**, built on their
+[Un-0](https://github.com/unconv-ai/Un-0) oscillator primitive. Retinal patch
+features set the initial phases of M/P/K oscillator populations; the read-out
+phases become vision tokens spliced into the LLM's embedding stream,
+ViT-connector style. Only the ~7M head trains; the LLM stays frozen. M and P
+encode; K both encodes (S-cone chromatic + coarse spatial) and injects a diffuse
+higher-area gain on the integrated decision vector — it does not modulate the
+M/P relays directly.
+
+| Dataset | Exact-match (class name) | Chance |
+|---------|--------------------------|--------|
+| CIFAR-100 | 19.6% (600 steps) | 1% |
+| Imagenette (ImageNet subset) | 50.9% (400 steps) | 10% |
+
+An equal-budget ablation shows K's **encoding** role is decisive (+~15 pts);
+the diffuse modulation and learned-vs-random dynamics need a longer budget /
+robustness tasks to separate. Code, usage, and full numbers:
+[`kuramoto_vlm/`](kuramoto_vlm/) — [README](kuramoto_vlm/README.md) ·
+[RESULTS](kuramoto_vlm/RESULTS.md).
 
 ---
 
@@ -245,7 +273,7 @@ Benchmark ablations forthcoming across all three autoresearch datasets.
 **Applications:**
 - [ ] **Detection head** — YOLO-style head using M/P as multi-scale FPN
 - [ ] **Medical uncertainty** — MC Dropout for epistemic uncertainty quantification
-- [ ] **VLM encoder** — Lightweight vision encoder for vision-language models
+- [x] **VLM encoder** — coupled-oscillator vision head for a frozen Qwen VLM ([Kuramoto-VLM](#kuramoto-vlm))
 - [ ] **Webcam eye tracking** — Real-time gaze estimation from eye crops
 - [ ] **Thermal glider fire detection** — 3D-printed gliders for wildfire monitoring
 
