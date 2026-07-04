@@ -111,10 +111,10 @@ Detailed per-epoch curves: `docs/results/2026-04-28_three-dataset-benchmark.md`
 
 ## Kuramoto-VLM
 
-An experimental thread — and an open collaboration with
-[Unconventional AI](https://unconv.ai) — replaces the CNN pathways with a
+An experimental thread that replaces the CNN pathways with a
 population of **coupled Kuramoto oscillators** and uses them as the **vision
-head of a frozen Qwen3.5-2B**, built on their
+head of a frozen Qwen3.5-2B**, built on
+[Unconventional AI](https://unconv.ai)'s open
 [Un-0](https://github.com/unconv-ai/Un-0) oscillator primitive. Retinal patch
 features set the initial phases of M/P/K oscillator populations; the read-out
 phases become vision tokens spliced into the LLM's embedding stream,
