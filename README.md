@@ -187,7 +187,7 @@ MPKx models the **Lateral Geniculate Nucleus (LGN)** — the relay station betwe
 |---------|-----------------|----------------|------------------|
 | **M** (Magnocellular) | ~10% of LGN, motion, global gist | Stride 5 (coarse) | Shape, motion, layout |
 | **P** (Parvocellular) | ~80% of LGN, fine detail, color | Stride 2 (fine) | Texture, edges, color |
-| **K** (Koniocellular) | ~10% of LGN, projects to M and P | Stride 3 (intermediate) | Context-dependent gating |
+| **K** (Koniocellular) | ~10% of LGN, heterogeneous circuit-family (SC-linked orienting, S-cone chromatic, diffuse state-gain) | Stride 3 (intermediate) | Chromatic + coarse **encoding** and higher-area **modulation** at convergence |
 
 ### Processing Pipeline
 
@@ -204,14 +204,14 @@ input → stereo disparity → retinal preprocessing (center-surround)
 1. **Same kernel, different stride** — All pathways use 5×5 kernels. Fibonacci strides (2:3:5) differentiate them, producing resolutions that converge toward the golden ratio.
 2. **Parallel processing** — M/P/K run independently until fusion. No cross-talk within pathways.
 3. **Late fusion only** — No pooling within pathways. Global adaptive average pool only at the end.
-4. **K modulates, doesn't process** — K generates bidirectional cross-stream gain gates for M and P (tanh gating: `1 + α·tanh(gate)`, α=0.5). Range [0.5, 1.5] allows both suppression and facilitation.
+4. **K is a modulatory circuit-family, not a relay that gates M/P** — Per the koniocellular circuit-family account, K both *encodes* (S-cone chromatic + coarse spatial) and injects diffuse *higher-area modulation* at the M/P convergence; it does **not** directly modulate the M and P relays. The MPKx CNN approximates this with bidirectional cross-stream gain (`1 + α·tanh(gate)`, α=0.5); the faithful form — K read out alongside M/P and modulating the integrated decision vector — is realized in [Kuramoto-VLM](#kuramoto-vlm).
 5. **Binocular processing** — Left/right eye views processed independently through M/P/K pathways, fused only at the V1 stage.
 
 ### What's Novel
 
 - **First Fibonacci strides in CNNs** — Derived from biological spatial frequency tuning, not empirical search
 - **First complete M/P/K implementation** — Prior work (Magno-Parvo CNN, EVNets, SlowFast) models M/P only
-- **Biologically-grounded cross-stream gating** — K→M/P gating mirrors koniocellular projections in LGN
+- **Koniocellular circuit-family** — K modeled as a hybrid encoder + higher-area modulator (not a third M/P relay); the corrected form is realized in [Kuramoto-VLM](#kuramoto-vlm)
 - **Late binocular fusion** — Eyes segregated through LGN blocks, matching known anatomy
 
 ### Why This Works
